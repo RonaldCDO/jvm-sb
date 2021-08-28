@@ -1,16 +1,14 @@
-#include <iostream>
 #include <iomanip>
 #include <fstream>
-using namespace std;
+#include <iostream>
+#include <netinet/in.h>
 
-#define u4length 4
+using namespace std;
 
 class ClassFile {
     public:
-        uint8_t ca;
-        uint8_t fe;
-        uint8_t ba;
-        uint8_t be;
+        ifstream arquivo;
+        uint32_t cafebabe;
         uint16_t minor;
         uint16_t major;
         uint16_t constant_pool_count;
@@ -25,36 +23,49 @@ class ClassFile {
         uint16_t method_count;
         uint8_t * method_table;
         uint16_t attribute_count;
-        uint8_t * attribute_table;  
+        uint8_t * attribute_table;
+        void carregarArquivo(char* nomeArquivo);
+        void lerArquivo();
 };
 
-void carregarArquivo(char* nomeArquivo) {
+void ClassFile::carregarArquivo(char* nomeArquivo) {
 
     cout << nomeArquivo << "\n";
-    ifstream arquivo;
-    arquivo.open(nomeArquivo);
+    this -> arquivo.open(nomeArquivo);
 
-    if (arquivo.is_open()) {
-        uint32_t u4;
+    if (this -> arquivo.is_open()) {
         cout << "Arquivo aberto com sucesso\n";
-        arquivo.read(reinterpret_cast<char *>(&u4), sizeof(u4));
+    } else {
+        cout << "Falha ao abrir arquivo. Encerrando...\n";
+    }
+}
 
-        /**
+void ClassFile::lerArquivo() {
+    if (arquivo.is_open()) {
+        uint32_t buffer;
+        arquivo.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+
+        /** htonl() - host to network long conversion:
+         * realiza a conversao de inteiros multi-byte 
+         * da ordem do host para a ordem da rede
+         * ex: se o programa ler "bebafeca", esse comando corrige
+         * a ordem para "cafebabe" 
+         **/
+        buffer = htonl(buffer);
+        cafebabe = buffer;
+        
+        // captura configuracoes do cout para posterior restauracao 
         ios_base::fmtflags oldFlags = cout.flags();
         streamsize oldPrec = cout.precision();
         char oldFill = cout.fill();
-        **/
-
-        cout << "Magic: " << hex << u4 << "\n";
-
-        /**
-         * cout.flags(oldFlags);
+        
+        cout << "Magic: " << hex << cafebabe << "\n";
+        
+        // restaura configuracoes do cout apos o uso do parametro "hex"
+        cout.flags(oldFlags);
         cout.precision(oldPrec);
         cout.fill(oldFill);
-        **/
 
-    } else {
-        cout << "Falha ao abrir arquivo. Encerrando...\n";
     }
 }
 
@@ -66,7 +77,10 @@ int main(int argc, char* argv[]) {
         cout << argv[i] << '\n';
     }
 
-    carregarArquivo(argv[1]);
+    ClassFile cf;
+
+    cf.carregarArquivo(argv[1]);
+    cf.lerArquivo();
 
     return 0;
 }
