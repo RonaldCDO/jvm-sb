@@ -3,6 +3,8 @@
 #include <iostream>
 #include <netinet/in.h>
 
+#define magic_number 0xcafebabe
+
 using namespace std;
 
 class ClassFile {
@@ -65,6 +67,10 @@ void ClassFile::lerArquivo() {
         cout.flags(oldFlags);
         cout.precision(oldPrec);
         cout.fill(oldFill);
+
+        if (cafebabe == magic_number) {
+            cout << "O arquivo possui o número magico de um .class \n";
+        }
 
     }
 }
