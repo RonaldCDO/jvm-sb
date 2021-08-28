@@ -8,7 +8,13 @@ int main(int argc, char* argv[]) {
         std::cout << argv[i] << '\n';
     }
 
-    carregarArquivo(argv[1]);
+    ClassFile cf;
+
+    cf.carregarArquivo(argv[1]);
+    if(cf.arquivo.is_open()) {
+        cf.lerNumeroMagico();
+        cf.lerMinorMajor();
+    }
 
     return 0;
 }
