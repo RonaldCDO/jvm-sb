@@ -1,7 +1,7 @@
 #include "leitor_exibidor.h"
 
 
-int convert(char num[]){
+int ConvertToInt(char num[]){
     int len = strlen(num);
     int base = 1;
     int temp = 0;
@@ -19,21 +19,22 @@ int convert(char num[]){
 }
 
 
-void ClassFile::carregarArquivo(char* nomeArquivo){
-    std::cout << nomeArquivo << "\n";
+void ClassFile::LoadFile(char* fileName){
+    std::cout << fileName << "\n";
 
-    this -> arquivo.open(nomeArquivo);
+    this -> file.open(fileName);
 
-    if (this -> arquivo.is_open()) {
-        std::cout << "Arquivo aberto com sucesso\n";
-    } else
+    if (this -> file.is_open() != true)
+    //     std::cout << "Arquivo aberto com sucesso\n";
+    // } else
         std::cout << "Falha ao abrir arquivo. Encerrando...\n";
+    
 }
 
 
-void ClassFile::lerNumeroMagico(){
+void ClassFile::GetMagicNumber(){
     uint32_t buffer;
-    arquivo.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+    file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
 
     /** htonl() - host to network long conversion:
      * realiza a conversao de inteiros multi-byte 
@@ -44,7 +45,7 @@ void ClassFile::lerNumeroMagico(){
     buffer = htonl(buffer);
     cafebabe = buffer;
     
-    // captura configuracoes do cout para posterior restauracao 
+    // captura configuracoes do std::cout para posterior restauracao 
     std::ios_base::fmtflags oldFlags = std::cout.flags();
     std::streamsize oldPrec = std::cout.precision();
     char oldFill = std::cout.fill();
@@ -57,21 +58,64 @@ void ClassFile::lerNumeroMagico(){
     std::cout.fill(oldFill);
 
     if (cafebabe == magic_number) 
-        std::cout << "O arquivo possui o número magico de um .class \n";
+        std::cout << "File Type: .class \n";
 }
 
 
-void ClassFile::lerMinorMajor() {
+void ClassFile::GetMinorMajor() {
     
     uint16_t buffer;
 
-    arquivo.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+    file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
     minor = buffer;
 
-    arquivo.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+    file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
     major = buffer;
 
-    std::cout << "Version (major.minor): " << major << "." << minor << "\n";
+    std::cout << "Minor Version:\t\t" << minor << std::endl;
+    std::cout << "Major Version:\t\t" << major << std::endl;
 }
+
+
+void GetFlags(){
+
+}
+
+
+void GetThis_class(){
+
+}
+
+
+void GetSuperClass(){
+
+}
+
+
+void GetInterfacesCount(){
+
+}
+
+
+void GetFieldsCount(){
+
+}
+
+
+void GetMethodsCount(){
+
+}
+
+
+void GetAttributesCount(){
+
+}
+
+
+void ClassFile::LoadConstantPool(){
+    // uint16_t buffer;
+
+}
+

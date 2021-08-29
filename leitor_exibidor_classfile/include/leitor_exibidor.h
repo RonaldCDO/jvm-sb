@@ -5,15 +5,13 @@
 #include <string.h>
 
 #define magic_number 0xcafebabe
-#define u4length 4
 
-
-void carregarArquivo(char* nomeArquivo);
+void LoadFile(char* fileName);
 
 
 class ClassFile {
     public:
-        std::ifstream arquivo;
+        std::ifstream file;
         uint32_t cafebabe;
         uint16_t minor;
         uint16_t major;
@@ -30,10 +28,19 @@ class ClassFile {
         uint8_t * method_table;
         uint16_t attribute_count;
         uint8_t * attribute_table;
-        void carregarArquivo(char* nomeArquivo);
-        void lerNumeroMagico();
-        void lerMinorMajor();
+
+        void LoadFile(char* fileName);
+        void GetMagicNumber();
+        void GetMinorMajor();
+        void GetFlags();
+        void GetThis_class();
+        void GetSuperClass();
+        void GetInterfacesCount();
+        void GetFieldsCount();
+        void GetMethodsCount();
+        void GetAttributesCount();
+        void LoadConstantPool();
 };
 
 
-int convert(char num[]);
+int ConvertToInt(char num[]);
