@@ -3,20 +3,21 @@
 
 int convert(char num[]){
     int len = strlen(num);
-   int base = 1;
-   int temp = 0;
-   for (int i=len-1; i>=0; i--) {
-      if (num[i]>='0' && num[i]<='9') {
-         temp += (num[i] - 48)*base;
-         base = base * 16;
-      }
-      else if (num[i]>='A' && num[i]<='F') {
-         temp += (num[i] - 55)*base;
-         base = base*16;
-      }
+    int base = 1;
+    int temp = 0;
+    for (int i=len-1; i>=0; i--) {
+        if (num[i]>='0' && num[i]<='9') {
+            temp += (num[i] - 48)*base;
+            base = base * 16;
+        }
+        else if (num[i]>='A' && num[i]<='F') {
+            temp += (num[i] - 55)*base;
+            base = base*16;
+        }
    }
    return temp;
 }
+
 
 void ClassFile::carregarArquivo(char* nomeArquivo){
     std::cout << nomeArquivo << "\n";
@@ -25,10 +26,10 @@ void ClassFile::carregarArquivo(char* nomeArquivo){
 
     if (this -> arquivo.is_open()) {
         std::cout << "Arquivo aberto com sucesso\n";
-    } else {
+    } else
         std::cout << "Falha ao abrir arquivo. Encerrando...\n";
-    }
 }
+
 
 void ClassFile::lerNumeroMagico(){
     uint32_t buffer;
@@ -55,10 +56,10 @@ void ClassFile::lerNumeroMagico(){
     std::cout.precision(oldPrec);
     std::cout.fill(oldFill);
 
-    if (cafebabe == magic_number) {
+    if (cafebabe == magic_number) 
         std::cout << "O arquivo possui o número magico de um .class \n";
-    }
 }
+
 
 void ClassFile::lerMinorMajor() {
     

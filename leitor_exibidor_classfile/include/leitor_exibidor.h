@@ -7,7 +7,9 @@
 #define magic_number 0xcafebabe
 #define u4length 4
 
+
 void carregarArquivo(char* nomeArquivo);
+
 
 class ClassFile {
     public:
@@ -32,5 +34,6 @@ class ClassFile {
         void lerNumeroMagico();
         void lerMinorMajor();
 };
+
 
 int convert(char num[]);
