@@ -23,6 +23,7 @@ void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
 
     this -> file.open(fileName);
+    std::cout<<"Filename: " << fileName <<std::endl;
 
     if (this -> file.is_open() != true)
     //     std::cout << "Arquivo aberto com sucesso\n";
@@ -58,7 +59,11 @@ void ClassFile::GetMagicNumber(){
     std::cout.fill(oldFill);
 
     if (cafebabe == magic_number) 
-        std::cout << "File Type: .class \n";
+        std::cout << "File Type: .class"<<"\n";
+    else{
+        std::cout<< "Tipo de arquivo não aceito\n";
+        exit(1);
+    }
 }
 
 
