@@ -12,9 +12,9 @@ void LoadFile(char* fileName);
 class ClassFile {
     public:
         std::ifstream file;
-        uint32_t cafebabe;
-        uint16_t minor;
-        uint16_t major;
+        uint32_t magic; 
+        uint16_t minor_version;
+        uint16_t major_version;
         uint16_t constant_pool_count;
         uint8_t * constant_pool_table;
         uint16_t acess_flags;
@@ -32,6 +32,7 @@ class ClassFile {
         void LoadFile(char* fileName);
         void GetMagicNumber();
         void GetMinorMajor();
+        void GetConstantPoolSize();
         void GetFlags();
         void GetThis_class();
         void GetSuperClass();

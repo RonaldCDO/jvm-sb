@@ -1,22 +1,22 @@
 #include "leitor_exibidor.h"
 
 
-int ConvertToInt(char num[]){
-    int len = strlen(num);
-    int base = 1;
-    int temp = 0;
-    for (int i=len-1; i>=0; i--) {
-        if (num[i]>='0' && num[i]<='9') {
-            temp += (num[i] - 48)*base;
-            base = base * 16;
-        }
-        else if (num[i]>='A' && num[i]<='F') {
-            temp += (num[i] - 55)*base;
-            base = base*16;
-        }
-   }
-   return temp;
-}
+// int ConvertToInt(char num[]){
+//     int len = strlen(num);
+//     int base = 1;
+//     int temp = 0;
+//     for (int i=len-1; i>=0; i--) {
+//         if (num[i]>='0' && num[i]<='9') {
+//             temp += (num[i] - 48)*base;
+//             base = base * 16;
+//         }
+//         else if (num[i]>='A' && num[i]<='F') {
+//             temp += (num[i] - 55)*base;
+//             base = base*16;
+//         }
+//    }
+//    return temp;
+// }
 
 
 void ClassFile::LoadFile(char* fileName){
@@ -44,21 +44,21 @@ void ClassFile::GetMagicNumber(){
      * a ordem para "cafebabe" 
      **/
     buffer = htonl(buffer);
-    cafebabe = buffer;
+    magic = buffer;
     
     // captura configuracoes do std::cout para posterior restauracao 
     std::ios_base::fmtflags oldFlags = std::cout.flags();
     std::streamsize oldPrec = std::cout.precision();
     char oldFill = std::cout.fill();
     
-    std::cout << "Magic: " << std::hex << cafebabe << "\n";
+    std::cout << "Magic: " << std::hex << magic << "\n";
     
     // restaura configuracoes do cout apos o uso do parametro "hex"
     std::cout.flags(oldFlags);
     std::cout.precision(oldPrec);
     std::cout.fill(oldFill);
 
-    if (cafebabe == magic_number) 
+    if (magic == magic_number) 
         std::cout << "File Type: .class"<<"\n";
     else{
         std::cout<< "Tipo de arquivo não aceito\n";
@@ -73,48 +73,53 @@ void ClassFile::GetMinorMajor() {
 
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
-    minor = buffer;
+    minor_version = buffer;
 
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
-    major = buffer;
+    major_version = buffer;
 
-    std::cout << "Minor Version:\t\t" << minor << std::endl;
-    std::cout << "Major Version:\t\t" << major << std::endl;
+    std::cout << "Minor Version:\t\t" << minor_version << std::endl;
+    std::cout << "Major Version:\t\t" << major_version << std::endl;
 }
 
 
-void GetFlags(){
-
-}
-
-
-void GetThis_class(){
+void ClassFile::GetFlags(){
 
 }
 
 
-void GetSuperClass(){
+void ClassFile::GetConstantPoolSize(){
 
 }
 
 
-void GetInterfacesCount(){
+void ClassFile::GetThis_class(){
 
 }
 
 
-void GetFieldsCount(){
+void ClassFile::GetSuperClass(){
 
 }
 
 
-void GetMethodsCount(){
+void ClassFile::GetInterfacesCount(){
 
 }
 
 
-void GetAttributesCount(){
+void ClassFile::GetFieldsCount(){
+
+}
+
+
+void ClassFile::GetMethodsCount(){
+
+}
+
+
+void ClassFile::GetAttributesCount(){
 
 }
 
