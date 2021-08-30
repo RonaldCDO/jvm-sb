@@ -33,8 +33,8 @@ void ClassFile::LoadFile(char* fileName){
 }
 
 
-void ClassFile::GetMagicNumber(){
-    uint32_t buffer;
+void ClassFile::GetMagic(){
+    u4 buffer;
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
 
     /** htonl() - host to network long conversion:
@@ -67,9 +67,9 @@ void ClassFile::GetMagicNumber(){
 }
 
 
-void ClassFile::GetMinorMajor() {
+void ClassFile::GetMinorAndMajor() {
     
-    uint16_t buffer;
+    u2 buffer;
 
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
@@ -84,48 +84,48 @@ void ClassFile::GetMinorMajor() {
 }
 
 
-void ClassFile::GetFlags(){
-
+u2 ClassFile::GetConstantPoolCount(){
+    return constant_pool_count;
 }
 
 
-void ClassFile::GetConstantPoolSize(){
-
+u2 ClassFile::GetAcessFlags(){
+    return acess_flags;
 }
 
 
-void ClassFile::GetThis_class(){
-
+u2 ClassFile::GetThisClass(){
+    return this_class;
 }
 
 
-void ClassFile::GetSuperClass(){
-
+u2 ClassFile::GetSuperClass(){
+    return super_class;
 }
 
 
-void ClassFile::GetInterfacesCount(){
-
+u2 ClassFile::GetInterfacesCount(){
+    return interfaces_count;
 }
 
 
-void ClassFile::GetFieldsCount(){
-
+u2 ClassFile::GetFieldsCount(){
+    return fields_count;
 }
 
 
-void ClassFile::GetMethodsCount(){
-
+u2 ClassFile::GetMethodsCount(){
+    return methods_count;
 }
 
 
-void ClassFile::GetAttributesCount(){
-
+u2 ClassFile::GetAttributesCount(){
+    return attributes_count;
 }
 
 
-void ClassFile::LoadConstantPool(){
-    // uint16_t buffer;
+void ClassFile::LoadConstantPoolTable(){
+    
 
 }
 

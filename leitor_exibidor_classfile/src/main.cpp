@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
 
     cf.LoadFile(argv[1]);
     if(cf.file.is_open()) {
-        cf.GetMagicNumber();
-        cf.GetMinorMajor();
+        cf.GetMagic();
+        cf.GetMinorAndMajor();
     }
 
     return 0;
