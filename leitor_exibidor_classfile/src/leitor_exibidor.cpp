@@ -69,12 +69,17 @@ void ClassFile::GetMagicNumber(){
 
 void ClassFile::GetMinorMajor() {
     
+    // declaracao de buffer do tipo unsigned integer de 16 bits
     uint16_t buffer;
 
+    // leitura de dados para esse buffer
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+    // conversao de endianess host-to-network do valor no buffer
     buffer = htons(buffer);
+    // atribuicao do valor convertido a variavel de minor_version
     minor_version = buffer;
 
+    // o processo se repete aqui para a major version
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
     major_version = buffer;
@@ -90,6 +95,14 @@ void ClassFile::GetFlags(){
 
 
 void ClassFile::GetConstantPoolSize(){
+
+    uint16_t buffer;
+
+    file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+
+    constant_pool_count = htons(buffer);
+
+    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
 
 }
 

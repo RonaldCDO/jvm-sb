@@ -23,6 +23,7 @@ int main(int argc, char* argv[]) {
     if(cf.file.is_open()) {
         cf.GetMagicNumber();
         cf.GetMinorMajor();
+        cf.GetConstantPoolSize();
     }
 
     return 0;
