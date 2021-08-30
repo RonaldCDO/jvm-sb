@@ -8,9 +8,8 @@
 
 void LoadFile(char* fileName);
 
-
 class ClassFile {
-    public:
+    private:
         std::ifstream file;
         uint32_t magic; 
         uint16_t minor_version;
@@ -28,11 +27,13 @@ class ClassFile {
         uint8_t * method_table;
         uint16_t attribute_count;
         uint8_t * attribute_table;
-
+    public:
         void LoadFile(char* fileName);
+        std::ifstream * GetFile();
         void GetMagicNumber();
         void GetMinorMajor();
         void GetConstantPoolSize();
+        void LoadConstantPool(int16_t cp_count);
         void GetFlags();
         void GetThis_class();
         void GetSuperClass();
@@ -40,8 +41,16 @@ class ClassFile {
         void GetFieldsCount();
         void GetMethodsCount();
         void GetAttributesCount();
-        void LoadConstantPool();
+};
+
+class ConstantPoolEntry {
+    private:
+        uint8_t tag;
+        uint8_t info[];
+    public: 
+        void SetTag(uint8_t tag);
+        int GetTag();
 };
 
 
-int ConvertToInt(char num[]);
+// int ConvertToInt(char num[]);

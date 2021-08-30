@@ -1,6 +1,5 @@
 #include "leitor_exibidor.h"
 
-
 // int ConvertToInt(char num[]){
 //     int len = strlen(num);
 //     int base = 1;
@@ -18,7 +17,6 @@
 //    return temp;
 // }
 
-
 void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
 
@@ -29,9 +27,13 @@ void ClassFile::LoadFile(char* fileName){
     //     std::cout << "Arquivo aberto com sucesso\n";
     // } else
         std::cout << "Falha ao abrir arquivo. Encerrando...\n";
-    
 }
 
+std::ifstream * ClassFile::GetFile() {
+    if (file.is_open())
+
+    return &file;
+}
 
 void ClassFile::GetMagicNumber(){
     uint32_t buffer;
@@ -66,7 +68,6 @@ void ClassFile::GetMagicNumber(){
     }
 }
 
-
 void ClassFile::GetMinorMajor() {
     
     // declaracao de buffer do tipo unsigned integer de 16 bits
@@ -88,11 +89,9 @@ void ClassFile::GetMinorMajor() {
     std::cout << "Major Version:\t\t" << major_version << std::endl;
 }
 
-
 void ClassFile::GetFlags(){
 
 }
-
 
 void ClassFile::GetConstantPoolSize(){
 
@@ -106,39 +105,49 @@ void ClassFile::GetConstantPoolSize(){
 
 }
 
+void ClassFile::LoadConstantPool(int16_t cp_count) {
+
+    int cp_count_local = cp_count;
+
+    uint8_t buffer_tag;
+    uint8_t buffer_info;
+
+    ConstantPoolEntry cp_entry;
+
+    while (cp_count_local) {
+        
+        file.read(reinterpret_cast<char *>(&buffer_tag), sizeof(buffer_tag));
+        file.read(reinterpret_cast<char *>(&buffer_tag), sizeof(buffer_tag));
+
+        std::cout << htons(buffer_tag) << std::endl;
+
+        cp_count_local--;
+    }
+}
 
 void ClassFile::GetThis_class(){
 
 }
 
-
 void ClassFile::GetSuperClass(){
 
 }
-
 
 void ClassFile::GetInterfacesCount(){
 
 }
 
-
 void ClassFile::GetFieldsCount(){
 
 }
 
-
 void ClassFile::GetMethodsCount(){
 
 }
-
 
 void ClassFile::GetAttributesCount(){
 
 }
 
 
-void ClassFile::LoadConstantPool(){
-    // uint16_t buffer;
-
-}
 
