@@ -29,10 +29,12 @@ void ClassFile::LoadFile(char* fileName){
         std::cout << "Falha ao abrir arquivo. Encerrando...\n";
 }
 
-std::ifstream * ClassFile::GetFile() {
-    if (file.is_open())
+bool ClassFile::FileIsOpen() {
+    if (file.is_open()) {
+        return true;
+    }
 
-    return &file;
+    return false;
 }
 
 void ClassFile::GetMagic(){
@@ -89,12 +91,7 @@ void ClassFile::GetMinorAndMajor() {
     std::cout << "Major Version:\t\t" << major_version << std::endl;
 }
 
-<<<<<<< HEAD
-void ClassFile::GetFlags(){
-
-}
-
-void ClassFile::GetConstantPoolSize(){
+void ClassFile::ReadConstantPoolSize(){
 
     uint16_t buffer;
 
@@ -103,22 +100,18 @@ void ClassFile::GetConstantPoolSize(){
     constant_pool_count = htons(buffer);
 
     std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
-
-=======
+}
 
 u2 ClassFile::GetConstantPoolCount(){
     return constant_pool_count;
 }
 
-
 u2 ClassFile::GetAcessFlags(){
     return acess_flags;
->>>>>>> ronald-leitor-exibidor
 }
 
-void ClassFile::LoadConstantPool(int16_t cp_count) {
+void ClassFile::LoadConstantPoolTable(int16_t cp_count) {
 
-<<<<<<< HEAD
     int cp_count_local = cp_count;
 
     uint8_t buffer_tag;
@@ -135,10 +128,8 @@ void ClassFile::LoadConstantPool(int16_t cp_count) {
 
         cp_count_local--;
     }
-=======
 u2 ClassFile::GetThisClass(){
     return this_class;
->>>>>>> ronald-leitor-exibidor
 }
 
 void ClassFile::GetThis_class(){
@@ -149,25 +140,6 @@ u2 ClassFile::GetSuperClass(){
     return super_class;
 }
 
-<<<<<<< HEAD
-void ClassFile::GetInterfacesCount(){
-
-}
-
-void ClassFile::GetFieldsCount(){
-
-}
-
-void ClassFile::GetMethodsCount(){
-
-}
-
-void ClassFile::GetAttributesCount(){
-
-}
-
-
-=======
 
 u2 ClassFile::GetInterfacesCount(){
     return interfaces_count;
@@ -193,5 +165,4 @@ void ClassFile::LoadConstantPoolTable(){
     
 
 }
->>>>>>> ronald-leitor-exibidor
 

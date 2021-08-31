@@ -13,7 +13,7 @@
 void LoadFile(char* fileName);
 
 class ClassFile {
-    private:
+    protected:
         std::ifstream file;
         u4 magic; 
         u2 minor_version;
@@ -31,10 +31,12 @@ class ClassFile {
         u1 * methods_table;
         u2 attributes_count;
         u1 * attributes_table;
-
+    public:
         void LoadFile(char* fileName);
+        bool FileIsOpen();
         void GetMagic();
         void GetMinorAndMajor();
+        void ClassFile::ReadConstantPoolSize();
         u2 GetConstantPoolCount();
         u2 GetAcessFlags();
         u2 GetThisClass();

@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     ClassFile cf;
 
     cf.LoadFile(argv[1]);
-    if(cf.file.is_open()) {
+    if(cf.FileIsOpen()) {
         cf.GetMagic();
         cf.GetMinorAndMajor();
     }
