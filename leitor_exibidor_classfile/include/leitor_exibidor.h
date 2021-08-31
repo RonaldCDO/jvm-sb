@@ -14,7 +14,7 @@ void LoadFile(char* fileName);
 
 
 class ClassFile {
-    public:
+    private:
         std::ifstream file;
         u4 magic; 
         u2 minor_version;
@@ -33,6 +33,7 @@ class ClassFile {
         u2 attributes_count;
         u1 * attributes_table;
 
+    public:
         void LoadFile(char* fileName);
         void GetMagic();
         void GetMinorAndMajor();
