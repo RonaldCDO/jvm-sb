@@ -110,14 +110,12 @@ u2 ClassFile::GetAcessFlags(){
     return acess_flags;
 }
 
-void ClassFile::LoadConstantPoolTable(int16_t cp_count) {
+void ClassFile::LoadConstantPoolTable() {
 
-    int cp_count_local = cp_count;
+    int cp_count_local = this->constant_pool_count;
 
     uint8_t buffer_tag;
     uint8_t buffer_info;
-
-    ConstantPoolEntry cp_entry;
 
     while (cp_count_local) {
         
@@ -128,12 +126,10 @@ void ClassFile::LoadConstantPoolTable(int16_t cp_count) {
 
         cp_count_local--;
     }
-u2 ClassFile::GetThisClass(){
-    return this_class;
 }
 
-void ClassFile::GetThis_class(){
-
+u2 ClassFile::GetThisClass(){
+    return this_class;
 }
 
 u2 ClassFile::GetSuperClass(){
