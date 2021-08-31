@@ -1,5 +1,15 @@
 #include "constant_pool.h"
 
+void InfoClass::CreateEntry(u1 tag) {
+    this->tag = tag;
+    
+}
+
+void InfoFieldRef::CreateEntry(u1 tag){
+    this->tag = tag;
+}
+
+
 /**
 void ConstantPool::CreateEntry(u1 incoming_tag) {
 

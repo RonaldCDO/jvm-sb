@@ -99,15 +99,14 @@ void ClassFile::ReadMinorAndMajor() {
     u2 buffer;
 
     // leitura de dados para esse buffer
-    file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-    // conversao de endianess host-to-network do valor no buffer
-    buffer = htons(buffer);
+    buffer = Readu2();
+    
     // atribuicao do valor convertido a variavel de minor_version
     minor_version = buffer;
 
     // o processo se repete aqui para a major version
-    file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-    buffer = htons(buffer);
+    buffer = Readu2();
+
     major_version = buffer;
 }
 
@@ -138,12 +137,75 @@ u2 ClassFile::GetAcessFlags(){
 
 void ClassFile::LoadConstantPool() {
 
-    u1 buffer_tag;
     u2 cp_count_local = constant_pool_count;
 
     ConstantPool cp;
 
+    u1 tag;
+
     while(cp_count_local) {
+
+        tag = Readu1();
+
+        switch (tag)
+        {
+        case CLASS:
+            // constant_pool.Append(Readu2());
+            break;
+
+        case FIELD_REF:
+            
+            break;
+        
+        case METHOD_REF:
+            
+            break;
+        
+        case INTERFACE_METHOD_REF:
+            
+            break;
+        
+        case STRING:
+            
+            break;
+        
+        case FLOAT:
+            
+            break;
+        
+        case LONG:
+            
+            break;
+        
+        case DOUBLE:
+            
+            break;
+        
+        case NAME_AND_TYPE:
+            
+            break;
+        
+        case UTF8:
+            
+            break;
+        
+        case METHOD_HANDLE:
+            
+            break;
+        
+        case METHOD_TYPE:
+            
+            break;        
+
+        case INVOKE_DYNAMIC:
+            
+            break;
+        
+        default:
+            break;
+        }
+
+        // cp
 
         std::cout << cp_count_local << std::endl;
 

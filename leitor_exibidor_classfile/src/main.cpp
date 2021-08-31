@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
         cf.ReadConstantPoolSize();
         cf.ShowConstantPoolCount();
 
-        cf.LoadConstantPool();
+        //cf.LoadConstantPool();
 
     }
 
