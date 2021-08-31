@@ -35,8 +35,8 @@ std::ifstream * ClassFile::GetFile() {
     return &file;
 }
 
-void ClassFile::GetMagicNumber(){
-    uint32_t buffer;
+void ClassFile::GetMagic(){
+    u4 buffer;
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
 
     /** htonl() - host to network long conversion:
@@ -68,10 +68,10 @@ void ClassFile::GetMagicNumber(){
     }
 }
 
-void ClassFile::GetMinorMajor() {
+
+void ClassFile::GetMinorAndMajor() {
     
-    // declaracao de buffer do tipo unsigned integer de 16 bits
-    uint16_t buffer;
+    u2 buffer;
 
     // leitura de dados para esse buffer
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
@@ -89,6 +89,7 @@ void ClassFile::GetMinorMajor() {
     std::cout << "Major Version:\t\t" << major_version << std::endl;
 }
 
+<<<<<<< HEAD
 void ClassFile::GetFlags(){
 
 }
@@ -103,10 +104,21 @@ void ClassFile::GetConstantPoolSize(){
 
     std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
 
+=======
+
+u2 ClassFile::GetConstantPoolCount(){
+    return constant_pool_count;
+}
+
+
+u2 ClassFile::GetAcessFlags(){
+    return acess_flags;
+>>>>>>> ronald-leitor-exibidor
 }
 
 void ClassFile::LoadConstantPool(int16_t cp_count) {
 
+<<<<<<< HEAD
     int cp_count_local = cp_count;
 
     uint8_t buffer_tag;
@@ -123,16 +135,21 @@ void ClassFile::LoadConstantPool(int16_t cp_count) {
 
         cp_count_local--;
     }
+=======
+u2 ClassFile::GetThisClass(){
+    return this_class;
+>>>>>>> ronald-leitor-exibidor
 }
 
 void ClassFile::GetThis_class(){
 
 }
 
-void ClassFile::GetSuperClass(){
-
+u2 ClassFile::GetSuperClass(){
+    return super_class;
 }
 
+<<<<<<< HEAD
 void ClassFile::GetInterfacesCount(){
 
 }
@@ -150,4 +167,31 @@ void ClassFile::GetAttributesCount(){
 }
 
 
+=======
+
+u2 ClassFile::GetInterfacesCount(){
+    return interfaces_count;
+}
+
+
+u2 ClassFile::GetFieldsCount(){
+    return fields_count;
+}
+
+
+u2 ClassFile::GetMethodsCount(){
+    return methods_count;
+}
+
+
+u2 ClassFile::GetAttributesCount(){
+    return attributes_count;
+}
+
+
+void ClassFile::LoadConstantPoolTable(){
+    
+
+}
+>>>>>>> ronald-leitor-exibidor
 
