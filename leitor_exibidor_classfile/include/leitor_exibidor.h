@@ -6,7 +6,7 @@
 #include <fstream>
 #include <netinet/in.h>
 #include <string.h>
-#include "data_class_format.h"
+#include "constant_pool.h"
 
 #define magic_number 0xcafebabe
 
@@ -19,7 +19,7 @@ class ClassFile {
         u2 minor_version;
         u2 major_version;
         u2 constant_pool_count;
-        u1 * constant_pool_table;
+        ConstantPool constant_pool;
         u2 acess_flags;
         u2 this_class;
         u2 super_class;
@@ -31,13 +31,19 @@ class ClassFile {
         u1 * methods_table;
         u2 attributes_count;
         u1 * attributes_table;
+        u1 Readu1();
+        u2 Readu2();
+        u4 Readu4();
     public:
         void LoadFile(char* fileName);
         bool FileIsOpen();
-        void GetMagic();
-        void GetMinorAndMajor();
-        void ClassFile::ReadConstantPoolSize();
-        u2 GetConstantPoolCount();
+        void ReadMagic();
+        void ReadMinorAndMajor();
+        void ReadConstantPoolSize();
+        void ShowMagic();
+        void ShowMinor();
+        void ShowMajor();
+        void ShowConstantPoolCount();
         u2 GetAcessFlags();
         u2 GetThisClass();
         u2 GetSuperClass();
@@ -45,7 +51,7 @@ class ClassFile {
         u2 GetFieldsCount();
         u2 GetMethodsCount();
         u2 GetAttributesCount();
-        void LoadConstantPoolTable();
+        void LoadConstantPool();
 };
 
 

@@ -1,21 +1,39 @@
 #include "leitor_exibidor.h"
 
-// int ConvertToInt(char num[]){
-//     int len = strlen(num);
-//     int base = 1;
-//     int temp = 0;
-//     for (int i=len-1; i>=0; i--) {
-//         if (num[i]>='0' && num[i]<='9') {
-//             temp += (num[i] - 48)*base;
-//             base = base * 16;
-//         }
-//         else if (num[i]>='A' && num[i]<='F') {
-//             temp += (num[i] - 55)*base;
-//             base = base*16;
-//         }
-//    }
-//    return temp;
-// }
+u1 ClassFile::Readu1() {
+
+    u1 buffer_u1;
+    
+    file.read(reinterpret_cast<char *>(&buffer_u1), sizeof(buffer_u1));
+
+    buffer_u1 = htons(buffer_u1);
+    
+    return buffer_u1;
+}
+
+u2 ClassFile::Readu2() {
+
+    u2 buffer_u2;
+    
+    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
+
+    buffer_u2 = htons(buffer_u2);
+    
+    return buffer_u2;
+    
+}
+
+u4 ClassFile::Readu4() {
+
+    u4 buffer_u4;
+    
+    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
+
+    buffer_u4 = htons(buffer_u4);
+    
+    return buffer_u4;
+    
+}
 
 void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
@@ -37,7 +55,7 @@ bool ClassFile::FileIsOpen() {
     return false;
 }
 
-void ClassFile::GetMagic(){
+void ClassFile::ReadMagic(){
     u4 buffer;
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
 
@@ -49,7 +67,18 @@ void ClassFile::GetMagic(){
      **/
     buffer = htonl(buffer);
     magic = buffer;
+
+    if (magic == magic_number) 
+        std::cout << "File Type: .class"<<"\n";
+    else{
+        std::cout<< "Tipo de arquivo não aceito\n";
+        exit(1);
+    }
     
+}
+
+void ClassFile::ShowMagic() {
+
     // captura configuracoes do std::cout para posterior restauracao 
     std::ios_base::fmtflags oldFlags = std::cout.flags();
     std::streamsize oldPrec = std::cout.precision();
@@ -62,16 +91,10 @@ void ClassFile::GetMagic(){
     std::cout.precision(oldPrec);
     std::cout.fill(oldFill);
 
-    if (magic == magic_number) 
-        std::cout << "File Type: .class"<<"\n";
-    else{
-        std::cout<< "Tipo de arquivo não aceito\n";
-        exit(1);
-    }
 }
 
 
-void ClassFile::GetMinorAndMajor() {
+void ClassFile::ReadMinorAndMajor() {
     
     u2 buffer;
 
@@ -86,46 +109,48 @@ void ClassFile::GetMinorAndMajor() {
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
     buffer = htons(buffer);
     major_version = buffer;
+}
 
+void ClassFile::ShowMinor() {
     std::cout << "Minor Version:\t\t" << minor_version << std::endl;
+}
+
+void ClassFile::ShowMajor() {
     std::cout << "Major Version:\t\t" << major_version << std::endl;
 }
 
 void ClassFile::ReadConstantPoolSize(){
 
-    uint16_t buffer;
+    u2 buffer;
 
     file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
 
     constant_pool_count = htons(buffer);
-
-    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
 }
 
-u2 ClassFile::GetConstantPoolCount(){
-    return constant_pool_count;
+void ClassFile::ShowConstantPoolCount(){
+    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
 }
 
 u2 ClassFile::GetAcessFlags(){
     return acess_flags;
 }
 
-void ClassFile::LoadConstantPoolTable() {
+void ClassFile::LoadConstantPool() {
 
-    int cp_count_local = this->constant_pool_count;
+    u1 buffer_tag;
+    u2 cp_count_local = constant_pool_count;
 
-    uint8_t buffer_tag;
-    uint8_t buffer_info;
+    ConstantPool cp;
 
-    while (cp_count_local) {
-        
-        file.read(reinterpret_cast<char *>(&buffer_tag), sizeof(buffer_tag));
-        file.read(reinterpret_cast<char *>(&buffer_tag), sizeof(buffer_tag));
+    while(cp_count_local) {
 
-        std::cout << htons(buffer_tag) << std::endl;
+        std::cout << cp_count_local << std::endl;
 
         cp_count_local--;
     }
+
+    this->constant_pool = cp;
 }
 
 u2 ClassFile::GetThisClass(){
@@ -154,11 +179,5 @@ u2 ClassFile::GetMethodsCount(){
 
 u2 ClassFile::GetAttributesCount(){
     return attributes_count;
-}
-
-
-void ClassFile::LoadConstantPoolTable(){
-    
-
-}
+}    
 

@@ -21,8 +21,18 @@ int main(int argc, char* argv[]) {
 
     cf.LoadFile(argv[1]);
     if(cf.FileIsOpen()) {
-        cf.GetMagic();
-        cf.GetMinorAndMajor();
+        cf.ReadMagic();
+        cf.ShowMagic();
+
+        cf.ReadMinorAndMajor();
+        cf.ShowMinor();
+        cf.ShowMajor();
+
+        cf.ReadConstantPoolSize();
+        cf.ShowConstantPoolCount();
+
+        cf.LoadConstantPool();
+
     }
 
     return 0;

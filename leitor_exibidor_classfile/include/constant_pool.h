@@ -1,3 +1,5 @@
+#include <iostream>
+#include <vector>
 #include <data_class_format.h>
 
 #ifndef CP
@@ -6,7 +8,7 @@
 #define CLASS 7
 #define FIELD_REF 9
 #define METHOD_REF 10
-#define INTERFACE_METHOD_RED 11
+#define INTERFACE_METHOD_REF 11
 #define STRING 8
 #define INTEGER 3
 #define FLOAT 4
@@ -24,6 +26,12 @@ class ConstantPoolInfo {
     public: 
         u1 GetTag();
         u1 SetTag();
+};
+
+class ConstantPool {
+    protected:
+        std::vector<ConstantPoolInfo> cp;
+    public:
 };
 
 class InfoClass: public ConstantPoolInfo {
