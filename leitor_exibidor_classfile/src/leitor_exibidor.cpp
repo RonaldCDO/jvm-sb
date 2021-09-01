@@ -1,5 +1,6 @@
 #include "leitor_exibidor.h"
 
+// Leitura de 1 byte do arquivo
 u1 ClassFile::Readu1() {
 
     u1 buffer_u1;
@@ -9,6 +10,7 @@ u1 ClassFile::Readu1() {
     return buffer_u1;
 }
 
+// Leitura byte a byte de uma string de 'length' bytes
 u1 * ClassFile::Readu1(u2 length) {
 
     u1* bytes = new u1[length+1];
@@ -26,6 +28,7 @@ u1 * ClassFile::Readu1(u2 length) {
     return bytes;
 }
 
+// Leitura de 2 bytes do arquivo
 u2 ClassFile::Readu2() {
 
     u2 buffer_u2;
@@ -38,6 +41,7 @@ u2 ClassFile::Readu2() {
     
 }
 
+// Leitura de 4 bytes do arquivo
 u4 ClassFile::Readu4() {
 
     u4 buffer_u4;
