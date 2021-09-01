@@ -52,3 +52,34 @@ void ConstantPool::CreateEntry(u1 incoming_tag) {
 };
 
 **/
+
+
+void ConstantPoolInfo::SetData(u1 data){
+    U1 = data;
+};
+void ConstantPoolInfo::SetData(u2 data){
+    U2 = data;
+};
+void ConstantPoolInfo::SetData(u4 data){
+    U4 = data;
+};
+
+void ConstantPool::Append(u1 data){
+    ConstantPoolInfo * address = (ConstantPoolInfo*)malloc(sizeof(u1));
+    address->SetData(data);
+    cp.push_back(address);
+};
+
+
+void ConstantPool::Append(u2 data){
+    ConstantPoolInfo * address = (ConstantPoolInfo*)malloc(sizeof(u2));
+    address->SetData(data);
+    cp.push_back(address);
+};
+
+
+void ConstantPool::Append(u4 data){
+    ConstantPoolInfo * address = (ConstantPoolInfo*)malloc(sizeof(u4));
+    address->SetData(data);
+    cp.push_back(address);
+};

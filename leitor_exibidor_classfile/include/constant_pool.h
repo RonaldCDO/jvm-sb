@@ -23,15 +23,24 @@
 class ConstantPoolInfo {
     protected:
         u1 tag;
+        u1 U1;
+        u2 U2;
+        u4 U4;
     public: 
         u1 GetTag();
-        u1 SetTag();
+        void SetTag(u1);
+        void SetData(u1);
+        void SetData(u2);
+        void SetData(u4);
 };
 
 class ConstantPool {
     protected:
-        std::vector<ConstantPoolInfo> cp;
+        std::vector<ConstantPoolInfo *> cp;
     public:
+        void Append(u1 data);
+        void Append(u2 data);
+        void Append(u4 data);
 };
 
 class InfoClass: public ConstantPoolInfo {
