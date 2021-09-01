@@ -23,17 +23,31 @@
 class ConstantPoolInfo {
     protected:
         u1 tag;
-        u1 SetTag();
     public: 
+        void SetTag(u1 tag);
         u1 GetTag();
-        void virtual CreateEntry() = 0;
+        void virtual Show() = 0;
 };
 
 class ConstantPool {
     protected:
         std::vector<ConstantPoolInfo*> cp;
     public:
-        void Append();
+        void AppendClass(u1 tag, u2 name_index);
+        void AppendFieldRef(u1 tag, u2 class_index, u2 name_and_type_index);
+        void AppendMethodRef(u1 tag, u2 class_index, u2 name_and_type_index);
+        void AppendInterfaceMethodRef(u1 tag, u2 class_index, u2 name_and_type_index);
+        void AppendString(u1 tag, u2 name_index);
+        void AppendInt(u1 tag, u4 bytes);
+        void AppendFloat(u1 tag, u4 bytes);
+        void AppendLong(u1 tag, u4 high_bytes, u4 low_bytes);
+        void AppendDouble(u1 tag, u4 high_bytes, u4 low_bytes);
+        void AppendNameAndType(u1 tag, u2 name_index, u2 descriptor_index);
+        void AppendUtf8(u1 tag, u2 length, u1 * bytes);
+        void AppendMethodHandle(u1 tag, u1 reference_type, u2 reference_index);
+        void AppendMethodType(u1 tag, u2 descriptor_index);
+        void AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index);
+        void ShowConstantPoolTable(int length);
 };
 
 
@@ -41,7 +55,9 @@ class InfoClass: public ConstantPoolInfo {
     protected: 
         u2 name_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoClass(u1 tag, u2 name_index);
+        void Show();
+        u2 GetNameIndex(); 
 };
 
 class InfoFieldRef: public ConstantPoolInfo {
@@ -49,7 +65,8 @@ class InfoFieldRef: public ConstantPoolInfo {
         u2 class_index;
         u2 name_and_type_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoFieldRef(u1 tag, u2 class_index, u2 name_and_type_index);
+        void Show();
 };
 
 class InfoMethodRef: public ConstantPoolInfo {
@@ -57,7 +74,8 @@ class InfoMethodRef: public ConstantPoolInfo {
         u2 class_index;
         u2 name_and_type_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoMethodRef(u1 tag, u2 class_index, u2 name_and_type_index);
+        void Show();
 };
 
 class InfoInterfaceMethodRef: public ConstantPoolInfo {
@@ -65,28 +83,32 @@ class InfoInterfaceMethodRef: public ConstantPoolInfo {
         u2 class_index;
         u2 name_and_type_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoInterfaceMethodRef(u1 tag, u2 class_index, u2 name_and_type_index);
+        void Show();
 };
 
 class InfoString: public ConstantPoolInfo {
     protected:
         u2 string_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoString(u1 tag, u2 string_index);
+        void Show();
 };
 
 class InfoInteger: public ConstantPoolInfo {
     protected:
         u4 bytes;
     public:
-        void CreateEntry(u1 tag);
+        InfoInteger(u1 tag, u4 bytes);
+        void Show();
 };
 
 class InfoFloat: public ConstantPoolInfo {
     protected:
         u4 bytes;
     public:
-        void CreateEntry(u1 tag);
+        InfoFloat(u1 tag, u4 bytes);
+        void Show();
 };
 
 class InfoLong: public ConstantPoolInfo {
@@ -94,7 +116,8 @@ class InfoLong: public ConstantPoolInfo {
         u4 high_bytes;
         u4 low_bytes;
     public:
-        void CreateEntry(u1 tag);
+        InfoLong(u1 tag, u4 high_bytes, u4 low_bytes);
+        void Show();
 };
 
 class InfoDouble: public ConstantPoolInfo {
@@ -102,15 +125,17 @@ class InfoDouble: public ConstantPoolInfo {
         u4 high_bytes;
         u4 low_bytes;
     public:
-        void CreateEntry(u1 tag);
+        InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes);
+        void Show();
 };
 
 class InfoNameAndType: public ConstantPoolInfo {
     protected:
         u2 name_index;
-        u4 descriptor_index;
+        u2 descriptor_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index);
+        void Show();
 };
 
 class InfoUtf8: public ConstantPoolInfo {
@@ -118,7 +143,8 @@ class InfoUtf8: public ConstantPoolInfo {
         u2 length;
         u1 * bytes;
     public:
-        void CreateEntry(u1 tag);
+        InfoUtf8(u1 tag, u2 length, u1 * bytes);
+        void Show();
 };
 
 class InfoMethodHandle: public ConstantPoolInfo {
@@ -126,14 +152,16 @@ class InfoMethodHandle: public ConstantPoolInfo {
         u1 reference_kind;
         u2 reference_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index);
+        void Show();
 };
 
 class InfoMethodType: public ConstantPoolInfo {
     protected:
         u2 descriptor_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoMethodType(u1 tag, u2 descriptor_index);
+        void Show();
 };
 
 class InfoInvokeDynamic: public ConstantPoolInfo {
@@ -141,7 +169,8 @@ class InfoInvokeDynamic: public ConstantPoolInfo {
         u2 bootstrap_method_attr_index;
         u2 name_and_type_index;
     public:
-        void CreateEntry(u1 tag);
+        InfoInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index);
+        void Show();
 };
 
 

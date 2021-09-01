@@ -17,23 +17,16 @@ int main(int argc, char* argv[]) {
     return 0;
     }
 
-    ClassFile cf;
+    ClassFile * cf = new ClassFile();
 
-    cf.LoadFile(argv[1]);
-    if(cf.FileIsOpen()) {
-        cf.ReadMagic();
-        cf.ShowMagic();
+    cf->LoadFile(argv[1]);
+    cf->ShowMagic();
+    cf->ShowMinor();
+    cf->ShowMajor();
+    cf->ShowConstantPoolCount();
+    cf->ShowConstantPool();
 
-        cf.ReadMinorAndMajor();
-        cf.ShowMinor();
-        cf.ShowMajor();
-
-        cf.ReadConstantPoolSize();
-        cf.ShowConstantPoolCount();
-
-        //cf.LoadConstantPool();
-
-    }
+    delete cf;
 
     return 0;
 }
