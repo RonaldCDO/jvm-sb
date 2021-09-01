@@ -1,10 +1,14 @@
+
+
+#ifndef CP
+#define CP
+
+
 #include <iostream>
 #include <vector>
 #include <data_class_format.h>
 #include <math.h>
-
-#ifndef CP
-#define CP
+#include <iomanip>
 
 #define CLASS 7
 #define FIELD_REF 9
@@ -146,6 +150,7 @@ class InfoUtf8: public ConstantPoolInfo {
     public:
         InfoUtf8(u1 tag, u2 length, u1 * bytes);
         void Show();
+        void getBytes();
 };
 
 class InfoMethodHandle: public ConstantPoolInfo {

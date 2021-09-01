@@ -21,13 +21,11 @@ typedef uint8_t u1;
 typedef uint16_t u2;
 typedef uint32_t u4;
 
-// typedef union {
-//         U1 * arr;
-//         U1 u1;        
-//         U2 u2;        
-//         U4 u4;
-        
-// } ClassType;
+union ulf
+{
+    unsigned long ul;
+    float f;
+};
 
 
 #endif

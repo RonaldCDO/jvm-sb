@@ -1,4 +1,5 @@
 #include "constant_pool.h"
+#include <bitset>
 
 InfoClass::InfoClass(u1 tag, u2 name_index) {
     this->tag = tag;
@@ -6,8 +7,9 @@ InfoClass::InfoClass(u1 tag, u2 name_index) {
     
 }
 
+
 void InfoClass::Show() {
-    std::cout <<  "Class\t\t" << "#" << name_index << "\t\t"<< "\\\\" <<std::endl;
+    std::cout <<  "Class\t\t" << "#" << name_index << "\t\t"<< "\\\\"<<std::endl;
 
 }
 
@@ -68,16 +70,16 @@ InfoFloat::InfoFloat(u1 tag, u4 bytes) {
 
 
 void InfoFloat::Show() {
-
+    ulf u;
+    std::stringstream stream;
+    stream << std::hex << bytes;
+    std::string result(stream.str());
     
-    // std::string teste = "0x40400000";
-    // int s = ((teste >> 31) == 0 ) ? 1 : -1;
-    // int e = ((teste >> 23) & 0xff);
-    // int m = (e == 0) ? (teste & 0x7fffff) << 1 :
-    //                    (teste & 0x7fffff) | 0x800000;
-    // float fl = s * m * pow(2, 2.71828 - 150);
+    std::stringstream ss(result);
+    ss >> std::hex >> u.ul;
+    float f = u.f;
     
-    std::cout<< "Float\t\t" << std::endl;
+    std::cout<< "Float\t\t" << std::setprecision(2) << f <<"f" <<  std::endl;
 }
 
 InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -87,7 +89,7 @@ InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
 }
 
 void InfoLong::Show() {
-    std::cout<< "Long\t\t" << "" <<std::endl;
+    std::cout<< "Long\t\t" << " ! " <<std::endl;
 }
 
 InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -96,8 +98,33 @@ InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
     this->low_bytes = low_bytes;
 }
 
+// union Converter { uint32_t i; double d; };
+
+// double convert(std::bitset<32> const& bs) {
+//     Converter c;
+//     c.i = bs.to_ullong();
+//     return c.d;
+// }
+
 void InfoDouble::Show() {
-    std::cout<< "Double\t\t" << "" <<std::endl;
+
+    // std::bitset<32> teste (low_bytes);
+    // std::bitset<32> teste2 (high_bytes);
+    // std::vector<int> a;
+    // for (int i= 0 ; i< teste.size(); i++){
+    //     a.push_back(teste[i]);
+    // }
+    // for (int i= 0 ; i< teste2.size(); i++){
+    //     a.push_back(teste2[i]);    
+    // }
+    // for (int c : a)
+    //     std::cout<< c;
+    //     std::cout<<std::endl;
+    
+    
+    // std::cout<< teste <<std::endl;
+    // std::cout<< "teste3: " <<teste3 <<std::endl;
+    std::cout<< "Double\t\t"<< " ! " <<std::endl;
 }
 
 InfoNameAndType::InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
@@ -117,8 +144,9 @@ InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
 }
 
 void InfoUtf8::Show() {
-    std::cout << "Utf8\t\t" << bytes << "\t\t"<<std::endl;
+    std::cout << "Utf8\t\t" << bytes <<std::endl;
 }
+
 
 InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index) {
     this->tag = tag;
@@ -215,7 +243,7 @@ void ConstantPool::ShowConstantPoolTable(int length) {
     for (int i = 0; i < length; i++) {
         // std::cout<< long(cp.at(i)) <<"\n";
         // if (long(cp.at(i)) > long(0x7ff0000000000000L))
-        std::cout<<"#"<< i << " = ";
+        std::cout<<"#"<< i+1 << " = ";
         // else{
         //     i+=1;
         //     std::cout<<"#"<< i << " = ";
