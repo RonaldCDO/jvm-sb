@@ -3,10 +3,11 @@
 InfoClass::InfoClass(u1 tag, u2 name_index) {
     this->tag = tag;
     this->name_index = name_index;
+    
 }
 
 void InfoClass::Show() {
-    std::cout <<  "Class\t\t" << name_index << "\t\t";
+    std::cout <<  "Class\t\t" << "#" << name_index << "\t\t"<< "\\\\" <<std::endl;
 
 }
 
@@ -17,7 +18,7 @@ InfoFieldRef::InfoFieldRef(u1 tag, u2 class_index, u2 name_and_type_index) {
 }
 
 void InfoFieldRef::Show() {
-
+    std::cout << "Fieldref\t\t" << "#" << name_and_type_index << ".#" << class_index << std::endl;
 }
 
 InfoMethodRef::InfoMethodRef(u1 tag, u2 class_index, u2 name_and_type_index) {
@@ -27,7 +28,8 @@ InfoMethodRef::InfoMethodRef(u1 tag, u2 class_index, u2 name_and_type_index) {
 }
 
 void InfoMethodRef::Show() {
-
+    std::cout<< "Methodref\t\t" << "#" << name_and_type_index << ".#" << class_index 
+             << std::endl;
 }
 
 InfoInterfaceMethodRef::InfoInterfaceMethodRef(u1 tag, u2 class_index, u2 name_and_type_index) {
@@ -37,7 +39,8 @@ InfoInterfaceMethodRef::InfoInterfaceMethodRef(u1 tag, u2 class_index, u2 name_a
 }
 
 void InfoInterfaceMethodRef::Show() {
-
+    std::cout<< "InterfaceMethodRef\t" << "#" << name_and_type_index << ".#" << class_index 
+             << std::endl;
 }
 
 InfoString::InfoString(u1 tag, u2 string_index){
@@ -46,7 +49,7 @@ InfoString::InfoString(u1 tag, u2 string_index){
 }
  
 void InfoString::Show() {
-
+    std::cout<<"String\t\t" << "#" << string_index << std::endl;
 }
 
 InfoInteger::InfoInteger(u1 tag, u4 bytes) {
@@ -55,7 +58,7 @@ InfoInteger::InfoInteger(u1 tag, u4 bytes) {
 }
 
 void InfoInteger::Show() {
-
+    std::cout<< "Integer\t\t" << "" <<std::endl;
 }
 
 InfoFloat::InfoFloat(u1 tag, u4 bytes) {
@@ -64,7 +67,7 @@ InfoFloat::InfoFloat(u1 tag, u4 bytes) {
 }
 
 void InfoFloat::Show() {
-
+    std::cout<< "Float\t\t" << "" <<std::endl;
 }
 
 InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -74,7 +77,7 @@ InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
 }
 
 void InfoLong::Show() {
-
+    std::cout<< "Long\t\t" << "" <<std::endl;
 }
 
 InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -84,7 +87,7 @@ InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
 }
 
 void InfoDouble::Show() {
-
+    std::cout<< "Double\t\t" << "" <<std::endl;
 }
 
 InfoNameAndType::InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
@@ -94,7 +97,7 @@ InfoNameAndType::InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
 }
 
 void InfoNameAndType::Show() {
-
+    std::cout<< "NameAndType\t" << "#" << descriptor_index << ".#" << name_index << std::endl;
 }
 
 InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
@@ -104,7 +107,7 @@ InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
 }
 
 void InfoUtf8::Show() {
-    std::cout <<  "Utf8\t\t" << bytes << "\t\t";
+    std::cout << "Utf8\t\t" << bytes << "\t\t"<<std::endl;
 }
 
 InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index) {
@@ -114,7 +117,7 @@ InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index
 }
 
 void InfoMethodHandle::Show() {
-
+    std::cout<<"InfoMethodHandle" << "#" << reference_index <<".#" << reference_kind <<std::endl;
 }
 
 InfoMethodType::InfoMethodType(u1 tag, u2 descriptor_index) {
@@ -123,7 +126,7 @@ InfoMethodType::InfoMethodType(u1 tag, u2 descriptor_index) {
 }
 
 void InfoMethodType::Show() {
-
+    std::cout<<"InfoMethodType\t" << "#" << descriptor_index <<std::endl;
 }
 
 InfoInvokeDynamic::InfoInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index) {
@@ -133,7 +136,8 @@ InfoInvokeDynamic::InfoInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 
 }
 
 void InfoInvokeDynamic::Show() {
-    
+    std::cout<<"InvokeDynamic\t" << "#" << name_and_type_index << ":#" << bootstrap_method_attr_index 
+             << std::endl;
 }
 
 void ConstantPoolInfo::SetTag(u1 tag) {
@@ -197,7 +201,9 @@ void ConstantPool::AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u
 }
 
 void ConstantPool::ShowConstantPoolTable(int length) {
+    std::cout<<"Constant Pool:"<<std::endl;
     for (int i = 0; i < length; i++) {
+        std::cout<<"#"<< i+1 << " = ";
         cp.at(i)->Show();
     }
 }
