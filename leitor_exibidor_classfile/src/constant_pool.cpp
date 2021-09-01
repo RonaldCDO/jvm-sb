@@ -58,7 +58,7 @@ InfoInteger::InfoInteger(u1 tag, u4 bytes) {
 }
 
 void InfoInteger::Show() {
-    std::cout<< "Integer\t\t" << "" <<std::endl;
+    std::cout<< "Integer\t\t" << bytes <<std::endl;
 }
 
 InfoFloat::InfoFloat(u1 tag, u4 bytes) {
@@ -66,8 +66,18 @@ InfoFloat::InfoFloat(u1 tag, u4 bytes) {
     this->bytes = bytes;
 }
 
+
 void InfoFloat::Show() {
-    std::cout<< "Float\t\t" << "" <<std::endl;
+
+    
+    // std::string teste = "0x40400000";
+    // int s = ((teste >> 31) == 0 ) ? 1 : -1;
+    // int e = ((teste >> 23) & 0xff);
+    // int m = (e == 0) ? (teste & 0x7fffff) << 1 :
+    //                    (teste & 0x7fffff) | 0x800000;
+    // float fl = s * m * pow(2, 2.71828 - 150);
+    
+    std::cout<< "Float\t\t" << std::endl;
 }
 
 InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -203,7 +213,13 @@ void ConstantPool::AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u
 void ConstantPool::ShowConstantPoolTable(int length) {
     std::cout<<"Constant Pool:"<<std::endl;
     for (int i = 0; i < length; i++) {
-        std::cout<<"#"<< i+1 << " = ";
+        // std::cout<< long(cp.at(i)) <<"\n";
+        // if (long(cp.at(i)) > long(0x7ff0000000000000L))
+        std::cout<<"#"<< i << " = ";
+        // else{
+        //     i+=1;
+        //     std::cout<<"#"<< i << " = ";
+        // }
         cp.at(i)->Show();
     }
 }
