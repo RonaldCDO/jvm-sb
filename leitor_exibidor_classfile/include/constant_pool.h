@@ -52,7 +52,7 @@ class ConstantPool {
         void AppendMethodHandle(u1 tag, u1 reference_type, u2 reference_index);
         void AppendMethodType(u1 tag, u2 descriptor_index);
         void AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index);
-        void ShowConstantPoolTable(int length);
+        void ShowConstantPoolTable();
 };
 
 
@@ -130,6 +130,11 @@ class InfoDouble: public ConstantPoolInfo {
         u4 low_bytes;
     public:
         InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes);
+        void Show();
+};
+
+class InfoLongDoubleDummy: public ConstantPoolInfo {
+    public:
         void Show();
 };
 

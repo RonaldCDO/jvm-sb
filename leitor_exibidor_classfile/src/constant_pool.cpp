@@ -7,7 +7,6 @@ InfoClass::InfoClass(u1 tag, u2 name_index) {
     
 }
 
-
 void InfoClass::Show() {
     std::cout <<  "Class\t\t" << "#" << name_index <<std::endl;
 
@@ -136,6 +135,8 @@ void InfoDouble::Show() {
     std::cout<< "Double\t\t"<< " ! " <<std::endl;
 }
 
+void InfoLongDoubleDummy::Show() {}
+
 InfoNameAndType::InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
     this->tag = tag;
     this->name_index = name_index;
@@ -191,6 +192,10 @@ void ConstantPoolInfo::SetTag(u1 tag) {
     this->tag = tag;
 }
 
+u1 ConstantPoolInfo::GetTag() {
+    return tag;
+}
+
 void ConstantPool::AppendClass(u1 tag, u2 name_index) {
     cp.push_back(new InfoClass(tag, name_index));
 }
@@ -221,10 +226,12 @@ void ConstantPool::AppendFloat(u1 tag, u4 bytes) {
 
 void ConstantPool::AppendLong(u1 tag, u4 high_bytes, u4 low_bytes) {
     cp.push_back(new InfoLong(tag, high_bytes, low_bytes));
+    cp.push_back(new InfoLongDoubleDummy());
 }
 
 void ConstantPool::AppendDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
     cp.push_back(new InfoDouble(tag, high_bytes, low_bytes));
+    cp.push_back(new InfoLongDoubleDummy());
 }
 
 void ConstantPool::AppendNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
@@ -247,8 +254,10 @@ void ConstantPool::AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u
     cp.push_back(new InfoInvokeDynamic(tag, bootstrap_method_attr_index, name_and_type_index));
 }
 
-void ConstantPool::ShowConstantPoolTable(int length) {
+void ConstantPool::ShowConstantPoolTable() {
     std::cout<<"Constant Pool:"<<std::endl;
+    int length = cp.size();
+    u1 tag;
     for (int i = 0; i < length; i++) {
         // std::cout<< long(cp.at(i)) <<"\n";
         // if (long(cp.at(i)) > long(0x7ff0000000000000L))
@@ -258,5 +267,9 @@ void ConstantPool::ShowConstantPoolTable(int length) {
         //     std::cout<<"#"<< i << " = ";
         // }
         cp.at(i)->Show();
+        tag = cp.at(i)->GetTag();
+        if (tag == LONG || tag == DOUBLE) {
+            i++;
+        } 
     }
 }

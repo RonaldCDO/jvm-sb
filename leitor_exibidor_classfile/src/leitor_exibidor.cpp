@@ -22,8 +22,6 @@ u1 * ClassFile::Readu1(u2 length) {
     }
 
     bytes[length] = '\0';
-    
-    std::cout << bytes << std::endl;
 
     return bytes;
 }
@@ -154,6 +152,7 @@ void ClassFile::LoadConstantPool() {
 
     u2 cp_count_local = constant_pool_count;
 
+
     constant_pool = new ConstantPool();
 
     u1 tag;
@@ -162,6 +161,7 @@ void ClassFile::LoadConstantPool() {
 
     while(cp_count_local) {
 
+        std::cout << cp_count_local << std::endl;
         tag = Readu1();
 
         switch(unsigned(tag)) {
@@ -196,10 +196,12 @@ void ClassFile::LoadConstantPool() {
             case LONG:
                 //std::cout << "Long_type" << std::endl;
                 constant_pool->AppendLong(tag, Readu4(), Readu4());
+                cp_count_local--;
                 break;
             case DOUBLE:
                 //std::cout << "Double_type" << std::endl;
                 constant_pool->AppendDouble(tag, Readu4(), Readu4());
+                cp_count_local--;
                 break;
             case NAME_AND_TYPE:
                 //std::cout << "NameAndType_type" << std::endl;
@@ -231,7 +233,7 @@ void ClassFile::LoadConstantPool() {
 }
 
 void ClassFile::ShowConstantPool() {
-    constant_pool->ShowConstantPoolTable(constant_pool_count);
+    constant_pool->ShowConstantPoolTable();
 }
 
 u2 ClassFile::GetThisClass(){
