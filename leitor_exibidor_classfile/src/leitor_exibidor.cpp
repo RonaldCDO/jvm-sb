@@ -161,7 +161,6 @@ void ClassFile::LoadConstantPool() {
 
     while(cp_count_local) {
 
-        std::cout << cp_count_local << std::endl;
         tag = Readu1();
 
         switch(unsigned(tag)) {
