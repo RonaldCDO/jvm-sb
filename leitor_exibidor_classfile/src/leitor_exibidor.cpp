@@ -36,7 +36,15 @@ u2 ClassFile::Readu2() {
     buffer_u2 = htons(buffer_u2);
     
     return buffer_u2;
+}
+
+u2 ClassFile::Readu2Raw() {
+
+    u2 buffer_u2;
     
+    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
+    
+    return buffer_u2;
 }
 
 // Leitura de 4 bytes do arquivo
@@ -56,6 +64,36 @@ u4 ClassFile::Readu4() {
     
     return buffer_u4;
     
+}
+
+void Printu2Hex(u2 hex_value) {
+
+    // captura configuracoes do std::cout para posterior restauracao 
+    std::ios_base::fmtflags oldFlags = std::cout.flags();
+    std::streamsize oldPrec = std::cout.precision();
+    char oldFill = std::cout.fill();
+    
+    std::cout << "0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::hex << hex_value << std::endl;
+    
+    // restaura configuracoes do cout apos o uso do parametro "hex"
+    std::cout.flags(oldFlags);
+    std::cout.precision(oldPrec);
+    std::cout.fill(oldFill);
+}
+
+void Printu4Hex(u4 hex_value) {
+
+    // captura configuracoes do std::cout para posterior restauracao 
+    std::ios_base::fmtflags oldFlags = std::cout.flags();
+    std::streamsize oldPrec = std::cout.precision();
+    char oldFill = std::cout.fill();
+    
+    std::cout << "0x" <<  std::uppercase <<std::setfill('0') << std::setw(8) << std::hex << hex_value << std::endl;
+    
+    // restaura configuracoes do cout apos o uso do parametro "hex"
+    std::cout.flags(oldFlags);
+    std::cout.precision(oldPrec);
+    std::cout.fill(oldFill);
 }
 
 void ClassFile::LoadFile(char* fileName){
@@ -94,9 +132,9 @@ void ClassFile::ReadClassFile(){
 
     LoadConstantPool();
 
-    acess_flags = Readu2();
-    this_class = Readu2();
-    super_class = Readu2();
+    access_flags = Readu2Raw();
+    this_class = Readu2Raw();
+    super_class = Readu2Raw();
     interfaces_count = Readu2();
 
     /**
@@ -118,18 +156,8 @@ void ClassFile::ReadClassFile(){
 
 void ClassFile::ShowMagic() {
 
-    // captura configuracoes do std::cout para posterior restauracao 
-    std::ios_base::fmtflags oldFlags = std::cout.flags();
-    std::streamsize oldPrec = std::cout.precision();
-    char oldFill = std::cout.fill();
-    
-    std::cout << "Magic: " << std::hex << magic << "\n";
-    
-    // restaura configuracoes do cout apos o uso do parametro "hex"
-    std::cout.flags(oldFlags);
-    std::cout.precision(oldPrec);
-    std::cout.fill(oldFill);
-
+    std::cout << "Magic: ";
+    Printu4Hex(magic);
 }
 
 void ClassFile::ShowMinor() {
@@ -144,8 +172,21 @@ void ClassFile::ShowConstantPoolCount(){
     std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
 }
 
+void ClassFile::ShowAccessFlags() {
+    std::cout << "Flags:\t\t";
+    Printu2Hex(access_flags);
+}
+
+void ClassFile::ShowThisClass() {
+    std::cout << "This_class:\t\t" << this_class << std::endl;
+}
+
+void ClassFile::ShowSuperClass() {
+    std::cout << "Super_class:\t\t" << super_class << std::endl;
+}
+
 u2 ClassFile::GetAcessFlags(){
-    return acess_flags;
+    return access_flags;
 }
 
 void ClassFile::LoadConstantPool() {

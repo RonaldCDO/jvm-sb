@@ -23,6 +23,9 @@ int main(int argc, char* argv[]) {
     cf->ShowMagic();
     cf->ShowMinor();
     cf->ShowMajor();
+    cf->ShowAccessFlags();
+    cf->ShowThisClass();
+    cf->ShowSuperClass();
     cf->ShowConstantPoolCount();
     cf->ShowConstantPool();
 

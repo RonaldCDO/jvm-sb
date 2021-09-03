@@ -20,7 +20,7 @@ class ClassFile {
         u2 major_version;
         u2 constant_pool_count;
         ConstantPool * constant_pool;
-        u2 acess_flags;
+        u2 access_flags;
         u2 this_class;
         u2 super_class;
         u2 interfaces_count;
@@ -34,6 +34,7 @@ class ClassFile {
         u1 Readu1();
         u1 * Readu1(u2 length);
         u2 Readu2();
+        u2 Readu2Raw();
         u4 Readu4();
         bool FileIsOpen();
         void ReadClassFile();
@@ -44,12 +45,14 @@ class ClassFile {
         void LoadAttributesTable();
     public:
         void LoadFile(char* fileName);
-
         void ShowMagic();
         void ShowMinor();
         void ShowMajor();
         void ShowConstantPoolCount();
         void ShowConstantPool();
+        void ShowAccessFlags();
+        void ShowThisClass();
+        void ShowSuperClass();
         u2 GetAcessFlags();
         u2 GetThisClass();
         u2 GetSuperClass();
