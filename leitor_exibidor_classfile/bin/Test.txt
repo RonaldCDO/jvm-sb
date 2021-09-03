@@ -1,0 +1,1 @@
+Teste de um arquivo com uma extensao diferente da .class
