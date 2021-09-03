@@ -62,7 +62,6 @@ class InfoClass: public ConstantPoolInfo {
     public:
         InfoClass(u1 tag, u2 name_index);
         void Show();
-        u2 GetNameIndex(); 
 };
 
 class InfoFieldRef: public ConstantPoolInfo {

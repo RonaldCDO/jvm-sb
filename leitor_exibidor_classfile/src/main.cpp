@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         std::cout<<"Arquivo a ser lido nao foi informado"<<std::endl;
     return 0;
     }
-
+    
     ClassFile * cf = new ClassFile();
 
     cf->LoadFile(argv[1]);

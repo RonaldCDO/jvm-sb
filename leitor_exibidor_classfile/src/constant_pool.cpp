@@ -9,7 +9,7 @@ InfoClass::InfoClass(u1 tag, u2 name_index) {
 
 
 void InfoClass::Show() {
-    std::cout <<  "Class\t\t" << "#" << name_index << "\t\t"<< "\\\\"<<std::endl;
+    std::cout <<  "Class\t\t" << "#" << name_index <<std::endl;
 
 }
 
@@ -79,7 +79,7 @@ void InfoFloat::Show() {
     ss >> std::hex >> u.ul;
     float f = u.f;
     
-    std::cout<< "Float\t\t" << std::setprecision(2) << f <<"f" <<  std::endl;
+    std::cout<< "Float\t\t" << f <<"f" <<  std::endl;
 }
 
 InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -98,7 +98,7 @@ InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
     this->low_bytes = low_bytes;
 }
 
-// union Converter { uint32_t i; double d; };
+union Converter { uint32_t i; double d; };
 
 // double convert(std::bitset<32> const& bs) {
 //     Converter c;
@@ -111,10 +111,10 @@ void InfoDouble::Show() {
     // std::bitset<32> teste (low_bytes);
     // std::bitset<32> teste2 (high_bytes);
     // std::vector<int> a;
-    // for (int i= 0 ; i< teste.size(); i++){
+    // for (int i= 0 ; i< teste2.size(); i++){
     //     a.push_back(teste[i]);
     // }
-    // for (int i= 0 ; i< teste2.size(); i++){
+    // for (int i= 0 ; i< teste.size(); i++){
     //     a.push_back(teste2[i]);    
     // }
     // for (int c : a)
@@ -124,6 +124,15 @@ void InfoDouble::Show() {
     
     // std::cout<< teste <<std::endl;
     // std::cout<< "teste3: " <<teste3 <<std::endl;
+
+    // std::stringstream stream;
+    // stream << std::hex << high_bytes;
+    // std::string result(stream.str());
+    // std::stringstream ss(result);
+    
+    // std::cout<< result;
+
+
     std::cout<< "Double\t\t"<< " ! " <<std::endl;
 }
 
