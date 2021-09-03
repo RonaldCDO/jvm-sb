@@ -1,4 +1,8 @@
+#ifndef FIELDS
+#define FIELDS
+
 #include "data_class_format.h"
+#include "attributes.h"
 
 #define ACC_PUBLIC "0x0001"
 #define ACC_PRIVATE "0x0002"
@@ -16,6 +20,12 @@ class Fields_info{
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
+        Atributtes_info attributes;
     public:
-
+        u2 GetAccessFlags();
+        u2 GetNameIndex();
+        u2 GetDescriptorIndex();
+        u2 GetAttributesCount();
 }; 
+
+#endif

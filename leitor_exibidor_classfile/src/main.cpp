@@ -26,9 +26,10 @@ int main(int argc, char* argv[]) {
     cf->ShowAccessFlags();
     cf->ShowThisClass();
     cf->ShowSuperClass();
+    cf->ShowInterfacesCount();
+    cf->ShowFieldsCount();
     cf->ShowConstantPoolCount();
     cf->ShowConstantPool();
-
     delete cf;
 
     return 0;

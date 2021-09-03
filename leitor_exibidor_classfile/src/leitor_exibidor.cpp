@@ -136,7 +136,7 @@ void ClassFile::ReadClassFile(){
     this_class = Readu2Raw();
     super_class = Readu2Raw();
     interfaces_count = Readu2();
-
+    fields_count = Readu2();
     /**
     LoadInterfacesTable();
 
@@ -173,21 +173,31 @@ void ClassFile::ShowConstantPoolCount(){
 }
 
 void ClassFile::ShowAccessFlags() {
-    std::cout << "Flags:\t\t";
+    std::cout << "Flags:\t\t\t";
     Printu2Hex(access_flags);
 }
 
 void ClassFile::ShowThisClass() {
-    std::cout << "This_class:\t\t" << this_class << std::endl;
+    std::cout << "this_class:\t\t" << this_class << std::endl;
 }
 
 void ClassFile::ShowSuperClass() {
-    std::cout << "Super_class:\t\t" << super_class << std::endl;
+    std::cout << "super_class:\t\t" << super_class << std::endl;
 }
 
-u2 ClassFile::GetAcessFlags(){
-    return access_flags;
+
+void ClassFile::ShowInterfacesCount(){
+    std::cout << "interfaces:\t\t" << interfaces_count << std::endl;
 }
+
+
+void ClassFile::ShowFieldsCount(){
+    std::cout << "fields:\t\t\t" << fields_count << std::endl;
+}
+
+// u2 ClassFile::GetAcessFlags(){
+//     return access_flags;
+// }
 
 void ClassFile::LoadConstantPool() {
 
@@ -276,31 +286,32 @@ void ClassFile::ShowConstantPool() {
     constant_pool->ShowConstantPoolTable();
 }
 
-u2 ClassFile::GetThisClass(){
-    return this_class;
-}
 
-u2 ClassFile::GetSuperClass(){
-    return super_class;
-}
+// u2 ClassFile::GetThisClass(){
+//     return this_class;
+// }
 
-
-u2 ClassFile::GetInterfacesCount(){
-    return interfaces_count;
-}
+// u2 ClassFile::GetSuperClass(){
+//     return super_class;
+// }
 
 
-u2 ClassFile::GetFieldsCount(){
-    return fields_count;
-}
+// u2 ClassFile::GetInterfacesCount(){
+//     return interfaces_count;
+// }
 
 
-u2 ClassFile::GetMethodsCount(){
-    return methods_count;
-}
+// u2 ClassFile::GetFieldsCount(){
+//     return fields_count;
+// }
 
 
-u2 ClassFile::GetAttributesCount(){
-    return attributes_count;
-}    
+// u2 ClassFile::GetMethodsCount(){
+//     return methods_count;
+// }
+
+
+// u2 ClassFile::GetAttributesCount(){
+//     return attributes_count;
+// }    
 

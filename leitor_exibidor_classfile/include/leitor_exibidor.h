@@ -53,13 +53,16 @@ class ClassFile {
         void ShowAccessFlags();
         void ShowThisClass();
         void ShowSuperClass();
-        u2 GetAcessFlags();
-        u2 GetThisClass();
-        u2 GetSuperClass();
-        u2 GetInterfacesCount();
-        u2 GetFieldsCount();
-        u2 GetMethodsCount();
-        u2 GetAttributesCount();
+        void ShowInterfacesCount();
+        void ShowFieldsCount();
+        
+        // u2 GetAcessFlags();
+        // u2 GetThisClass();
+        // u2 GetSuperClass();
+        // u2 GetInterfacesCount();
+        // u2 GetFieldsCount();
+        // u2 GetMethodsCount();
+        // u2 GetAttributesCount();
 };
 
 

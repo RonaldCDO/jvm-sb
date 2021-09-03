@@ -188,9 +188,9 @@ void InfoInvokeDynamic::Show() {
              << std::endl;
 }
 
-void ConstantPoolInfo::SetTag(u1 tag) {
-    this->tag = tag;
-}
+// void ConstantPoolInfo::SetTag(u1 tag) {
+//     this->tag = tag;
+// }
 
 u1 ConstantPoolInfo::GetTag() {
     return tag;
@@ -259,13 +259,7 @@ void ConstantPool::ShowConstantPoolTable() {
     int length = cp.size();
     u1 tag;
     for (int i = 0; i < length; i++) {
-        // std::cout<< long(cp.at(i)) <<"\n";
-        // if (long(cp.at(i)) > long(0x7ff0000000000000L))
         std::cout<<"#"<< i+1 << " = ";
-        // else{
-        //     i+=1;
-        //     std::cout<<"#"<< i << " = ";
-        // }
         cp.at(i)->Show();
         tag = cp.at(i)->GetTag();
         if (tag == LONG || tag == DOUBLE) {

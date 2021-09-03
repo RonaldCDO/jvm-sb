@@ -1,5 +1,3 @@
-
-
 #ifndef CP
 #define CP
 
@@ -29,7 +27,7 @@ class ConstantPoolInfo {
     protected:
         u1 tag;
     public: 
-        void SetTag(u1 tag);
+        // void SetTag(u1 tag);
         u1 GetTag();
         void virtual Show() = 0;
 };
