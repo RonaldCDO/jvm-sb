@@ -23,6 +23,7 @@ CC_FLAGS = -g -I$(INC_DIRECTORY) -Wall -Wextra
 ifeq ($(OS),Windows_NT)
 	#Project Name
 	PROJ_NAME = bin\jvm.exe
+	PROJ_NAME_LIN = bin\jvm
 	SOCKET = -lws2_32
 	#Compilator
 	CC = g++
@@ -32,14 +33,15 @@ ifeq ($(OS),Windows_NT)
 	#Remove Objects
 	RM_OBJ = $(RM) $(OBJ_DIRECTORY)
 	#Remove Binary
-	RM_BINARY = $(RM) $(PROJ_NAME)
+	RM_BINARY = $(RM) $(PROJ_NAME) $(PROJ_NAME_LIN)
 else
 	PROJ_NAME = bin/jvm
+	PROJ_NAME_WIN = bin/jvm.exe
 	CC = g++
 	RM = rm -rf
 
 	RM_OBJ = $(RM) $(OBJ_DIRECTORY)/*
-	RM_BINARY = $(RM) $(PROJ_NAME)
+	RM_BINARY = $(RM) $(PROJ_NAME) $(PROJ_NAME_WIN)
 endif
          
 #
