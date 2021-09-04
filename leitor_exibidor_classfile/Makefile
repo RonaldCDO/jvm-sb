@@ -23,6 +23,7 @@ CC_FLAGS = -g -I$(INC_DIRECTORY) -Wall -Wextra
 ifeq ($(OS),Windows_NT)
 	#Project Name
 	PROJ_NAME = bin\jvm.exe
+	SOCKET = -lws2_32
 	#Compilator
 	CC = g++
 	#Remove Command
@@ -49,7 +50,7 @@ all: $(PROJ_NAME)
 
 $(PROJ_NAME): $(OBJ_COM)
 	@ echo "Building "$@" using G++ Linker"  
-	@$(CC) $(CC_FLAGS) $(OBJ_COM) -o $@
+	@$(CC) $(CC_FLAGS) $(OBJ_COM) -o $@ $(SOCKET)
 	@ echo "Finished building binary"
 
 $(OBJ_COM): $(OBJ_DIRECTORY)/%.o : $(SRC_DIRECTORY)/%.cpp

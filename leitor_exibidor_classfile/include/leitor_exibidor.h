@@ -1,10 +1,16 @@
 #ifndef EXIBITOR
 #define EXIBITOR
 
+#ifdef _WIN32
+    #include <WinSock2.h>
+#else
+    #include <netinet/in.h>
+#endif
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <netinet/in.h>
+// #include <netinet/in.h>
 #include <string.h>
 #include "constant_pool.h"
 
