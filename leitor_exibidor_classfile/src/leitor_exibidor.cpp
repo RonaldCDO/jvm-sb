@@ -364,7 +364,8 @@ void ClassFile::LoadFieldsTable() {
                 attribute_length = Readu4();
                 att_info = Readu1(attribute_length);
             }
-
+            //field_pt->SetDescriptor();
+            //field_pt->setName();
             fields_table->appendField(field_pt);
         }
     }

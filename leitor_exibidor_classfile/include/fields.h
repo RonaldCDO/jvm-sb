@@ -21,7 +21,7 @@ class Fields_info {
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        char descriptor;
+        char* descriptor;
         char* name;
         std::vector<Attributes_info*> attributes;
     public:
@@ -30,7 +30,7 @@ class Fields_info {
         u2 GetNameIndex();
         u2 GetDescriptorIndex();
         u2 GetAttributesCount();
-        void SetDescriptor(char descriptor);
+        void SetDescriptor(char* descriptor);
         void setName(char* name);
         void Show();
 }; 

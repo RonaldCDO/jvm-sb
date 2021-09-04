@@ -359,7 +359,9 @@ void ConstantPool::ShowConstantPoolTable() {
     u1 tag;
     for (int i = 0; i < length; i++) {
         std::cout<<"#"<< i+1 << " = ";
-        
+
+        cp.at(i)->Show();
+        /**
         tag = cp.at(i)->GetTag();
         if (tag != DOUBLE && tag != LONG && tag != FLOAT && tag != INTEGER) {
             if (tag != UTF8){
@@ -375,7 +377,9 @@ void ConstantPool::ShowConstantPoolTable() {
         }
         if (tag == LONG || tag == DOUBLE) {
             i++;
-        } 
+        }
+
+        **/
         std::cout<<std::endl;
     }
 }
