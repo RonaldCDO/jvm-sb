@@ -26,4 +26,8 @@ u2 Fields_info::GetAttributesCount(){
   return attributes_count; 
 }
 
+void Fields::appendField(Fields_info * fields_info) {
+  fields.push_back(fields_info);
+}
+
 

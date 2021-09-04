@@ -41,6 +41,7 @@ class ClassFile {
         u1 * attributes_table;
         u1 Readu1();
         u1 * Readu1(u2 length);
+        u1 * Readu1(u4 length);
         u2 Readu2();
         u2 Readu2Raw();
         u4 Readu4();

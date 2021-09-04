@@ -26,6 +26,20 @@ u1 * ClassFile::Readu1(u2 length) {
     return bytes;
 }
 
+// Leitura byte a byte de uma cadeia de 'length' bytes
+u1 * ClassFile::Readu1(u4 length) {
+
+    u1* bytes = new u1[length+1];
+    u1 buffer;
+    
+    for (u4 i = 0; i < length; i++) {
+        file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+        bytes[i] = buffer;
+    }
+
+    return bytes;
+}
+
 // Leitura de 2 bytes do arquivo
 u2 ClassFile::Readu2() {
 
@@ -299,19 +313,32 @@ void ClassFile::LoadInterfaces() {
 }
 
 void ClassFile::LoadFieldsTable() {
-
-    Fields_info * fields_info_pt;
-    u2 attribute
-
+    
     if (fields_count) {
+
+    Fields_info * field_pt;
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1 * att_info;
 
         fields_table = new Fields();
 
         for (int i = 0; i < fields_count; i++) {
             
-            fields_info_pt = new Fields_info(Readu2(), Readu2(), Readu2(), Readu2());
+            field_pt = new Fields_info(Readu2(), Readu2(), Readu2(), Readu2());
 
+            for (int j = 0; j < field_pt->GetAttributesCount(); j++) {
+                attribute_name_index = Readu2();
+                attribute_length = Readu4();
+                att_info = Readu1(attribute_length);
 
+                std::cout << "Attribute " << j << std::endl;
+                std::cout << "Attribute_name_index" << attribute_name_index << std::endl;
+                std::cout << "Attribute_length " << attribute_length << std::endl;
+                std::cout << att_info << std::endl;
+            }
+
+            fields_table->appendField(field_pt);
         }
     }
 }

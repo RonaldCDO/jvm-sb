@@ -18,7 +18,7 @@ class Fields {
     protected:
         std::vector<Fields_info *> fields;
     public:
-        void appendField();
+        void appendField(Fields_info * fields_info);
 };
 
 class Fields_info {
@@ -27,7 +27,7 @@ class Fields_info {
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        std::vector<Atributtes_info*> attributes;
+        std::vector<Attributes_info*> attributes;
     public:
         Fields_info(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         u2 GetAccessFlags();

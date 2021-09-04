@@ -4,10 +4,10 @@
 class Attributes_info{
     protected:
     u2 attribute_name_index;
-    u4 attribute_lenght;
+    u4 attribute_length;
     public:
     u2 getAttributeNameIndex();
-    u4 getAttributeLenght();
+    u4 getAttributeLength();
 };
 
 class Attributes_table{
@@ -39,6 +39,17 @@ class Code{
     
 };
 
+
+class ExceptionsIndexTable{
+    protected:
+        u2 exceptions_table_length;
+        std::vector<Exceptions *> et;
+        u2 start_pc;
+        u2 end_pc;
+        u2 handler_pc;
+        u2 catch_type;   
+};
+
 class CodeAtt : public Attributes_info{
     u2 max_stack;
     u2 max_locals;
@@ -56,15 +67,6 @@ class CodeAtt : public Attributes_info{
 };
 
 
-class ExceptionsIndexTable{
-    protected:
-        u2 exceptions_table_length;
-        std::vector<Exceptions *> et;
-        u2 start_pc;
-        u2 end_pc;
-        u2 handler_pc;
-        u2 catch_type;   
-};
 
 
 class Exceptions : public Attributes_info{
