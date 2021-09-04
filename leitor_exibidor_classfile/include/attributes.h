@@ -33,15 +33,23 @@ class Attributes_table{
 
 };
 
-class Exceptions : public Attributes_info{
-    u2 number_of_exceptions;
-    // u2 exception_index_table[number_of_exceptions];
+
+
+class ConstantValueAtt : public Attributes_info{
+    u2 constantvalue_index;
 };
 
-class ExceptionsIndexTable{
+
+
+
+class Code{
+    u1 instructions;
+};
+
+
+class ExceptionsTable{
     protected:
         u2 exceptions_table_length;
-        std::vector<Exceptions *> et;
         u2 start_pc;
         u2 end_pc;
         u2 handler_pc;
@@ -49,66 +57,57 @@ class ExceptionsIndexTable{
 };
 
 
-class ConstantValue : public Attributes_info{
-    u2 constantvalue_index;
-};
-
-class Code{
-    
-};
-
-
-
 class CodeAtt : public Attributes_info{
     u2 max_stack;
     u2 max_locals;
     u4 code_length;
-    // u1 code[code_length];
-    // u2 exception_table_length;
-    // u2 start_pc;
-    // u2 end_pc;
-    // u2 handler_pc;
-    // u2 catch_type;
-    ExceptionsIndexTable exception_table;
-    // exception_table[exception_table_length];
+    u2 exception_table_length;
+    ExceptionsTable* exception_table;
     u2 attributes_count;
-    //attribute_info attributes[attributes_count];
+
+};
+
+
+class ExceptionIndexTable{
+    u2 index;
 };
 
 
 
+class ExceptionsAtt : public Attributes_info{
+    u2 number_of_exceptions;
+    ExceptionIndexTable * exeption_index_table;
+};
 
 
-class SourceFile : public Attributes_info{
+class SourceFileAtt : public Attributes_info{
     u2 sourcefile_index;
 };
 
 
 class LineNumberTable{
-
+    u2 start_pc;
+    u2 line_number;
 };
 
 
 class LineNumberTableAtt : public Attributes_info{
     u2 line_number_table_length;
-    u2 start_pc;
-    u2 line_number;
-    // line_number_table[line_number_table_length];
+    LineNumberTable * line_number_table;
 };
 
 
 class LocalVariableTable{
-
+    u2 start_pc;
+    u2 name_index;
+    u2 descriptor_index;
+    u2 index;
 };
 
 
 class LocalVariableTableAtt : public Attributes_info{
     u2 local_variable_table_length;
-    u2 start_pc;
-    u2 name_index;
-    u2 descriptor_index;
-    u2 index;
-    // local_variable_table[local_variable_table_length];
+    LocalVariableTable * local_variable_table;
 };
 
 
