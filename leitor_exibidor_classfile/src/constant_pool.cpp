@@ -11,17 +11,12 @@ void ConstantPool::Reference (u2 index) {
     else{   // Pegar parametros para os metodos e chamar recursiva
         u2 arg2;
         u2 arg1 = cp.at(index)->GetArgs(&arg2);
-        // std::cout <<  arg1  <<std::endl;
-        // u2 arg2 = cp->GetArg2(tag);
         if (arg1 != 0) {
             Reference(arg1-1);
             if (arg2 != 0) {
                 std::cout<<" ";
                 Reference(arg2-1);
             }
-        }
-        if (tag != CLASS || tag != STRING || tag != METHOD_TYPE) {
-            // Reference(arg2);
         }
     }
 }
