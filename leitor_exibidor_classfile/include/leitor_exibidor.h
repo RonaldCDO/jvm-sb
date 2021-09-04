@@ -18,6 +18,14 @@
 #include "attributes.h"
 
 #define magic_number 0xcafebabe
+#define ACC_PUBLIC_C 0x0001
+#define ACC_FINAL_C 0x0010
+#define ACC_SUPER_C 0x0020
+#define ACC_INTERFACE_C 0x0200
+#define ACC_ABSTRACT_C 0x0400
+#define ACC_SYNTHETIC_C 0x1000
+#define ACC_ANNOTATION_C 0x2000
+#define ACC_ENUM_C 0x4000
 
 void LoadFile(char* fileName);
 

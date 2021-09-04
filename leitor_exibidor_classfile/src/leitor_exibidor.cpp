@@ -197,6 +197,27 @@ void ClassFile::ShowConstantPoolCount(){
 void ClassFile::ShowAccessFlags() {
     std::cout << "Flags:\t\t\t";
     Printu2Hex(access_flags);
+
+    u2 byte;
+
+    byte = access_flags & 0x000F;
+
+    if (byte == ACC_PUBLIC_C) std::cout << "\t\t\tACC_PUBLIC" << std::endl;
+
+    byte = access_flags & 0x00F0;
+
+    if (byte == ACC_FINAL_C) std::cout << "\t\t\tACC_FINAL" << std::endl;
+    if (byte == ACC_SUPER_C) std::cout << "\t\t\tACC_SUPER" << std::endl;
+
+    byte = access_flags & 0x0F00;
+
+    if (byte == ACC_INTERFACE_C) std::cout << "\t\t\tACC_INTERFACE" << std::endl;
+    if (byte == ACC_ABSTRACT_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+
+    byte = access_flags & 0xF000;
+
+    if (byte == ACC_ANNOTATION_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ENUM_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
 }
 
 void ClassFile::ShowThisClass() {

@@ -16,6 +16,7 @@
 #define ACC_ENUM_F "0x4000"
 
 
+
 class Fields_info {
     protected:
         u2 access_flags;
