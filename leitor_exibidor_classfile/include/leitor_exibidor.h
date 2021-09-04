@@ -68,6 +68,7 @@ class ClassFile {
         void ShowMajor();
         void ShowConstantPoolCount();
         void ShowConstantPool();
+        void ShowFields();
         void ShowAccessFlags();
         void ShowThisClass();
         void ShowSuperClass();

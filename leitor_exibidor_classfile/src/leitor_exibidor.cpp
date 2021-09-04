@@ -144,24 +144,21 @@ void ClassFile::ReadClassFile(){
     minor_version = Readu2();
     major_version = Readu2();
     constant_pool_count = Readu2();
-   
-   
+      
     LoadConstantPool();
-
 
     access_flags = Readu2Raw();
     this_class = Readu2Raw();
     super_class = Readu2Raw();
     interfaces_count = Readu2Raw();
-    fields_count = Readu2Raw();
-    methods_count = Readu2Raw();
-
 
     LoadInterfaces();
 
+    fields_count = Readu2Raw();
 
     LoadFieldsTable();
 
+    methods_count = Readu2Raw();
 
     LoadMethodsTable();
 
@@ -331,6 +328,96 @@ void ClassFile::LoadConstantPool() {
 
 void ClassFile::ShowConstantPool() {
     constant_pool->ShowConstantPoolTable();
+}
+
+void ClassFile::ShowFields() {
+
+    if (fields_count) {
+
+        std::cout << "Fields:" << std::endl;
+        
+        Fields_info* field;
+
+        u2 byte;
+        u2 flags;
+        u2 index;
+
+        for (int i = 0; i < fields_count; i++) {
+            field = fields_table->GetField(i);
+
+            flags = field->GetAccessFlags();
+
+            byte = flags & 0x000F;
+
+            std::cout << "{\n\t" << std::endl;
+
+            switch(byte){
+                case ACC_PUBLIC_F:
+                    std::cout << "public ";
+                    break;
+                case ACC_PROTECTED_F:
+                    std::cout << "protected ";
+                    break;
+                case ACC_PRIVATE_F:
+                    std::cout << "private ";
+                    break;
+            }
+
+            index = field->GetDescriptorIndex();
+            std::cout << constant_pool->GetUtf8(index) << " ";
+
+            index = field->GetNameIndex();
+            std::cout << constant_pool->GetUtf8(index) << std::endl;
+
+            std::cout << "\tFlags:" << std::endl;
+
+            byte = flags & 0x000F;
+
+            switch(byte){
+                case ACC_PUBLIC_F:
+                    std::cout << "\t\tACC_PUBLIC" << std::endl;
+                    break;
+                case ACC_PROTECTED_F:
+                    std::cout << "\t\tACC_PROTECTED" << std::endl;
+                    break;
+                case ACC_PRIVATE_F:
+                    std::cout << "\t\tACC_PRIVATE" << std::endl;
+                    break;
+                case ACC_STATIC_F:
+                    std::cout << "\t\tACC_STATIC" << std::endl;
+                    break;
+            }
+
+            byte = flags & 0x00F0;
+
+            switch(byte){
+                case ACC_FINAL_F:
+                    std::cout << "\t\tACC_FINAL" << std::endl;
+                    break;
+                case ACC_VOLATILE_F:
+                    std::cout << "\t\tACC_VOLATILE" << std::endl;
+                    break;
+                case ACC_TRANSIENT_F:
+                    std::cout << "\t\tACC_TRANSIENT" << std::endl;
+                    break;
+            }
+
+            byte = flags & 0x0F00;
+
+                switch(byte){
+                case ACC_SYNTHETIC_F:
+                    std::cout << "\t\tACC_SYNTHETIC" << std::endl;
+                    break;
+                case ACC_ENUM_F:
+                    std::cout << "\t\tACC_ENUM" << std::endl;
+                    break;
+            }
+
+            std::cout << "}" << std::endl;
+
+        }
+    }
+
 }
 
 void ClassFile::LoadInterfaces() {

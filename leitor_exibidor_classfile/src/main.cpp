@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
     cf->ShowMethodsCount();
     cf->ShowConstantPoolCount();
     cf->ShowConstantPool();
+    cf->ShowFields();
     delete cf;
 
     return 0;
