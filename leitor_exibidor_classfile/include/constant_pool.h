@@ -51,6 +51,7 @@ class ConstantPool {
         void AppendMethodType(u1 tag, u2 descriptor_index);
         void AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index);
         void ShowConstantPoolTable();
+        void Reference(ConstantPoolInfo * cp);
 };
 
 

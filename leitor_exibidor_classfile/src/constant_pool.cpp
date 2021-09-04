@@ -1,6 +1,22 @@
 #include "constant_pool.h"
 #include <bitset>
 
+// Funcao para pegar referencias das constantpools
+void ConstantPool::Reference (ConstantPoolInfo * cp) {
+    u1 tag;
+    tag = cp->GetTag();
+    if (tag == UTF8) {
+        cp->Show();
+    }
+    // else{   // Pegar parametros para os metodos e chamar recursiva
+    //     // arg1 = cp->GetArg1(tag);
+    //     // arg2 = cp->GetArg2(tag);
+    //     // Referencia(arg1);
+    //     // if (tag != CLASS || tag != STRING || tag != METHOD_TYPE) {
+    //     //     Referencia(arg2);
+    //     }
+}
+
 InfoClass::InfoClass(u1 tag, u2 name_index) {
     this->tag = tag;
     this->name_index = name_index;
@@ -262,6 +278,9 @@ void ConstantPool::ShowConstantPoolTable() {
         std::cout<<"#"<< i+1 << " = ";
         cp.at(i)->Show();
         tag = cp.at(i)->GetTag();
+        if (tag != UTF8){
+            Reference(cp.at(i));
+        }
         if (tag == LONG || tag == DOUBLE) {
             i++;
         } 
