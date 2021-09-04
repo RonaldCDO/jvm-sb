@@ -28,9 +28,9 @@ class ConstantPoolInfo {
     public: 
         // void SetTag(u1 tag);
         u1 GetTag();
-        
-        void virtual Show() = 0;
-        u2 virtual GetArgs(u2 *arg2) = 0;
+        virtual void Show() = 0;
+        virtual u2 GetArgs(u2 *arg2) = 0;
+        virtual u1* GetUtf8Bytes();
 };
 
 class ConstantPool {
@@ -53,6 +53,7 @@ class ConstantPool {
         void AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index);
         void ShowConstantPoolTable();
         void Reference(u2 index);
+        u1 * GetUtf8(int index);
 };
 
 
@@ -166,7 +167,7 @@ class InfoUtf8: public ConstantPoolInfo {
         InfoUtf8(u1 tag, u2 length, u1 * bytes);
         void Show();
         u2 GetArgs(u2 *arg2);
-        void getBytes();
+        u1* GetUtf8Bytes();
 };
 
 class InfoMethodHandle: public ConstantPoolInfo {

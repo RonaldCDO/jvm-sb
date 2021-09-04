@@ -13,12 +13,12 @@ u2 Fields_info::GetAccessFlags(){
 
 
 u2 Fields_info::GetNameIndex(){
-  return name_index; 
+  return name_index - 1; 
 }
 
 
 u2 Fields_info::GetDescriptorIndex(){
-  return descriptor_index; 
+  return descriptor_index - 1; 
 }
 
 
@@ -30,8 +30,6 @@ void Fields::appendField(Fields_info * fields_info) {
   fields.push_back(fields_info);
 }
 
-void Fields_info::Show() {
-
-  
-
+Fields_info* Fields::GetField(int index) {
+  return fields.at(index);
 }

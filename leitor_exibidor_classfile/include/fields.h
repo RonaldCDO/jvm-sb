@@ -5,15 +5,15 @@
 #include "attributes.h"
 #include <iostream>
 
-#define ACC_PUBLIC_F "0x0001"
-#define ACC_PRIVATE_F "0x0002"
-#define ACC_PROTECTED_F "0x0004"
-#define ACC_STATIC_F "0x0008"
-#define ACC_FINAL_F "0x0010"
-#define ACC_VOLATILE_F "0x0040"
-#define ACC_TRANSIENT_F "0x0080"
-#define ACC_SYNTHETIC_F "0x1000"
-#define ACC_ENUM_F "0x4000"
+#define ACC_PUBLIC_F 0x0001
+#define ACC_PRIVATE_F 0x0002
+#define ACC_PROTECTED_F 0x0004
+#define ACC_STATIC_F 0x0008
+#define ACC_FINAL_F 0x0010
+#define ACC_VOLATILE_F 0x0040
+#define ACC_TRANSIENT_F 0x0080
+#define ACC_SYNTHETIC_F 0x1000
+#define ACC_ENUM_F 0x4000
 
 class Fields_info {
     protected:
@@ -32,7 +32,6 @@ class Fields_info {
         u2 GetAttributesCount();
         void SetDescriptor(char* descriptor);
         void setName(char* name);
-        void Show();
 }; 
 
 class Fields {
@@ -40,6 +39,7 @@ class Fields {
         std::vector<Fields_info *> fields;
     public:
         void appendField(Fields_info * fields_info);
+        Fields_info* GetField(int index);
 };
 
 #endif

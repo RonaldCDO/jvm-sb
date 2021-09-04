@@ -26,6 +26,10 @@ void ConstantPool::Reference (u2 index) {
     }
 }
 
+u1* ConstantPoolInfo::GetUtf8Bytes() {
+    return NULL;
+}
+
 
 InfoClass::InfoClass(u1 tag, u2 name_index) {
     this->tag = tag;
@@ -242,6 +246,10 @@ u2 InfoUtf8::GetArgs(u2 *arg2){
     return 0;
 }
 
+u1 * InfoUtf8::GetUtf8Bytes() {
+    return bytes;
+}
+
 InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index) {
     this->tag = tag;
     this->reference_kind = reference_kind;
@@ -382,4 +390,8 @@ void ConstantPool::ShowConstantPoolTable() {
         **/
         std::cout<<std::endl;
     }
+}
+
+u1* ConstantPool::GetUtf8(int index) {
+    return cp.at(index)->GetUtf8Bytes();
 }
