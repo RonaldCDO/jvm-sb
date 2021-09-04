@@ -357,6 +357,7 @@ void ClassFile::LoadFieldsTable() {
         for (int i = 0; i < fields_count; i++) {
             
             field_pt = new Fields_info(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw());
+            
 
             for (int j = 0; j < field_pt->GetAttributesCount(); j++) {
                 attribute_name_index = Readu2();

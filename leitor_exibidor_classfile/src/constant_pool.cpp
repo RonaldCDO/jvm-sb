@@ -2,30 +2,44 @@
 #include <bitset>
 
 // Funcao para pegar referencias das constantpools
-void ConstantPool::Reference (ConstantPoolInfo * cp) {
+void ConstantPool::Reference (u2 index) {
     u1 tag;
-    tag = cp->GetTag();
+    tag = cp.at(index)->GetTag();
     if (tag == UTF8) {
-        cp->Show();
+        cp.at(index)->Show();
     }
-    // else{   // Pegar parametros para os metodos e chamar recursiva
-    //     // arg1 = cp->GetArg1(tag);
-    //     // arg2 = cp->GetArg2(tag);
-    //     // Referencia(arg1);
-    //     // if (tag != CLASS || tag != STRING || tag != METHOD_TYPE) {
-    //     //     Referencia(arg2);
-    //     }
+    else{   // Pegar parametros para os metodos e chamar recursiva
+        u2 arg2;
+        u2 arg1 = cp.at(index)->GetArgs(&arg2);
+        // std::cout <<  arg1  <<std::endl;
+        // u2 arg2 = cp->GetArg2(tag);
+        if (arg1 != 0) {
+            Reference(arg1-1);
+            if (arg2 != 0) {
+                std::cout<<" ";
+                Reference(arg2-1);
+            }
+        }
+        if (tag != CLASS || tag != STRING || tag != METHOD_TYPE) {
+            // Reference(arg2);
+        }
+    }
 }
+
 
 InfoClass::InfoClass(u1 tag, u2 name_index) {
     this->tag = tag;
     this->name_index = name_index;
-    
 }
 
 void InfoClass::Show() {
-    std::cout <<  "Class\t\t" << "#" << name_index <<std::endl;
+    std::cout <<  "Class\t\t" << "#" << name_index<< "\t\t";
 
+}
+
+u2 InfoClass::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return name_index;
 }
 
 InfoFieldRef::InfoFieldRef(u1 tag, u2 class_index, u2 name_and_type_index) {
@@ -35,7 +49,12 @@ InfoFieldRef::InfoFieldRef(u1 tag, u2 class_index, u2 name_and_type_index) {
 }
 
 void InfoFieldRef::Show() {
-    std::cout << "Fieldref\t\t" << "#" << name_and_type_index << ".#" << class_index << std::endl;
+    std::cout << "Fieldref\t\t" << "#" << name_and_type_index << ".#" << class_index << "\t\t";
+}
+
+u2 InfoFieldRef::GetArgs(u2 *arg2){
+    *arg2 = class_index;
+    return name_and_type_index;
 }
 
 InfoMethodRef::InfoMethodRef(u1 tag, u2 class_index, u2 name_and_type_index) {
@@ -46,7 +65,12 @@ InfoMethodRef::InfoMethodRef(u1 tag, u2 class_index, u2 name_and_type_index) {
 
 void InfoMethodRef::Show() {
     std::cout<< "Methodref\t\t" << "#" << name_and_type_index << ".#" << class_index 
-             << std::endl;
+             << "\t\t";
+}
+
+u2 InfoMethodRef::GetArgs(u2 *arg2){
+    *arg2 = class_index;
+    return name_and_type_index;
 }
 
 InfoInterfaceMethodRef::InfoInterfaceMethodRef(u1 tag, u2 class_index, u2 name_and_type_index) {
@@ -57,7 +81,12 @@ InfoInterfaceMethodRef::InfoInterfaceMethodRef(u1 tag, u2 class_index, u2 name_a
 
 void InfoInterfaceMethodRef::Show() {
     std::cout<< "InterfaceMethodRef\t" << "#" << name_and_type_index << ".#" << class_index 
-             << std::endl;
+             << "\t\t";
+}
+
+u2 InfoInterfaceMethodRef::GetArgs(u2 *arg2){
+    *arg2 = class_index;
+    return name_and_type_index;
 }
 
 InfoString::InfoString(u1 tag, u2 string_index){
@@ -66,7 +95,12 @@ InfoString::InfoString(u1 tag, u2 string_index){
 }
  
 void InfoString::Show() {
-    std::cout<<"String\t\t" << "#" << string_index << std::endl;
+    std::cout<<"String\t\t" << "#" << string_index << "\t\t";
+}
+
+u2 InfoString::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return string_index;
 }
 
 InfoInteger::InfoInteger(u1 tag, u4 bytes) {
@@ -75,7 +109,12 @@ InfoInteger::InfoInteger(u1 tag, u4 bytes) {
 }
 
 void InfoInteger::Show() {
-    std::cout<< "Integer\t\t" << bytes <<std::endl;
+    std::cout<< "Integer\t\t" << bytes << "\t\t";
+}
+
+u2 InfoInteger::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return bytes;
 }
 
 InfoFloat::InfoFloat(u1 tag, u4 bytes) {
@@ -94,7 +133,12 @@ void InfoFloat::Show() {
     ss >> std::hex >> u.ul;
     float f = u.f;
     
-    std::cout<< "Float\t\t" << f <<"f" <<  std::endl;
+    std::cout<< "Float\t\t" << f <<"f" << "\t\t";
+}
+
+u2 InfoFloat::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return bytes;
 }
 
 InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -104,7 +148,12 @@ InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
 }
 
 void InfoLong::Show() {
-    std::cout<< "Long\t\t" << " ! " <<std::endl;
+    std::cout<< "Long\t\t" << " ! " << "\t\t";
+}
+
+u2 InfoLong::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return 0;
 }
 
 InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
@@ -148,10 +197,20 @@ void InfoDouble::Show() {
     // std::cout<< result;
 
 
-    std::cout<< "Double\t\t"<< " ! " <<std::endl;
+    std::cout<< "Double\t\t"<< " ! " << "\t\t";
+}
+
+u2 InfoDouble::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return 0;
 }
 
 void InfoLongDoubleDummy::Show() {}
+
+u2 InfoLongDoubleDummy::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return 0;
+}
 
 InfoNameAndType::InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
     this->tag = tag;
@@ -160,7 +219,12 @@ InfoNameAndType::InfoNameAndType(u1 tag, u2 name_index, u2 descriptor_index) {
 }
 
 void InfoNameAndType::Show() {
-    std::cout<< "NameAndType\t" << "#" << descriptor_index << ".#" << name_index << std::endl;
+    std::cout<< "NameAndType\t" << "#" << descriptor_index << ".#" << name_index << "\t\t";
+}
+
+u2 InfoNameAndType::GetArgs(u2 *arg2){
+    *arg2 = name_index;
+    return descriptor_index;
 }
 
 InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
@@ -170,9 +234,13 @@ InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
 }
 
 void InfoUtf8::Show() {
-    std::cout << "Utf8\t\t" << bytes <<std::endl;
+    std::cout << bytes<< "\t";
 }
 
+u2 InfoUtf8::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return 0;
+}
 
 InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index) {
     this->tag = tag;
@@ -181,7 +249,12 @@ InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index
 }
 
 void InfoMethodHandle::Show() {
-    std::cout<<"InfoMethodHandle" << "#" << reference_index <<".#" << reference_kind <<std::endl;
+    std::cout<<"InfoMethodHandle" << "#" << reference_index <<".#" << reference_kind << "\t\t";
+}
+
+u2 InfoMethodHandle::GetArgs(u2 *arg2){
+    *arg2 = reference_kind;
+    return reference_index;
 }
 
 InfoMethodType::InfoMethodType(u1 tag, u2 descriptor_index) {
@@ -190,7 +263,12 @@ InfoMethodType::InfoMethodType(u1 tag, u2 descriptor_index) {
 }
 
 void InfoMethodType::Show() {
-    std::cout<<"InfoMethodType\t" << "#" << descriptor_index <<std::endl;
+    std::cout<<"InfoMethodType\t" << "#" << descriptor_index << "\t\t";
+}
+
+u2 InfoMethodType::GetArgs(u2 *arg2){
+    *arg2 = 0;
+    return descriptor_index;
 }
 
 InfoInvokeDynamic::InfoInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 name_and_type_index) {
@@ -202,6 +280,11 @@ InfoInvokeDynamic::InfoInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u2 
 void InfoInvokeDynamic::Show() {
     std::cout<<"InvokeDynamic\t" << "#" << name_and_type_index << ":#" << bootstrap_method_attr_index 
              << std::endl;
+}
+
+u2 InfoInvokeDynamic::GetArgs(u2 *arg2){
+    *arg2 = bootstrap_method_attr_index;
+    return name_and_type_index;
 }
 
 // void ConstantPoolInfo::SetTag(u1 tag) {
@@ -276,13 +359,23 @@ void ConstantPool::ShowConstantPoolTable() {
     u1 tag;
     for (int i = 0; i < length; i++) {
         std::cout<<"#"<< i+1 << " = ";
-        cp.at(i)->Show();
+        
         tag = cp.at(i)->GetTag();
-        if (tag != UTF8){
-            Reference(cp.at(i));
+        if (tag != DOUBLE && tag != LONG && tag != FLOAT && tag != INTEGER) {
+            if (tag != UTF8){
+                cp.at(i)->Show();
+                std::cout<< "|| ";
+                Reference(i);
+            } else {
+                std::cout<< "Utf8\t\t";
+                cp.at(i)->Show();
+            }
+        } else {
+            cp.at(i)->Show();
         }
         if (tag == LONG || tag == DOUBLE) {
             i++;
         } 
+        std::cout<<std::endl;
     }
 }
