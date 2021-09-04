@@ -14,6 +14,7 @@
 #include <string.h>
 #include "constant_pool.h"
 #include "fields.h"
+#include "methods.h"
 #include "attributes.h"
 
 #define magic_number 0xcafebabe
@@ -36,7 +37,7 @@ class ClassFile {
         u2 fields_count;
         Fields * fields_table;
         u2 methods_count;
-        u1 * methods_table;
+        Methods * methods_table;
         u2 attributes_count;
         u1 * attributes_table;
         u1 Readu1();
@@ -64,6 +65,7 @@ class ClassFile {
         void ShowSuperClass();
         void ShowInterfacesCount();
         void ShowFieldsCount();
+        void ShowMethodsCount();
         
         // u2 GetAcessFlags();
         // u2 GetThisClass();

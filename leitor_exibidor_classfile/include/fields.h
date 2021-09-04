@@ -31,6 +31,7 @@ class Fields_info {
         u2 GetAttributesCount();
 }; 
 
+
 class Fields {
     protected:
         std::vector<Fields_info *> fields;

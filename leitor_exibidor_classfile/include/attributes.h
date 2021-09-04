@@ -9,8 +9,8 @@ class Attributes_info{
     u2 attribute_name_index;
     u4 attribute_length;
     public:
-    u2 getAttributeNameIndex();
-    u4 getAttributeLength();
+    u2 GetAttributeNameIndex();
+    u4 GetAttributeLength();
 };
 
 class Attributes_table{
@@ -33,7 +33,7 @@ class Attributes_table{
 
 };
 
-/**
+
 
 class ConstantValue : public Attributes_info{
     u2 constantvalue_index;
@@ -111,6 +111,6 @@ class LocalVariableTableAtt : public Attributes_info{
     // local_variable_table[local_variable_table_length];
 };
 
-**/
+
 
 #endif

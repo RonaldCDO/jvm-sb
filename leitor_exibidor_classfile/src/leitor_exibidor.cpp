@@ -144,20 +144,26 @@ void ClassFile::ReadClassFile(){
     minor_version = Readu2();
     major_version = Readu2();
     constant_pool_count = Readu2();
-
+   
+   
     LoadConstantPool();
+
 
     access_flags = Readu2Raw();
     this_class = Readu2Raw();
     super_class = Readu2Raw();
     interfaces_count = Readu2Raw();
+    fields_count = Readu2Raw();
+    methods_count = Readu2Raw();
 
-    
+
     LoadInterfaces();
 
-    fields_count = Readu2Raw();
 
     LoadFieldsTable();
+
+
+    LoadMethodsTable();
 
     /**
     methods_count = Readu2();   
@@ -211,6 +217,10 @@ void ClassFile::ShowFieldsCount(){
     std::cout << "Fields:\t\t\t" << fields_count << std::endl;
 }
 
+
+void ClassFile::ShowMethodsCount(){
+    std::cout << "Methods:\t\t" << methods_count << std::endl;
+}
 // u2 ClassFile::GetAcessFlags(){
 //     return access_flags;
 // }
@@ -343,6 +353,48 @@ void ClassFile::LoadFieldsTable() {
     }
 }
 
+
+void ClassFile::LoadMethodsTable() {
+    
+    if (methods_count) {
+
+    Methods_info * methods_pt;
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1 * att_info;
+
+        methods_table = new Methods();
+
+        for (int i = 0; i < methods_count; i++) {
+            
+            methods_pt = new Methods_info(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw());
+
+            for (int j = 0; j < methods_pt->GetAttributesCount(); j++) {
+                attribute_name_index = Readu2();
+                attribute_length = Readu4();
+                att_info = Readu1(attribute_length);
+
+                std::cout << "Attribute " << j << std::endl;
+                std::cout << "Attribute_name_index" << attribute_name_index << std::endl;
+                std::cout << "Attribute_length " << attribute_length << std::endl;
+                std::cout << att_info << std::endl;
+            }
+
+            methods_table->AppendMethod(methods_pt);
+        }
+    }
+}
+
+void ClassFile::LoadAttributesTable() {
+/**
+    if (attributes_count) {
+
+        u2 attribute_name_index;
+        u4 attribute_length;
+
+    }
+**/ 
+};
 
 // u2 ClassFile::GetThisClass(){
 //     return this_class;

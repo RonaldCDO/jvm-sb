@@ -1,7 +1,6 @@
 #ifndef CP
 #define CP
 
-
 #include <iostream>
 #include <vector>
 #include <data_class_format.h>

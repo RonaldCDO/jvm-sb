@@ -1,13 +1,13 @@
 #include "attributes.h"
 
 
-u2 Atributtes_info::getAttributeNameIndex(){
+u2 Attributes_info::GetAttributeNameIndex(){
     return attribute_name_index;
 }
 
 
-u4 Atributtes_info::getAttributeLenght(){
-    return attribute_lenght;
+u4 Attributes_info::GetAttributeLength(){
+    return attribute_length;
 }
 
 
