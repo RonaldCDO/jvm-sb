@@ -38,6 +38,7 @@ u2 ClassFile::Readu2() {
     return buffer_u2;
 }
 
+//  Leitura de 2 bytes sem conversão de endianess
 u2 ClassFile::Readu2Raw() {
 
     u2 buffer_u2;
@@ -135,15 +136,16 @@ void ClassFile::ReadClassFile(){
     access_flags = Readu2Raw();
     this_class = Readu2Raw();
     super_class = Readu2Raw();
-    interfaces_count = Readu2();
-    fields_count = Readu2();
-    /**
-    LoadInterfacesTable();
+    interfaces_count = Readu2Raw();
 
-    fields_count = Readu2();
-
-    LoadFieldsTable();
     
+    LoadInterfaces();
+
+    fields_count = Readu2Raw();
+
+    //LoadFieldsTable();
+
+    /**
     methods_count = Readu2();   
 
     LoadMethodsTable();
@@ -178,21 +180,21 @@ void ClassFile::ShowAccessFlags() {
 }
 
 void ClassFile::ShowThisClass() {
-    std::cout << "this_class:\t\t" << this_class << std::endl;
+    std::cout << "This_class:\t\t" << this_class << std::endl;
 }
 
 void ClassFile::ShowSuperClass() {
-    std::cout << "super_class:\t\t" << super_class << std::endl;
+    std::cout << "Super_class:\t\t" << super_class << std::endl;
 }
 
 
 void ClassFile::ShowInterfacesCount(){
-    std::cout << "interfaces:\t\t" << interfaces_count << std::endl;
+    std::cout << "Interfaces:\t\t" << interfaces_count << std::endl;
 }
 
 
 void ClassFile::ShowFieldsCount(){
-    std::cout << "fields:\t\t\t" << fields_count << std::endl;
+    std::cout << "Fields:\t\t\t" << fields_count << std::endl;
 }
 
 // u2 ClassFile::GetAcessFlags(){
@@ -284,6 +286,34 @@ void ClassFile::LoadConstantPool() {
 
 void ClassFile::ShowConstantPool() {
     constant_pool->ShowConstantPoolTable();
+}
+
+void ClassFile::LoadInterfaces() {
+    if (interfaces_count) {
+
+        interfaces = new u2(interfaces_count);
+        for (int i = 0; i < interfaces_count; i++) {
+            interfaces[i] = Readu2Raw();
+        }
+    }
+}
+
+void ClassFile::LoadFieldsTable() {
+
+    Fields_info * fields_info_pt;
+    u2 attribute
+
+    if (fields_count) {
+
+        fields_table = new Fields();
+
+        for (int i = 0; i < fields_count; i++) {
+            
+            fields_info_pt = new Fields_info(Readu2(), Readu2(), Readu2(), Readu2());
+
+
+        }
+    }
 }
 
 

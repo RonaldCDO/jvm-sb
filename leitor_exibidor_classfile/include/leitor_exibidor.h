@@ -13,6 +13,8 @@
 // #include <netinet/in.h>
 #include <string.h>
 #include "constant_pool.h"
+#include "fields.h"
+#include "attributes.h"
 
 #define magic_number 0xcafebabe
 
@@ -30,9 +32,9 @@ class ClassFile {
         u2 this_class;
         u2 super_class;
         u2 interfaces_count;
-        u1 * interfaces_table;
+        u2 * interfaces;
         u2 fields_count;
-        u1 * fields_table;
+        Fields * fields_table;
         u2 methods_count;
         u1 * methods_table;
         u2 attributes_count;
@@ -45,7 +47,7 @@ class ClassFile {
         bool FileIsOpen();
         void ReadClassFile();
         void LoadConstantPool();
-        void LoadInterfacesTable();
+        void LoadInterfaces();
         void LoadFieldsTable();
         void LoadMethodsTable();
         void LoadAttributesTable();

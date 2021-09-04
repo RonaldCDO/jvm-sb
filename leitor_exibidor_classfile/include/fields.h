@@ -14,14 +14,22 @@
 #define ACC_SYNTHETIC "0x1000"
 #define ACC_ENUM "0x4000"
 
-class Fields_info{
+class Fields {
+    protected:
+        std::vector<Fields_info *> fields;
+    public:
+        void appendField();
+};
+
+class Fields_info {
     protected:
         u2 access_flags;
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        Atributtes_info attributes;
+        std::vector<Atributtes_info*> attributes;
     public:
+        Fields_info(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         u2 GetAccessFlags();
         u2 GetNameIndex();
         u2 GetDescriptorIndex();
