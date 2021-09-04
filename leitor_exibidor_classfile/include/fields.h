@@ -3,6 +3,7 @@
 
 #include "data_class_format.h"
 #include "attributes.h"
+#include <iostream>
 
 #define ACC_PUBLIC "0x0001"
 #define ACC_PRIVATE "0x0002"
@@ -14,12 +15,6 @@
 #define ACC_SYNTHETIC "0x1000"
 #define ACC_ENUM "0x4000"
 
-class Fields {
-    protected:
-        std::vector<Fields_info *> fields;
-    public:
-        void appendField(Fields_info * fields_info);
-};
 
 class Fields_info {
     protected:
@@ -36,4 +31,10 @@ class Fields_info {
         u2 GetAttributesCount();
 }; 
 
+class Fields {
+    protected:
+        std::vector<Fields_info *> fields;
+    public:
+        void appendField(Fields_info * fields_info);
+};
 #endif

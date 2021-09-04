@@ -1,3 +1,6 @@
+#ifndef ATTRIBUTES
+#define ATTRIBUTES
+
 #include "data_class_format.h"
 #include <vector>
 
@@ -30,6 +33,7 @@ class Attributes_table{
 
 };
 
+/**
 
 class ConstantValue : public Attributes_info{
     u2 constantvalue_index;
@@ -107,5 +111,6 @@ class LocalVariableTableAtt : public Attributes_info{
     // local_variable_table[local_variable_table_length];
 };
 
+**/
 
-
+#endif
