@@ -341,11 +341,6 @@ void ClassFile::LoadFieldsTable() {
                 attribute_name_index = Readu2();
                 attribute_length = Readu4();
                 att_info = Readu1(attribute_length);
-
-                std::cout << "Attribute " << j << std::endl;
-                std::cout << "Attribute_name_index" << attribute_name_index << std::endl;
-                std::cout << "Attribute_length " << attribute_length << std::endl;
-                std::cout << att_info << std::endl;
             }
 
             fields_table->appendField(field_pt);
@@ -373,11 +368,6 @@ void ClassFile::LoadMethodsTable() {
                 attribute_name_index = Readu2();
                 attribute_length = Readu4();
                 att_info = Readu1(attribute_length);
-
-                std::cout << "Attribute " << j << std::endl;
-                std::cout << "Attribute_name_index" << attribute_name_index << std::endl;
-                std::cout << "Attribute_length " << attribute_length << std::endl;
-                std::cout << att_info << std::endl;
             }
 
             methods_table->AppendMethod(methods_pt);

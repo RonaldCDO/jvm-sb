@@ -33,6 +33,20 @@ class Attributes_table{
 
 };
 
+class Exceptions : public Attributes_info{
+    u2 number_of_exceptions;
+    // u2 exception_index_table[number_of_exceptions];
+};
+
+class ExceptionsIndexTable{
+    protected:
+        u2 exceptions_table_length;
+        std::vector<Exceptions *> et;
+        u2 start_pc;
+        u2 end_pc;
+        u2 handler_pc;
+        u2 catch_type;   
+};
 
 
 class ConstantValue : public Attributes_info{
@@ -44,15 +58,6 @@ class Code{
 };
 
 
-class ExceptionsIndexTable{
-    protected:
-        u2 exceptions_table_length;
-        std::vector<Exceptions *> et;
-        u2 start_pc;
-        u2 end_pc;
-        u2 handler_pc;
-        u2 catch_type;   
-};
 
 class CodeAtt : public Attributes_info{
     u2 max_stack;
@@ -72,11 +77,6 @@ class CodeAtt : public Attributes_info{
 
 
 
-
-class Exceptions : public Attributes_info{
-    u2 number_of_exceptions;
-    // u2 exception_index_table[number_of_exceptions];
-};
 
 
 class SourceFile : public Attributes_info{
