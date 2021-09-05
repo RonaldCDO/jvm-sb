@@ -17,18 +17,12 @@ class Attributes_table{
     protected:
         std::vector<Attributes_info *> at;
     public:
-        void AppendConstantValue(u2 attribute_name_index, u4 attribute_length,
-                                 u2 constantvalue_index);
-        void AppendCode(u2 attribute_name_index, u4 attribute_length,
-                        u2 max_stack, u2 max_locals, u4 code_length);
-        void AppendExceptions(u2 attribute_name_index, u4 attribute_length,
-                                 u2 number_of_exceptions);
-        void AppendSourceFile(u2 attribute_name_index, u4 attribute_length,
-                                 u2 sourcefile_index);
-        void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length,
-                                 u2 line_number_table_length);
-        void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length,
-                                 u2 local_variable_table_length);
+        void AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index);
+        void AppendCode(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length);
+        void AppendExceptions(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions);
+        void AppendSourceFile(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
+        void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length);
+        void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length);
         void ShowAttributesTable();
 
 };
@@ -36,14 +30,18 @@ class Attributes_table{
 
 
 class ConstantValueAtt : public Attributes_info{
-    u2 constantvalue_index;
+    protected:
+        u2 constantvalue_index;
+    public:
+        ConstantValueAtt(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index);
 };
 
 
 
 
 class Code{
-    u1 instructions;
+    protected:
+        u1 instructions;
 };
 
 
@@ -58,56 +56,74 @@ class ExceptionsTable{
 
 
 class CodeAtt : public Attributes_info{
-    u2 max_stack;
-    u2 max_locals;
-    u4 code_length;
-    u2 exception_table_length;
-    ExceptionsTable* exception_table;
-    u2 attributes_count;
-
+    protected:
+        u2 max_stack;
+        u2 max_locals;
+        u4 code_length;
+        u2 exception_table_length;
+        ExceptionsTable* exception_table;
+        u2 attributes_count;
+    public:
+        CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length);
 };
 
 
 class ExceptionIndexTable{
-    u2 index;
+    protected:
+        u2 index;
 };
 
 
 
 class ExceptionsAtt : public Attributes_info{
-    u2 number_of_exceptions;
-    ExceptionIndexTable * exeption_index_table;
+    protected:
+        u2 number_of_exceptions;
+        ExceptionIndexTable * exeption_index_table;
+    public:
+        ExceptionsAtt(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions);
+
 };
 
 
 class SourceFileAtt : public Attributes_info{
-    u2 sourcefile_index;
+    protected:
+        u2 sourcefile_index;
+    public:
+        SourceFileAtt(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
 };
 
 
 class LineNumberTable{
-    u2 start_pc;
-    u2 line_number;
+    protected:
+        u2 start_pc;
+        u2 line_number;
 };
 
 
 class LineNumberTableAtt : public Attributes_info{
-    u2 line_number_table_length;
-    LineNumberTable * line_number_table;
+    protected:
+        u2 line_number_table_length;
+        LineNumberTable * line_number_table;
+    public:
+        LineNumberTableAtt(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length);
 };
 
 
 class LocalVariableTable{
-    u2 start_pc;
-    u2 name_index;
-    u2 descriptor_index;
-    u2 index;
+    protected:
+        u2 start_pc;
+        u2 name_index;
+        u2 descriptor_index;
+        u2 index;
 };
 
 
 class LocalVariableTableAtt : public Attributes_info{
-    u2 local_variable_table_length;
-    LocalVariableTable * local_variable_table;
+    protected:
+        u2 local_variable_table_length;
+        LocalVariableTable * local_variable_table;
+    public:
+        LocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length);
 };
 
 

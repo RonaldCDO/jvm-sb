@@ -47,7 +47,7 @@ class ClassFile {
         u2 methods_count;
         Methods * methods_table;
         u2 attributes_count;
-        u1 * attributes_table;
+        Attributes_table * attributes_table;
         u1 Readu1();
         u1 * Readu1(u2 length);
         u1 * Readu1(u4 length);
@@ -69,12 +69,14 @@ class ClassFile {
         void ShowConstantPoolCount();
         void ShowConstantPool();
         void ShowFields();
+        void ShowMethods();
         void ShowAccessFlags();
         void ShowThisClass();
         void ShowSuperClass();
         void ShowInterfacesCount();
         void ShowFieldsCount();
         void ShowMethodsCount();
+        void ShowAttributesCount();
         
         // u2 GetAcessFlags();
         // u2 GetThisClass();

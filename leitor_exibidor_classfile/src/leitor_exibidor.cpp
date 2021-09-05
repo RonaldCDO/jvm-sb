@@ -162,15 +162,11 @@ void ClassFile::ReadClassFile(){
 
     LoadMethodsTable();
 
-    /**
-    methods_count = Readu2();   
+    attributes_count = Readu2Raw();
 
-    LoadMethodsTable();
 
-    attributes_count = Readu2();
+    // LoadAttributesTable();
 
-    LoadAttributesTable();
-    **/
 }
 
 void ClassFile::ShowMagic() {
@@ -238,6 +234,10 @@ void ClassFile::ShowFieldsCount(){
 
 void ClassFile::ShowMethodsCount(){
     std::cout << "Methods:\t\t" << methods_count << std::endl;
+}
+
+void ClassFile::ShowAttributesCount(){
+    std::cout <<"Attributes:\t\t" << attributes_count << std::endl;
 }
 // u2 ClassFile::GetAcessFlags(){
 //     return access_flags;
@@ -333,7 +333,7 @@ void ClassFile::ShowConstantPool() {
 void ClassFile::ShowFields() {
 
     if (fields_count) {
-
+        
         std::cout << "Fields:" << std::endl;
         
         Fields_info* field;
@@ -412,6 +412,107 @@ void ClassFile::ShowFields() {
                     std::cout << "\t\tACC_ENUM" << std::endl;
                     break;
             }
+            std::cout << "}" << std::endl;
+
+        }
+    }
+
+}
+
+void ClassFile::ShowMethods() {
+
+    if (methods_count) {
+        
+        std::cout << "Methods:" << std::endl;
+        
+        Methods_info* method;
+
+        u2 byte;
+        u2 flags;
+        u2 index;
+
+        for (int i = 0; i < fields_count; i++) {
+            method = methods_table->GetMethod(i);
+
+            flags = method->GetAccessFlags_M();
+
+            byte = flags & 0x000F;
+
+            std::cout << "\n" << std::endl;
+
+            switch(byte){
+                case ACC_PRIVATE_M:
+                    std::cout << "private ";
+                    break;
+                case ACC_PROTECTED_M:
+                    std::cout << "protected ";
+                    break;
+                case ACC_PUBLIC_M:
+                    std::cout << "public ";
+                    break;
+            }
+
+            index = method->GetDescriptorIndex_M();
+            std::cout << constant_pool->GetUtf8(index) << " ";
+
+            index = method->GetNameIndex_M();
+            std::cout << constant_pool->GetUtf8(index) << std::endl;
+
+            std::cout << "\tFlags:" << std::endl;
+
+            byte = flags & 0x000F;
+
+            switch(byte){
+                case ACC_PUBLIC_M:
+                    std::cout << "\t\tACC_PUBLIC" << std::endl;
+                    break;
+                case ACC_PROTECTED_M:
+                    std::cout << "\t\tACC_PROTECTED" << std::endl;
+                    break;
+                case ACC_PRIVATE_M:
+                    std::cout << "\t\tACC_PRIVATE" << std::endl;
+                    break;
+                case ACC_STATIC_M:
+                    std::cout << "\t\tACC_STATIC" << std::endl;
+                    break;
+            }
+
+            byte = flags & 0x00F0;
+
+            switch(byte){
+                case ACC_FINAL_M:
+                    std::cout << "\t\tACC_FINAL" << std::endl;
+                    break;
+                case ACC_SYNCRONIZED_M:
+                    std::cout << "\t\tACC_SYNCRONIZED" << std::endl;
+                    break;
+                case ACC_BRIDGE_M:
+                    std::cout << "\t\tACC_BRIDGE" << std::endl;
+                    break;
+                  case ACC_VARARGS_M:
+                    std::cout << "\t\tACC_VARARGS" << std::endl;
+                    break;
+                    
+            }
+
+            byte = flags & 0x0F00;
+
+                switch(byte){
+                case ACC_NATIVE_M:
+                    std::cout << "\t\tACC_NATIVE" << std::endl;
+                    break;
+                case ACC_ABSTRACT_M:
+                    std::cout << "\t\tACC_ABSTRACT" << std::endl;
+                    break;
+                case ACC_STRICT_M:
+                    std::cout << "\t\tACC_STRICT" << std::endl;
+                    break;
+                case ACC_SYNTHETIC_M:
+                    std::cout << "\t\tACC_SYNTHETIC" << std::endl;
+                    break;
+                
+
+            }
 
             std::cout << "}" << std::endl;
 
@@ -419,6 +520,8 @@ void ClassFile::ShowFields() {
     }
 
 }
+
+
 
 void ClassFile::LoadInterfaces() {
     if (interfaces_count) {
@@ -451,8 +554,6 @@ void ClassFile::LoadFieldsTable() {
                 attribute_length = Readu4();
                 att_info = Readu1(attribute_length);
             }
-            //field_pt->SetDescriptor();
-            //field_pt->setName();
             fields_table->appendField(field_pt);
         }
     }
@@ -474,7 +575,7 @@ void ClassFile::LoadMethodsTable() {
             
             methods_pt = new Methods_info(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw());
 
-            for (int j = 0; j < methods_pt->GetAttributesCount(); j++) {
+            for (int j = 0; j < methods_pt->GetAttributesCount_M(); j++) {
                 attribute_name_index = Readu2();
                 attribute_length = Readu4();
                 att_info = Readu1(attribute_length);
@@ -486,14 +587,15 @@ void ClassFile::LoadMethodsTable() {
 }
 
 void ClassFile::LoadAttributesTable() {
-/**
-    if (attributes_count) {
+    if(attributes_count){
 
-        u2 attribute_name_index;
-        u4 attribute_length;
+    attributes_table = new Attributes_table();
+
+        for (int i = attributes_count; i > 0; i--){
+            // switch();
+        }
 
     }
-**/ 
 };
 
 // u2 ClassFile::GetThisClass(){
