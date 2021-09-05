@@ -88,7 +88,4 @@ class ClassFile {
         // u2 GetAttributesCount();
 };
 
-
-// int ConvertToInt(char num[]);
-
 #endif

@@ -176,8 +176,7 @@ void ClassFile::ReadClassFile(){
 
     attributes_count = Readu2Raw();
 
-
-    // LoadAttributesTable();
+    LoadAttributesTable();
 
 }
 
@@ -612,12 +611,33 @@ void ClassFile::LoadMethodsTable() {
 }
 
 void ClassFile::LoadAttributesTable() {
+
     if(attributes_count){
+    
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1* att_info;
+    u1* attribute_name;
 
     attributes_table = new Attributes_table();
 
-        for (int i = attributes_count; i > 0; i--){
-            // switch();
+        for (int i = 0; i < attributes_count; i++){
+            attribute_name_index = Readu2Raw();
+            u2 aux = Readu2Raw();
+            u2 aux2 = Readu2Raw();
+            attribute_length = aux + aux2;
+            att_info = Readu1(attribute_length);
+            attribute_name = constant_pool->GetUtf8(attribute_name_index-1);
+            
+            std::cout << attribute_name << std::endl;
+
+            if (strcmp((const char*)attribute_name, "Code") == 0) {
+                std::cout << "CODE" << std::endl;
+            }
+            if (strcmp((const char*)attribute_name, "SourceFile") == 0) {
+                std::cout << "SOURCEFILE" << std::endl;
+            }
+            
         }
 
     }
