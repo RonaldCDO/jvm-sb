@@ -81,6 +81,18 @@ u4 ClassFile::Readu4() {
     
 }
 
+
+u4 ClassFile::Readu4Raw() {
+
+    u4 buffer_u4;
+    
+    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
+    
+    return buffer_u4;
+    
+}
+
+
 void Printu2Hex(u2 hex_value) {
 
     // captura configuracoes do std::cout para posterior restauracao 
@@ -438,7 +450,7 @@ void ClassFile::ShowMethods() {
         u2 flags;
         u2 index;
 
-        for (int i = 0; i < fields_count; i++) {
+        for (int i = 0; i < methods_count; i++) {
             method = methods_table->GetMethod(i);
 
             flags = method->GetAccessFlags_M();
@@ -557,8 +569,8 @@ void ClassFile::LoadFieldsTable() {
             
 
             for (int j = 0; j < field_pt->GetAttributesCount(); j++) {
-                attribute_name_index = Readu2();
-                attribute_length = Readu4();
+                attribute_name_index = Readu2Raw();
+                attribute_length = Readu4Raw();
                 att_info = Readu1(attribute_length);
             }
             fields_table->appendField(field_pt);
@@ -583,7 +595,7 @@ void ClassFile::LoadMethodsTable() {
             methods_pt = new Methods_info(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw());
 
             for (int j = 0; j < methods_pt->GetAttributesCount_M(); j++) {
-                attribute_name_index = Readu2();
+                attribute_name_index = Readu2Raw();
                 attribute_length = Readu4();
                 att_info = Readu1(attribute_length);
             }

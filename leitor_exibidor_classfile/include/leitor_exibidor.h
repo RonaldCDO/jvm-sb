@@ -54,6 +54,7 @@ class ClassFile {
         u2 Readu2();
         u2 Readu2Raw();
         u4 Readu4();
+        u4 Readu4Raw();
         bool FileIsOpen();
         void ReadClassFile();
         void LoadConstantPool();
