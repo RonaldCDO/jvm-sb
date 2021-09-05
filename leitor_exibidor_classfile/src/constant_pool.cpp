@@ -6,7 +6,7 @@ void ConstantPool::Reference (u2 index) {
     u1 tag;
     tag = cp.at(index)->GetTag();
     if (tag == UTF8) {
-        cp.at(index)->Show();
+        std::cout<< GetUtf8(index) << "\t\t";
     }
     else{   // Pegar parametros para os metodos e chamar recursiva
         u2 arg2;
@@ -19,6 +19,10 @@ void ConstantPool::Reference (u2 index) {
             }
         }
     }
+}
+
+u1* ConstantPoolInfo::GetUtf8Bytes() {
+    return NULL;
 }
 
 
@@ -229,12 +233,16 @@ InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
 }
 
 void InfoUtf8::Show() {
-    std::cout << bytes<< "\t";
+    std::cout << "Utf8\t\t" << bytes<< "\t";
 }
 
 u2 InfoUtf8::GetArgs(u2 *arg2){
     *arg2 = 0;
     return 0;
+}
+
+u1 * InfoUtf8::GetUtf8Bytes() {
+    return bytes;
 }
 
 InfoMethodHandle::InfoMethodHandle(u1 tag, u1 reference_kind, u2 reference_index) {
@@ -354,7 +362,9 @@ void ConstantPool::ShowConstantPoolTable() {
     u1 tag;
     for (int i = 0; i < length; i++) {
         std::cout<<"#"<< i+1 << " = ";
-        
+
+        // cp.at(i)->Show();
+        // /**
         tag = cp.at(i)->GetTag();
         if (tag != DOUBLE && tag != LONG && tag != FLOAT && tag != INTEGER) {
             if (tag != UTF8){
@@ -362,7 +372,6 @@ void ConstantPool::ShowConstantPoolTable() {
                 std::cout<< "|| ";
                 Reference(i);
             } else {
-                std::cout<< "Utf8\t\t";
                 cp.at(i)->Show();
             }
         } else {
@@ -370,7 +379,13 @@ void ConstantPool::ShowConstantPoolTable() {
         }
         if (tag == LONG || tag == DOUBLE) {
             i++;
-        } 
+        }
+
+        // **/
         std::cout<<std::endl;
     }
+}
+
+u1* ConstantPool::GetUtf8(int index) {
+    return cp.at(index)->GetUtf8Bytes();
 }

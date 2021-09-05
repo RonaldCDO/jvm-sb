@@ -28,8 +28,12 @@ int main(int argc, char* argv[]) {
     cf->ShowSuperClass();
     cf->ShowInterfacesCount();
     cf->ShowFieldsCount();
+    cf->ShowMethodsCount();
+    cf->ShowAttributesCount();
     cf->ShowConstantPoolCount();
     cf->ShowConstantPool();
+    cf->ShowFields();
+    cf->ShowMethods();
     delete cf;
 
     return 0;

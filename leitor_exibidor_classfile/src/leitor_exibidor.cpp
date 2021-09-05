@@ -1,107 +1,11 @@
 #include "leitor_exibidor.h"
 
-// Leitura de 1 byte do arquivo
-u1 ClassFile::Readu1() {
-
-    u1 buffer_u1;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u1), sizeof(buffer_u1));
-
-    return buffer_u1;
-}
-
-// Leitura byte a byte de uma string de 'length' bytes
-u1 * ClassFile::Readu1(u2 length) {
-
-    u1* bytes = new u1[length+1];
-    u1 buffer;
-    
-    for (int i = 0; i < length; i++) {
-        file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-        bytes[i] = buffer;
-    }
-
-    bytes[length] = '\0';
-
-    return bytes;
-}
-
-// Leitura de 2 bytes do arquivo
-u2 ClassFile::Readu2() {
-
-    u2 buffer_u2;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-
-    buffer_u2 = htons(buffer_u2);
-    
-    return buffer_u2;
-}
-
-u2 ClassFile::Readu2Raw() {
-
-    u2 buffer_u2;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-    
-    return buffer_u2;
-}
-
-// Leitura de 4 bytes do arquivo
-u4 ClassFile::Readu4() {
-
-    u4 buffer_u4;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
-
-    /** htonl() - host to network long conversion:
-     * realiza a conversao de inteiros multi-byte 
-     * da ordem do host para a ordem da rede
-     * ex: se o programa ler "bebafeca", esse comando corrige
-     * a ordem para "cafebabe" 
-     **/
-    buffer_u4 = htonl(buffer_u4);
-    
-    return buffer_u4;
-    
-}
-
-void Printu2Hex(u2 hex_value) {
-
-    // captura configuracoes do std::cout para posterior restauracao 
-    std::ios_base::fmtflags oldFlags = std::cout.flags();
-    std::streamsize oldPrec = std::cout.precision();
-    char oldFill = std::cout.fill();
-    
-    std::cout << "0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::hex << hex_value << std::endl;
-    
-    // restaura configuracoes do cout apos o uso do parametro "hex"
-    std::cout.flags(oldFlags);
-    std::cout.precision(oldPrec);
-    std::cout.fill(oldFill);
-}
-
-void Printu4Hex(u4 hex_value) {
-
-    // captura configuracoes do std::cout para posterior restauracao 
-    std::ios_base::fmtflags oldFlags = std::cout.flags();
-    std::streamsize oldPrec = std::cout.precision();
-    char oldFill = std::cout.fill();
-    
-    std::cout << "0x" <<  std::uppercase <<std::setfill('0') << std::setw(8) << std::hex << hex_value << std::endl;
-    
-    // restaura configuracoes do cout apos o uso do parametro "hex"
-    std::cout.flags(oldFlags);
-    std::cout.precision(oldPrec);
-    std::cout.fill(oldFill);
-}
-
 void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
 
     this -> file.open(fileName);
     std::cout<<"Filename: " << fileName <<std::endl;
-
+    
     if (this -> file.is_open()) {
         ReadClassFile();
     } else {
@@ -118,7 +22,8 @@ bool ClassFile::FileIsOpen() {
 }
 
 void ClassFile::ReadClassFile(){
-    magic = Readu4();
+    magic = Readu4(file);
+    
 
     if (magic == magic_number) 
         std::cout << "File Type: .class"<<"\n";
@@ -126,32 +31,35 @@ void ClassFile::ReadClassFile(){
         std::cout<< "Tipo de arquivo não aceito\n";
         exit(1);
     }
-    minor_version = Readu2();
-    major_version = Readu2();
-    constant_pool_count = Readu2();
+    minor_version = Readu2(file);
 
+    major_version = Readu2(file);
+
+    constant_pool_count = Readu2(file);
+      
     LoadConstantPool();
 
-    access_flags = Readu2Raw();
-    this_class = Readu2Raw();
-    super_class = Readu2Raw();
-    interfaces_count = Readu2();
-    fields_count = Readu2();
-    /**
-    LoadInterfacesTable();
+    access_flags = Readu2Raw(file);
+    this_class = Readu2Raw(file);
+    super_class = Readu2Raw(file);
+    interfaces_count = Readu2Raw(file);
 
-    fields_count = Readu2();
+    LoadInterfaces();
+
+    fields_count = Readu2Raw(file);
 
     LoadFieldsTable();
-    
-    methods_count = Readu2();   
+
+    methods_count = Readu2Raw(file);
 
     LoadMethodsTable();
 
-    attributes_count = Readu2();
+    attributes_count = Readu2Raw(file);
 
-    LoadAttributesTable();
-    **/
+    if (attributes_count) {
+        attributes_table = new AttributesTable();
+        attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
+    }
 }
 
 void ClassFile::ShowMagic() {
@@ -175,26 +83,55 @@ void ClassFile::ShowConstantPoolCount(){
 void ClassFile::ShowAccessFlags() {
     std::cout << "Flags:\t\t\t";
     Printu2Hex(access_flags);
+
+    u2 byte;
+
+    byte = access_flags & 0x000F;
+
+    if (byte == ACC_PUBLIC_C) std::cout << "\t\t\tACC_PUBLIC" << std::endl;
+
+    byte = access_flags & 0x00F0;
+
+    if (byte == ACC_FINAL_C) std::cout << "\t\t\tACC_FINAL" << std::endl;
+    if (byte == ACC_SUPER_C) std::cout << "\t\t\tACC_SUPER" << std::endl;
+
+    byte = access_flags & 0x0F00;
+
+    if (byte == ACC_INTERFACE_C) std::cout << "\t\t\tACC_INTERFACE" << std::endl;
+    if (byte == ACC_ABSTRACT_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+
+    byte = access_flags & 0xF000;
+
+    if (byte == ACC_ANNOTATION_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ENUM_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
 }
 
 void ClassFile::ShowThisClass() {
-    std::cout << "this_class:\t\t" << this_class << std::endl;
+    std::cout << "This_class:\t\t" << this_class << std::endl;
 }
 
 void ClassFile::ShowSuperClass() {
-    std::cout << "super_class:\t\t" << super_class << std::endl;
+    std::cout << "Super_class:\t\t" << super_class << std::endl;
 }
 
 
 void ClassFile::ShowInterfacesCount(){
-    std::cout << "interfaces:\t\t" << interfaces_count << std::endl;
+    std::cout << "Interfaces:\t\t" << interfaces_count << std::endl;
 }
 
 
 void ClassFile::ShowFieldsCount(){
-    std::cout << "fields:\t\t\t" << fields_count << std::endl;
+    std::cout << "Fields:\t\t\t" << fields_count << std::endl;
 }
 
+
+void ClassFile::ShowMethodsCount(){
+    std::cout << "Methods:\t\t" << methods_count << std::endl;
+}
+
+void ClassFile::ShowAttributesCount(){
+    std::cout <<"Attributes:\t\t" << attributes_count << std::endl;
+}
 // u2 ClassFile::GetAcessFlags(){
 //     return access_flags;
 // }
@@ -212,69 +149,69 @@ void ClassFile::LoadConstantPool() {
 
     while(cp_count_local) {
 
-        tag = Readu1();
+        tag = Readu1(file);
 
         switch(unsigned(tag)) {
             case CLASS:
                 //std::cout << "Class_type" << std::endl;
-                constant_pool->AppendClass(tag, Readu2());;
+                constant_pool->AppendClass(tag, Readu2(file));;
                 break;
             case FIELD_REF:
                 //std::cout << "FieldRef_type" << std::endl;
-                constant_pool->AppendFieldRef(tag, Readu2(), Readu2());
+                constant_pool->AppendFieldRef(tag, Readu2(file), Readu2(file));
                 break;
             case METHOD_REF:
                 //std::cout << "MethodRef_type" << std::endl;
-                constant_pool->AppendMethodRef(tag, Readu2(), Readu2());
+                constant_pool->AppendMethodRef(tag, Readu2(file), Readu2(file));
                 break;
             case INTERFACE_METHOD_REF:
                 //std::cout << "InterfaceMethodRef_type" << std::endl;
-                constant_pool->AppendInterfaceMethodRef(tag, Readu2(), Readu2());
+                constant_pool->AppendInterfaceMethodRef(tag, Readu2(file), Readu2(file));
                 break;
             case STRING:
                 //std::cout << "String_type" << std::endl;
-                constant_pool->AppendString(tag, Readu2());
+                constant_pool->AppendString(tag, Readu2(file));
                 break;
             case INTEGER:
                 //std::cout << "Integer_type" << std::endl;
-                constant_pool->AppendInt(tag, Readu4());
+                constant_pool->AppendInt(tag, Readu4(file));
                 break;
             case FLOAT:
                 //std::cout << "Float_type" << std::endl;
-                constant_pool->AppendFloat(tag, Readu4());
+                constant_pool->AppendFloat(tag, Readu4(file));
                 break;
             case LONG:
                 //std::cout << "Long_type" << std::endl;
-                constant_pool->AppendLong(tag, Readu4(), Readu4());
+                constant_pool->AppendLong(tag, Readu4(file), Readu4(file));
                 cp_count_local--;
                 break;
             case DOUBLE:
                 //std::cout << "Double_type" << std::endl;
-                constant_pool->AppendDouble(tag, Readu4(), Readu4());
+                constant_pool->AppendDouble(tag, Readu4(file), Readu4(file));
                 cp_count_local--;
                 break;
             case NAME_AND_TYPE:
                 //std::cout << "NameAndType_type" << std::endl;
-                constant_pool->AppendNameAndType(tag, Readu2(), Readu2());
+                constant_pool->AppendNameAndType(tag, Readu2(file), Readu2(file));
                 break;
             case UTF8:
                 //std::cout << "Utf8_type" << std::endl;
-                length = Readu2();
+                length = Readu2(file);
                 //std::cout << length << std::endl;
-                bytes = Readu1(length);
+                bytes = Readu1(file, length);
                 constant_pool->AppendUtf8(tag, length, bytes);
                 break;
             case METHOD_HANDLE:
                 //std::cout << "MethodHandle_type" << std::endl;
-                constant_pool->AppendMethodHandle(tag, Readu1(), Readu2());
+                constant_pool->AppendMethodHandle(tag, Readu1(file), Readu2(file));
                 break;
             case METHOD_TYPE:
                 //std::cout << "MethodType_type" << std::endl;
-                constant_pool->AppendMethodType(tag, Readu2());
+                constant_pool->AppendMethodType(tag, Readu2(file));
                 break;
             case INVOKE_DYNAMIC:
                 //std::cout << "InvokeDynamic_type" << std::endl;
-                constant_pool->AppendInvokeDynamic(tag, Readu2(), Readu2());
+                constant_pool->AppendInvokeDynamic(tag, Readu2(file), Readu2(file));
                 break;
         }
 
@@ -286,6 +223,267 @@ void ClassFile::ShowConstantPool() {
     constant_pool->ShowConstantPoolTable();
 }
 
+void ClassFile::ShowFields() {
+
+    if (fields_count) {
+        
+        std::cout << "Fields:" << std::endl;
+        
+        FieldsInfo* field;
+
+        u2 byte;
+        u2 flags;
+        u2 index;
+        u1 * descriptor_string;
+
+        for (int i = 0; i < fields_count; i++) {
+            field = fields_table->GetField(i);
+
+            flags = field->GetAccessFlags();
+
+            byte = flags & 0x000F;
+
+            std::cout << "{\n" << std::endl;
+
+            switch(byte){
+                case ACC_PUBLIC_F:
+                    std::cout << "public ";
+                    break;
+                case ACC_PROTECTED_F:
+                    std::cout << "protected ";
+                    break;
+                case ACC_PRIVATE_F:
+                    std::cout << "private ";
+                    break;
+            }
+
+            index = field->GetDescriptorIndex();
+            descriptor_string = constant_pool->GetUtf8(index);
+            /**
+            switch (descriptor_string[0]) {
+                case ((int)"B"):
+                    std:: 
+            }**/
+            std::cout << constant_pool->GetUtf8(index) << " ";
+
+            index = field->GetNameIndex();
+            std::cout << constant_pool->GetUtf8(index) << std::endl;
+
+            std::cout << "\tFlags:" << std::endl;
+
+            byte = flags & 0x000F;
+
+            switch(byte){
+                case ACC_PUBLIC_F:
+                    std::cout << "\t\tACC_PUBLIC" << std::endl;
+                    break;
+                case ACC_PROTECTED_F:
+                    std::cout << "\t\tACC_PROTECTED" << std::endl;
+                    break;
+                case ACC_PRIVATE_F:
+                    std::cout << "\t\tACC_PRIVATE" << std::endl;
+                    break;
+                case ACC_STATIC_F:
+                    std::cout << "\t\tACC_STATIC" << std::endl;
+                    break;
+            }
+
+            byte = flags & 0x00F0;
+
+            switch(byte){
+                case ACC_FINAL_F:
+                    std::cout << "\t\tACC_FINAL" << std::endl;
+                    break;
+                case ACC_VOLATILE_F:
+                    std::cout << "\t\tACC_VOLATILE" << std::endl;
+                    break;
+                case ACC_TRANSIENT_F:
+                    std::cout << "\t\tACC_TRANSIENT" << std::endl;
+                    break;
+            }
+
+            byte = flags & 0x0F00;
+
+                switch(byte){
+                case ACC_SYNTHETIC_F:
+                    std::cout << "\t\tACC_SYNTHETIC" << std::endl;
+                    break;
+                case ACC_ENUM_F:
+                    std::cout << "\t\tACC_ENUM" << std::endl;
+                    break;
+            }
+            std::cout << "}" << std::endl;
+
+        }
+    }
+
+}
+
+void ClassFile::ShowMethods() {
+
+    if (methods_count) {
+        
+        std::cout << "Methods:" << std::endl;
+        
+        MethodsInfo* method;
+
+        u2 byte;
+        u2 flags;
+        u2 index;
+
+        for (int i = 0; i < methods_count; i++) {
+            method = methods_table->GetMethod(i);
+
+            flags = method->GetAccessFlags_M();
+
+            byte = flags & 0x000F;
+
+            std::cout << "\n" << std::endl;
+
+            switch(byte){
+                case ACC_PRIVATE_M:
+                    std::cout << "private ";
+                    break;
+                case ACC_PROTECTED_M:
+                    std::cout << "protected ";
+                    break;
+                case ACC_PUBLIC_M:
+                    std::cout << "public ";
+                    break;
+            }
+
+            index = method->GetDescriptorIndex_M();
+            std::cout << constant_pool->GetUtf8(index) << " ";
+
+            index = method->GetNameIndex_M();
+            std::cout << constant_pool->GetUtf8(index) << std::endl;
+
+            std::cout << "\tFlags:" << std::endl;
+
+            byte = flags & 0x000F;
+
+            switch(byte){
+                case ACC_PUBLIC_M:
+                    std::cout << "\t\tACC_PUBLIC" << std::endl;
+                    break;
+                case ACC_PROTECTED_M:
+                    std::cout << "\t\tACC_PROTECTED" << std::endl;
+                    break;
+                case ACC_PRIVATE_M:
+                    std::cout << "\t\tACC_PRIVATE" << std::endl;
+                    break;
+                case ACC_STATIC_M:
+                    std::cout << "\t\tACC_STATIC" << std::endl;
+                    break;
+            }
+
+            byte = flags & 0x00F0;
+
+            switch(byte){
+                case ACC_FINAL_M:
+                    std::cout << "\t\tACC_FINAL" << std::endl;
+                    break;
+                case ACC_SYNCRONIZED_M:
+                    std::cout << "\t\tACC_SYNCRONIZED" << std::endl;
+                    break;
+                case ACC_BRIDGE_M:
+                    std::cout << "\t\tACC_BRIDGE" << std::endl;
+                    break;
+                  case ACC_VARARGS_M:
+                    std::cout << "\t\tACC_VARARGS" << std::endl;
+                    break;
+                    
+            }
+
+            byte = flags & 0x0F00;
+
+                switch(byte){
+                case ACC_NATIVE_M:
+                    std::cout << "\t\tACC_NATIVE" << std::endl;
+                    break;
+                case ACC_ABSTRACT_M:
+                    std::cout << "\t\tACC_ABSTRACT" << std::endl;
+                    break;
+                case ACC_STRICT_M:
+                    std::cout << "\t\tACC_STRICT" << std::endl;
+                    break;
+                case ACC_SYNTHETIC_M:
+                    std::cout << "\t\tACC_SYNTHETIC" << std::endl;
+                    break;
+                
+
+            }
+
+            std::cout << "}" << std::endl;
+
+        }
+    }
+
+}
+
+
+
+void ClassFile::LoadInterfaces() {
+    if (interfaces_count) {
+
+        interfaces = new u2(interfaces_count);
+        for (int i = 0; i < interfaces_count; i++) {
+            interfaces[i] = Readu2Raw(file);
+        }
+    }
+}
+
+void ClassFile::LoadFieldsTable() {
+    
+    if (fields_count) {
+
+    FieldsInfo * field_pt;
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1 * att_info;
+    
+    
+
+        fields_table = new Fields();
+
+        for (int i = 0; i < fields_count; i++) {
+            
+            field_pt = new FieldsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            
+            if (field_pt->GetAttributesCount()) {
+                AttributesTable* at = new AttributesTable();
+                at->LoadAttributesTable(file, field_pt->GetAttributesCount(), constant_pool);
+            }
+            fields_table->appendField(field_pt);
+        }
+    }
+}
+
+
+void ClassFile::LoadMethodsTable() {
+    
+    if (methods_count) {
+
+    MethodsInfo * methods_pt;
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1 * att_info;
+
+        methods_table = new Methods();
+
+        for (int i = 0; i < methods_count; i++) {
+            
+            methods_pt = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+
+            if (methods_pt->GetAttributesCount_M()) {
+                AttributesTable* at = new AttributesTable();
+                at->LoadAttributesTable(file, methods_pt->GetAttributesCount_M(), constant_pool);
+            }
+
+            methods_table->AppendMethod(methods_pt);
+        }
+    }
+}
 
 // u2 ClassFile::GetThisClass(){
 //     return this_class;

@@ -1,11 +1,6 @@
 #ifndef EXIBITOR
 #define EXIBITOR
 
-#ifdef _WIN32
-    #include <WinSock2.h>
-#else
-    #include <netinet/in.h>
-#endif
 
 #include <iostream>
 #include <iomanip>
@@ -13,8 +8,20 @@
 // #include <netinet/in.h>
 #include <string.h>
 #include "constant_pool.h"
+#include "fields.h"
+#include "methods.h"
+#include "attributes.h"
+#include "data_class_format.h"
 
 #define magic_number 0xcafebabe
+#define ACC_PUBLIC_C 0x0001
+#define ACC_FINAL_C 0x0010
+#define ACC_SUPER_C 0x0020
+#define ACC_INTERFACE_C 0x0200
+#define ACC_ABSTRACT_C 0x0400
+#define ACC_SYNTHETIC_C 0x1000
+#define ACC_ANNOTATION_C 0x2000
+#define ACC_ENUM_C 0x4000
 
 void LoadFile(char* fileName);
 
@@ -30,22 +37,18 @@ class ClassFile {
         u2 this_class;
         u2 super_class;
         u2 interfaces_count;
-        u1 * interfaces_table;
+        u2 * interfaces;
         u2 fields_count;
-        u1 * fields_table;
+        Fields * fields_table;
         u2 methods_count;
-        u1 * methods_table;
+        Methods * methods_table;
         u2 attributes_count;
-        u1 * attributes_table;
-        u1 Readu1();
-        u1 * Readu1(u2 length);
-        u2 Readu2();
-        u2 Readu2Raw();
-        u4 Readu4();
+        AttributesTable * attributes_table;
+
         bool FileIsOpen();
         void ReadClassFile();
         void LoadConstantPool();
-        void LoadInterfacesTable();
+        void LoadInterfaces();
         void LoadFieldsTable();
         void LoadMethodsTable();
         void LoadAttributesTable();
@@ -56,11 +59,15 @@ class ClassFile {
         void ShowMajor();
         void ShowConstantPoolCount();
         void ShowConstantPool();
+        void ShowFields();
+        void ShowMethods();
         void ShowAccessFlags();
         void ShowThisClass();
         void ShowSuperClass();
         void ShowInterfacesCount();
         void ShowFieldsCount();
+        void ShowMethodsCount();
+        void ShowAttributesCount();
         
         // u2 GetAcessFlags();
         // u2 GetThisClass();
@@ -70,8 +77,5 @@ class ClassFile {
         // u2 GetMethodsCount();
         // u2 GetAttributesCount();
 };
-
-
-// int ConvertToInt(char num[]);
 
 #endif
