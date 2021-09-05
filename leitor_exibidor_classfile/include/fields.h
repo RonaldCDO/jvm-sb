@@ -23,7 +23,7 @@ class Fields_info {
         u2 attributes_count;
         char* descriptor;
         char* name;
-        std::vector<Attributes_info*> attributes;
+        std::vector<AttributesInfo*> attributes;
     public:
         Fields_info(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         u2 GetAccessFlags();

@@ -26,13 +26,12 @@ class Methods_info{
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        std::vector<Attributes_info*> attributes;
+        std::vector<AttributesInfo*> attributes;
     public:
         Methods_info(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         u2 GetAccessFlags_M();
         u2 GetNameIndex_M();
         u2 GetDescriptorIndex_M();
-        
         u2 GetAttributesCount_M();
 };
 

@@ -47,7 +47,7 @@ class ClassFile {
         u2 methods_count;
         Methods * methods_table;
         u2 attributes_count;
-        Attributes_table * attributes_table;
+        AttributesTable * attributes_table;
         u1 Readu1();
         u1 * Readu1(u2 length);
         u1 * Readu1(u4 length);
