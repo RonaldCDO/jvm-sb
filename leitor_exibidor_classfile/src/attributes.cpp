@@ -1,6 +1,50 @@
 #include "attributes.h"
 
 
+ConstantValueAtt::ConstantValueAtt(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+    this->constantvalue_index = constantvalue_index;
+}
+
+
+CodeAtt::CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+    this->max_stack = max_stack;
+    this->max_locals = max_locals;
+    this->code_length = code_length;
+}
+
+
+ExceptionsAtt::ExceptionsAtt(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+    this->number_of_exceptions = number_of_exceptions;
+}
+
+
+SourceFileAtt::SourceFileAtt(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+    this->sourcefile_index = sourcefile_index;
+}
+
+
+LineNumberTableAtt::LineNumberTableAtt(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+    this->line_number_table_length = line_number_table_length;
+}
+
+
+LocalVariableTableAtt::LocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+    this->local_variable_table_length = local_variable_table_length;
+}
+
+
 u2 Attributes_info::GetAttributeNameIndex(){
     return attribute_name_index;
 }
