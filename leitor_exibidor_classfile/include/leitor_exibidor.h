@@ -1,11 +1,6 @@
 #ifndef EXIBITOR
 #define EXIBITOR
 
-#ifdef _WIN32
-    #include <WinSock2.h>
-#else
-    #include <netinet/in.h>
-#endif
 
 #include <iostream>
 #include <iomanip>
@@ -16,6 +11,7 @@
 #include "fields.h"
 #include "methods.h"
 #include "attributes.h"
+#include "data_class_format.h"
 
 #define magic_number 0xcafebabe
 #define ACC_PUBLIC_C 0x0001
@@ -48,13 +44,7 @@ class ClassFile {
         Methods * methods_table;
         u2 attributes_count;
         AttributesTable * attributes_table;
-        u1 Readu1();
-        u1 * Readu1(u2 length);
-        u1 * Readu1(u4 length);
-        u2 Readu2();
-        u2 Readu2Raw();
-        u4 Readu4();
-        u4 Readu4Raw();
+
         bool FileIsOpen();
         void ReadClassFile();
         void LoadConstantPool();

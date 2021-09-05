@@ -132,3 +132,79 @@ void AttributesTable::AppendLocalVariableTableAtt(u2 attribute_name_index, u4 at
 }
 
 
+// void AttributesTable::LoadAttributesTable(std::ifstream file) {
+
+//     u2 attribute_name_index;
+//     u4 attribute_length;
+//     u1* att_info;
+//     u1* attribute_name;
+
+//     attributes_table = new AttributesTable();
+
+//         for (int i = 0; i < attributes_count; i++){
+
+//             attribute_name_index = Readu2Raw();
+
+//             u2 aux = Readu2Raw();
+//             u2 aux2 = Readu2Raw();
+//             attribute_length = aux + aux2;
+
+//             attribute_name = constant_pool->GetUtf8(attribute_name_index-1);
+            
+//             std::cout << attribute_name << std::endl;
+
+//             if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
+//                 attributes_table->AppendConstantValue(attribute_name_index, attribute_length, Readu2Raw());
+//             }
+
+//             if (strcmp((const char*)attribute_name, "Code") == 0) {
+//                 u2 max_stack = Readu2Raw();
+//                 u2 max_locals = Readu2Raw();
+//                 aux = Readu2Raw();
+//                 aux2 = Readu2Raw();
+//                 u4 code_length = aux + aux2;
+//                 u1 * code = Readu1(code_length);
+
+//                 CodeAtt* code_att = new CodeAtt(attribute_name_index, attribute_length, max_stack, max_locals, code_length);
+                
+//                 u2 exception_table_length = Readu2Raw();
+//                 code_att->SetExceptionTableLength(exception_table_length);
+
+//                 for (int i = 0; i < exception_table_length; i++) {
+//                     code_att->AppendException(new ExceptionsTableAtt(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw()));
+//                 }
+                
+//                 u2 code_attributes_count = Readu2Raw();
+//                 for (int i = 0; i < code_attributes_count; i++) {
+//                     u2 code_attribute_name_index = Readu2Raw();
+//                     aux = Readu2Raw();
+//                     aux2 = Readu2Raw();
+//                     u2 code_attribute_length = aux + aux2;
+//                     att_info = Readu1(attribute_length);
+//                     code_att->AppendAttribute(new GenericAtt(code_attribute_name_index, code_attribute_length, att_info));                    
+//                 }                
+//                 code_att->Show();
+//             }
+
+//             if (strcmp((const char*)attribute_name, "Exceptions") == 0) {
+//             }
+            
+            
+//             if (strcmp((const char*)attribute_name, "SourceFile") == 0) {
+//                 u2 constantvalue_index = Readu2Raw();
+//                 attributes_table->AppendSourceFile(attribute_name_index, attribute_length, constantvalue_index);
+//             } 
+
+//             if (strcmp((const char*)attribute_name, "LineNumber") == 0) {
+               
+//             }
+
+//             if (strcmp((const char*)attribute_name, "LocalVariable") == 0) {
+//             }
+            
+            
+            
+//         }
+
+    
+// };

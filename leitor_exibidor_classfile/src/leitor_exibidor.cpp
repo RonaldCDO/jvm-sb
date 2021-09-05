@@ -1,134 +1,11 @@
 #include "leitor_exibidor.h"
 
-// Leitura de 1 byte do arquivo
-u1 ClassFile::Readu1() {
-
-    u1 buffer_u1;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u1), sizeof(buffer_u1));
-
-    return buffer_u1;
-}
-
-// Leitura byte a byte de uma string de 'length' bytes
-u1 * ClassFile::Readu1(u2 length) {
-
-    u1* bytes = new u1[length+1];
-    u1 buffer;
-    
-    for (int i = 0; i < length; i++) {
-        file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-        bytes[i] = buffer;
-    }
-
-    bytes[length] = '\0';
-
-    return bytes;
-}
-
-// Leitura byte a byte de uma cadeia de 'length' bytes
-u1 * ClassFile::Readu1(u4 length) {
-
-    u1* bytes = new u1[length+1];
-    u1 buffer;
-    
-    for (u4 i = 0; i < length; i++) {
-        file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-        bytes[i] = buffer;
-    }
-
-    return bytes;
-}
-
-// Leitura de 2 bytes do arquivo
-u2 ClassFile::Readu2() {
-
-    u2 buffer_u2;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-
-    buffer_u2 = htons(buffer_u2);
-    
-    return buffer_u2;
-}
-
-//  Leitura de 2 bytes sem conversão de endianess
-u2 ClassFile::Readu2Raw() {
-
-    u2 buffer_u2;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-    
-    return buffer_u2;
-}
-
-// Leitura de 4 bytes do arquivo
-u4 ClassFile::Readu4() {
-
-    u4 buffer_u4;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
-
-    /** htonl() - host to network long conversion:
-     * realiza a conversao de inteiros multi-byte 
-     * da ordem do host para a ordem da rede
-     * ex: se o programa ler "bebafeca", esse comando corrige
-     * a ordem para "cafebabe" 
-     **/
-    buffer_u4 = htonl(buffer_u4);
-    
-    return buffer_u4;
-    
-}
-
-
-u4 ClassFile::Readu4Raw() {
-
-    u4 buffer_u4;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
-    
-    return buffer_u4;
-    
-}
-
-
-void Printu2Hex(u2 hex_value) {
-
-    // captura configuracoes do std::cout para posterior restauracao 
-    std::ios_base::fmtflags oldFlags = std::cout.flags();
-    std::streamsize oldPrec = std::cout.precision();
-    char oldFill = std::cout.fill();
-    
-    std::cout << "0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::hex << hex_value << std::endl;
-    
-    // restaura configuracoes do cout apos o uso do parametro "hex"
-    std::cout.flags(oldFlags);
-    std::cout.precision(oldPrec);
-    std::cout.fill(oldFill);
-}
-
-void Printu4Hex(u4 hex_value) {
-
-    // captura configuracoes do std::cout para posterior restauracao 
-    std::ios_base::fmtflags oldFlags = std::cout.flags();
-    std::streamsize oldPrec = std::cout.precision();
-    char oldFill = std::cout.fill();
-    
-    std::cout << "0x" <<  std::uppercase <<std::setfill('0') << std::setw(8) << std::hex << hex_value << std::endl;
-    
-    // restaura configuracoes do cout apos o uso do parametro "hex"
-    std::cout.flags(oldFlags);
-    std::cout.precision(oldPrec);
-    std::cout.fill(oldFill);
-}
-
 void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
 
     this -> file.open(fileName);
     std::cout<<"Filename: " << fileName <<std::endl;
-
+    
     if (this -> file.is_open()) {
         ReadClassFile();
     } else {
@@ -145,7 +22,8 @@ bool ClassFile::FileIsOpen() {
 }
 
 void ClassFile::ReadClassFile(){
-    magic = Readu4();
+    magic = Readu4(file);
+    
 
     if (magic == magic_number) 
         std::cout << "File Type: .class"<<"\n";
@@ -153,30 +31,32 @@ void ClassFile::ReadClassFile(){
         std::cout<< "Tipo de arquivo não aceito\n";
         exit(1);
     }
-    minor_version = Readu2();
-    major_version = Readu2();
-    constant_pool_count = Readu2();
+    minor_version = Readu2(file);
+
+    major_version = Readu2(file);
+
+    constant_pool_count = Readu2(file);
       
     LoadConstantPool();
 
-    access_flags = Readu2Raw();
-    this_class = Readu2Raw();
-    super_class = Readu2Raw();
-    interfaces_count = Readu2Raw();
+    access_flags = Readu2Raw(file);
+    this_class = Readu2Raw(file);
+    super_class = Readu2Raw(file);
+    interfaces_count = Readu2Raw(file);
 
     LoadInterfaces();
 
-    fields_count = Readu2Raw();
+    fields_count = Readu2Raw(file);
 
     LoadFieldsTable();
 
-    methods_count = Readu2Raw();
+    methods_count = Readu2Raw(file);
 
     LoadMethodsTable();
 
-    attributes_count = Readu2Raw();
+    attributes_count = Readu2Raw(file);
 
-    LoadAttributesTable();
+    // LoadAttributesTable();
 
 }
 
@@ -267,69 +147,69 @@ void ClassFile::LoadConstantPool() {
 
     while(cp_count_local) {
 
-        tag = Readu1();
+        tag = Readu1(file);
 
         switch(unsigned(tag)) {
             case CLASS:
                 //std::cout << "Class_type" << std::endl;
-                constant_pool->AppendClass(tag, Readu2());;
+                constant_pool->AppendClass(tag, Readu2(file));;
                 break;
             case FIELD_REF:
                 //std::cout << "FieldRef_type" << std::endl;
-                constant_pool->AppendFieldRef(tag, Readu2(), Readu2());
+                constant_pool->AppendFieldRef(tag, Readu2(file), Readu2(file));
                 break;
             case METHOD_REF:
                 //std::cout << "MethodRef_type" << std::endl;
-                constant_pool->AppendMethodRef(tag, Readu2(), Readu2());
+                constant_pool->AppendMethodRef(tag, Readu2(file), Readu2(file));
                 break;
             case INTERFACE_METHOD_REF:
                 //std::cout << "InterfaceMethodRef_type" << std::endl;
-                constant_pool->AppendInterfaceMethodRef(tag, Readu2(), Readu2());
+                constant_pool->AppendInterfaceMethodRef(tag, Readu2(file), Readu2(file));
                 break;
             case STRING:
                 //std::cout << "String_type" << std::endl;
-                constant_pool->AppendString(tag, Readu2());
+                constant_pool->AppendString(tag, Readu2(file));
                 break;
             case INTEGER:
                 //std::cout << "Integer_type" << std::endl;
-                constant_pool->AppendInt(tag, Readu4());
+                constant_pool->AppendInt(tag, Readu4(file));
                 break;
             case FLOAT:
                 //std::cout << "Float_type" << std::endl;
-                constant_pool->AppendFloat(tag, Readu4());
+                constant_pool->AppendFloat(tag, Readu4(file));
                 break;
             case LONG:
                 //std::cout << "Long_type" << std::endl;
-                constant_pool->AppendLong(tag, Readu4(), Readu4());
+                constant_pool->AppendLong(tag, Readu4(file), Readu4(file));
                 cp_count_local--;
                 break;
             case DOUBLE:
                 //std::cout << "Double_type" << std::endl;
-                constant_pool->AppendDouble(tag, Readu4(), Readu4());
+                constant_pool->AppendDouble(tag, Readu4(file), Readu4(file));
                 cp_count_local--;
                 break;
             case NAME_AND_TYPE:
                 //std::cout << "NameAndType_type" << std::endl;
-                constant_pool->AppendNameAndType(tag, Readu2(), Readu2());
+                constant_pool->AppendNameAndType(tag, Readu2(file), Readu2(file));
                 break;
             case UTF8:
                 //std::cout << "Utf8_type" << std::endl;
-                length = Readu2();
+                length = Readu2(file);
                 //std::cout << length << std::endl;
-                bytes = Readu1(length);
+                bytes = Readu1(file, length);
                 constant_pool->AppendUtf8(tag, length, bytes);
                 break;
             case METHOD_HANDLE:
                 //std::cout << "MethodHandle_type" << std::endl;
-                constant_pool->AppendMethodHandle(tag, Readu1(), Readu2());
+                constant_pool->AppendMethodHandle(tag, Readu1(file), Readu2(file));
                 break;
             case METHOD_TYPE:
                 //std::cout << "MethodType_type" << std::endl;
-                constant_pool->AppendMethodType(tag, Readu2());
+                constant_pool->AppendMethodType(tag, Readu2(file));
                 break;
             case INVOKE_DYNAMIC:
                 //std::cout << "InvokeDynamic_type" << std::endl;
-                constant_pool->AppendInvokeDynamic(tag, Readu2(), Readu2());
+                constant_pool->AppendInvokeDynamic(tag, Readu2(file), Readu2(file));
                 break;
         }
 
@@ -546,7 +426,7 @@ void ClassFile::LoadInterfaces() {
 
         interfaces = new u2(interfaces_count);
         for (int i = 0; i < interfaces_count; i++) {
-            interfaces[i] = Readu2Raw();
+            interfaces[i] = Readu2Raw(file);
         }
     }
 }
@@ -566,15 +446,15 @@ void ClassFile::LoadFieldsTable() {
 
         for (int i = 0; i < fields_count; i++) {
             
-            field_pt = new Fields_info(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw());
+            field_pt = new Fields_info(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
             
 
             for (int j = 0; j < field_pt->GetAttributesCount(); j++) {
-                attribute_name_index = Readu2Raw();
-                u2 aux = Readu2Raw();
-                u2 aux2 = Readu2Raw();
+                attribute_name_index = Readu2Raw(file);
+                u2 aux = Readu2Raw(file);
+                u2 aux2 = Readu2Raw(file);
                 attribute_length = aux + aux2;
-                att_info = Readu1(attribute_length);
+                att_info = Readu1(file, attribute_length);
             }
             fields_table->appendField(field_pt);
         }
@@ -595,99 +475,20 @@ void ClassFile::LoadMethodsTable() {
 
         for (int i = 0; i < methods_count; i++) {
             
-            methods_pt = new Methods_info(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw());
+            methods_pt = new Methods_info(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
 
             for (int j = 0; j < methods_pt->GetAttributesCount_M(); j++) {
-                attribute_name_index = Readu2Raw();
-                u2 aux = Readu2Raw();
-                u2 aux2 = Readu2Raw();
+                attribute_name_index = Readu2Raw(file);
+                u2 aux = Readu2Raw(file);
+                u2 aux2 = Readu2Raw(file);
                 attribute_length = aux + aux2;
-                att_info = Readu1(attribute_length);
+                att_info = Readu1(file, attribute_length);
             }
 
             methods_table->AppendMethod(methods_pt);
         }
     }
 }
-
-void ClassFile::LoadAttributesTable() {
-
-    if(attributes_count){
-    
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1* att_info;
-    u1* attribute_name;
-
-    attributes_table = new AttributesTable();
-
-        for (int i = 0; i < attributes_count; i++){
-
-            attribute_name_index = Readu2Raw();
-
-            u2 aux = Readu2Raw();
-            u2 aux2 = Readu2Raw();
-            attribute_length = aux + aux2;
-
-            attribute_name = constant_pool->GetUtf8(attribute_name_index-1);
-            
-            std::cout << attribute_name << std::endl;
-
-            if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
-                attributes_table->AppendConstantValue(attribute_name_index, attribute_length, Readu2Raw());
-            }
-
-            if (strcmp((const char*)attribute_name, "Code") == 0) {
-                u2 max_stack = Readu2Raw();
-                u2 max_locals = Readu2Raw();
-                aux = Readu2Raw();
-                aux2 = Readu2Raw();
-                u4 code_length = aux + aux2;
-                u1 * code = Readu1(code_length);
-
-                CodeAtt* code_att = new CodeAtt(attribute_name_index, attribute_length, max_stack, max_locals, code_length);
-                
-                u2 exception_table_length = Readu2Raw();
-                code_att->SetExceptionTableLength(exception_table_length);
-
-                for (int i = 0; i < exception_table_length; i++) {
-                    code_att->AppendException(new ExceptionsTableAtt(Readu2Raw(), Readu2Raw(), Readu2Raw(), Readu2Raw()));
-                }
-                
-                u2 code_attributes_count = Readu2Raw();
-                for (int i = 0; i < code_attributes_count; i++) {
-                    u2 code_attribute_name_index = Readu2Raw();
-                    aux = Readu2Raw();
-                    aux2 = Readu2Raw();
-                    u2 code_attribute_length = aux + aux2;
-                    att_info = Readu1(attribute_length);
-                    code_att->AppendAttribute(new GenericAtt(code_attribute_name_index, code_attribute_length, att_info));                    
-                }                
-                code_att->Show();
-            }
-
-            if (strcmp((const char*)attribute_name, "Exceptions") == 0) {
-            }
-            
-            
-            if (strcmp((const char*)attribute_name, "SourceFile") == 0) {
-                u2 constantvalue_index = Readu2Raw();
-                attributes_table->AppendSourceFile(attribute_name_index, attribute_length, constantvalue_index);
-            } 
-
-            if (strcmp((const char*)attribute_name, "LineNumber") == 0) {
-               
-            }
-
-            if (strcmp((const char*)attribute_name, "LocalVariable") == 0) {
-            }
-            
-            
-            
-        }
-
-    }
-};
 
 // u2 ClassFile::GetThisClass(){
 //     return this_class;
