@@ -341,6 +341,7 @@ void ClassFile::ShowFields() {
         u2 byte;
         u2 flags;
         u2 index;
+        u1 * descriptor_string;
 
         for (int i = 0; i < fields_count; i++) {
             field = fields_table->GetField(i);
@@ -349,7 +350,7 @@ void ClassFile::ShowFields() {
 
             byte = flags & 0x000F;
 
-            std::cout << "{\n\t" << std::endl;
+            std::cout << "{\n" << std::endl;
 
             switch(byte){
                 case ACC_PUBLIC_F:
@@ -364,6 +365,12 @@ void ClassFile::ShowFields() {
             }
 
             index = field->GetDescriptorIndex();
+            descriptor_string = constant_pool->GetUtf8(index);
+            /**
+            switch (descriptor_string[0]) {
+                case ((int)"B"):
+                    std:: 
+            }**/
             std::cout << constant_pool->GetUtf8(index) << " ";
 
             index = field->GetNameIndex();

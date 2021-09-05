@@ -238,7 +238,7 @@ InfoUtf8::InfoUtf8(u1 tag, u2 length, u1 * bytes) {
 }
 
 void InfoUtf8::Show() {
-    std::cout << bytes<< "\t";
+    std::cout << "Utf8\t" << bytes<< "\t";
 }
 
 u2 InfoUtf8::GetArgs(u2 *arg2){

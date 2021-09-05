@@ -24,7 +24,6 @@ class Attributes_table{
         void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length);
         void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length);
         void ShowAttributesTable();
-
 };
 
 
