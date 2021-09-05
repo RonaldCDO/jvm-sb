@@ -560,6 +560,8 @@ void ClassFile::LoadFieldsTable() {
     u2 attribute_name_index;
     u4 attribute_length;
     u1 * att_info;
+    
+    
 
         fields_table = new Fields();
 
@@ -570,7 +572,9 @@ void ClassFile::LoadFieldsTable() {
 
             for (int j = 0; j < field_pt->GetAttributesCount(); j++) {
                 attribute_name_index = Readu2Raw();
-                attribute_length = Readu4Raw();
+                u2 aux = Readu2Raw();
+                u2 aux2 = Readu2Raw();
+                attribute_length = aux + aux2;
                 att_info = Readu1(attribute_length);
             }
             fields_table->appendField(field_pt);
@@ -596,7 +600,9 @@ void ClassFile::LoadMethodsTable() {
 
             for (int j = 0; j < methods_pt->GetAttributesCount_M(); j++) {
                 attribute_name_index = Readu2Raw();
-                attribute_length = Readu4();
+                u2 aux = Readu2Raw();
+                u2 aux2 = Readu2Raw();
+                attribute_length = aux + aux2;
                 att_info = Readu1(attribute_length);
             }
 
