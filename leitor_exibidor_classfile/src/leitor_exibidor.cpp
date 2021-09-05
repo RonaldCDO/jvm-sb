@@ -56,8 +56,10 @@ void ClassFile::ReadClassFile(){
 
     attributes_count = Readu2Raw(file);
 
-    // LoadAttributesTable();
-
+    if (attributes_count) {
+        attributes_table = new AttributesTable();
+        attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
+    }
 }
 
 void ClassFile::ShowMagic() {
@@ -227,7 +229,7 @@ void ClassFile::ShowFields() {
         
         std::cout << "Fields:" << std::endl;
         
-        Fields_info* field;
+        FieldsInfo* field;
 
         u2 byte;
         u2 flags;
@@ -323,7 +325,7 @@ void ClassFile::ShowMethods() {
         
         std::cout << "Methods:" << std::endl;
         
-        Methods_info* method;
+        MethodsInfo* method;
 
         u2 byte;
         u2 flags;
@@ -435,7 +437,7 @@ void ClassFile::LoadFieldsTable() {
     
     if (fields_count) {
 
-    Fields_info * field_pt;
+    FieldsInfo * field_pt;
     u2 attribute_name_index;
     u4 attribute_length;
     u1 * att_info;
@@ -446,15 +448,11 @@ void ClassFile::LoadFieldsTable() {
 
         for (int i = 0; i < fields_count; i++) {
             
-            field_pt = new Fields_info(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            field_pt = new FieldsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
             
-
-            for (int j = 0; j < field_pt->GetAttributesCount(); j++) {
-                attribute_name_index = Readu2Raw(file);
-                u2 aux = Readu2Raw(file);
-                u2 aux2 = Readu2Raw(file);
-                attribute_length = aux + aux2;
-                att_info = Readu1(file, attribute_length);
+            if (field_pt->GetAttributesCount()) {
+                AttributesTable* at = new AttributesTable();
+                at->LoadAttributesTable(file, field_pt->GetAttributesCount(), constant_pool);
             }
             fields_table->appendField(field_pt);
         }
@@ -466,7 +464,7 @@ void ClassFile::LoadMethodsTable() {
     
     if (methods_count) {
 
-    Methods_info * methods_pt;
+    MethodsInfo * methods_pt;
     u2 attribute_name_index;
     u4 attribute_length;
     u1 * att_info;
@@ -475,14 +473,11 @@ void ClassFile::LoadMethodsTable() {
 
         for (int i = 0; i < methods_count; i++) {
             
-            methods_pt = new Methods_info(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            methods_pt = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
 
-            for (int j = 0; j < methods_pt->GetAttributesCount_M(); j++) {
-                attribute_name_index = Readu2Raw(file);
-                u2 aux = Readu2Raw(file);
-                u2 aux2 = Readu2Raw(file);
-                attribute_length = aux + aux2;
-                att_info = Readu1(file, attribute_length);
+            if (methods_pt->GetAttributesCount_M()) {
+                AttributesTable* at = new AttributesTable();
+                at->LoadAttributesTable(file, methods_pt->GetAttributesCount_M(), constant_pool);
             }
 
             methods_table->AppendMethod(methods_pt);

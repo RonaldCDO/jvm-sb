@@ -15,7 +15,7 @@
 #define ACC_SYNTHETIC_F 0x1000
 #define ACC_ENUM_F 0x4000
 
-class Fields_info {
+class FieldsInfo {
     protected:
         u2 access_flags;
         u2 name_index;
@@ -23,23 +23,24 @@ class Fields_info {
         u2 attributes_count;
         char* descriptor;
         char* name;
-        std::vector<AttributesInfo*> attributes;
+        AttributesTable* at;
     public:
-        Fields_info(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
+        FieldsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         u2 GetAccessFlags();
         u2 GetNameIndex();
         u2 GetDescriptorIndex();
         u2 GetAttributesCount();
         void SetDescriptor(char* descriptor);
-        void setName(char* name);
+        void SetName(char* name);
+        void SetAttributesTable(AttributesTable* at);
 }; 
 
 class Fields {
     protected:
-        std::vector<Fields_info *> fields;
+        std::vector<FieldsInfo *> fields;
     public:
-        void appendField(Fields_info * fields_info);
-        Fields_info* GetField(int index);
+        void appendField(FieldsInfo * fields_info);
+        FieldsInfo* GetField(int index);
 };
 
 #endif

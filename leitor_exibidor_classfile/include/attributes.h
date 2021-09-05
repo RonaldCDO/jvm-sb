@@ -2,8 +2,10 @@
 #define ATTRIBUTES
 
 #include "data_class_format.h"
+#include "constant_pool.h"
 #include <vector>
 #include <iostream>
+#include <string.h>
 
 class AttributesInfo{
     protected:
@@ -20,15 +22,14 @@ class AttributesTable{
         std::vector<AttributesInfo *> at;
     public:
         void AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index);
-        void AppendCode(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length);
+        void AppendCode(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
         void AppendExceptions(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions);
         void AppendSourceFile(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
         void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length);
         void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length);
         void ShowAttributesTable();
-        // void LoadAttributesTable();
+        void LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool);
 };
-
 
 
 class ConstantValueAtt : public AttributesInfo{
@@ -68,13 +69,13 @@ class CodeAtt : public AttributesInfo{
         u2 max_stack;
         u2 max_locals;
         u4 code_length;
-        std::vector<u1*> code;
+        u1* code;
         u2 exception_table_length;
         std::vector<ExceptionsTableAtt*> exceptions_table;
         u2 attributes_length;
         std::vector<GenericAtt*> attributes_table;
     public:
-        CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length);
+        CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
         void SetExceptionTableLength(u2 length);
         void SetAttributesLength(u2 length);
         void AppendException(ExceptionsTableAtt * eta);

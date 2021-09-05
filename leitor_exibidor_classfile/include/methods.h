@@ -20,27 +20,28 @@
 #define ACC_SYNTHETIC_M 0X1000
 
 
-class Methods_info{
+class MethodsInfo{
     protected:
         u2 access_flags;
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        std::vector<AttributesInfo*> attributes;
+        AttributesTable * at;
     public:
-        Methods_info(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
+        MethodsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         u2 GetAccessFlags_M();
         u2 GetNameIndex_M();
         u2 GetDescriptorIndex_M();
         u2 GetAttributesCount_M();
+        void SetAttributesTable(AttributesTable* at);
 };
 
 class Methods{
     protected:
-        std::vector<Methods_info *> methods;
+        std::vector<MethodsInfo *> methods;
     public:
-        void AppendMethod(Methods_info * method_info);
-        Methods_info* GetMethod(int index);
+        void AppendMethod(MethodsInfo * method_info);
+        MethodsInfo* GetMethod(int index);
 };
 
 
