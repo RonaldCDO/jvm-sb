@@ -17,7 +17,7 @@ u2 MethodsInfo::GetAccessFlags_M(){
 
 
 u2 MethodsInfo::GetNameIndex_M(){
-    return name_index -1;
+    return name_index - 1;
 }
 
 

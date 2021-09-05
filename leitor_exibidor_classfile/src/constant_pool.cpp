@@ -6,22 +6,17 @@ void ConstantPool::Reference (u2 index) {
     u1 tag;
     tag = cp.at(index)->GetTag();
     if (tag == UTF8) {
-        cp.at(index)->Show();
+        std::cout<< GetUtf8(index) << "\t";
     }
     else{   // Pegar parametros para os metodos e chamar recursiva
         u2 arg2;
         u2 arg1 = cp.at(index)->GetArgs(&arg2);
-        // std::cout <<  arg1  <<std::endl;
-        // u2 arg2 = cp->GetArg2(tag);
         if (arg1 != 0) {
             Reference(arg1-1);
             if (arg2 != 0) {
                 std::cout<<" ";
                 Reference(arg2-1);
             }
-        }
-        if (tag != CLASS || tag != STRING || tag != METHOD_TYPE) {
-            // Reference(arg2);
         }
     }
 }
@@ -368,8 +363,6 @@ void ConstantPool::ShowConstantPoolTable() {
     for (int i = 0; i < length; i++) {
         std::cout<<"#"<< i+1 << " = ";
 
-        cp.at(i)->Show();
-        /**
         tag = cp.at(i)->GetTag();
         if (tag != DOUBLE && tag != LONG && tag != FLOAT && tag != INTEGER) {
             if (tag != UTF8){
@@ -377,7 +370,6 @@ void ConstantPool::ShowConstantPoolTable() {
                 std::cout<< "|| ";
                 Reference(i);
             } else {
-                std::cout<< "Utf8\t\t";
                 cp.at(i)->Show();
             }
         } else {
@@ -387,7 +379,7 @@ void ConstantPool::ShowConstantPoolTable() {
             i++;
         }
 
-        **/
+    
         std::cout<<std::endl;
     }
 }

@@ -233,7 +233,9 @@ void ClassFile::ShowFields() {
 
         u2 byte;
         u2 flags;
-        u2 index;
+        u2 name_index;
+        u2 descriptor_index;
+        u1 * name_string;
         u1 * descriptor_string;
 
         for (int i = 0; i < fields_count; i++) {
@@ -257,17 +259,21 @@ void ClassFile::ShowFields() {
                     break;
             }
 
-            index = field->GetDescriptorIndex();
-            descriptor_string = constant_pool->GetUtf8(index);
+
+
+            name_index = field->GetNameIndex();
+            name_string = constant_pool->GetUtf8(name_index);
             /**
             switch (descriptor_string[0]) {
                 case ((int)"B"):
                     std:: 
             }**/
-            std::cout << constant_pool->GetUtf8(index) << " ";
-
-            index = field->GetNameIndex();
-            std::cout << constant_pool->GetUtf8(index) << std::endl;
+            std::cout << constant_pool->GetUtf8(name_index) << " ";
+            
+            descriptor_index = field->GetDescriptorIndex();
+            descriptor_string = constant_pool->GetUtf8(descriptor_index);
+            std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
+            
 
             std::cout << "\tFlags:" << std::endl;
 
@@ -329,7 +335,10 @@ void ClassFile::ShowMethods() {
 
         u2 byte;
         u2 flags;
-        u2 index;
+        u2 descriptor_index;
+        u2 name_index;
+        u1 * descriptor_string;
+        u1 * name_string;
 
         for (int i = 0; i < methods_count; i++) {
             method = methods_table->GetMethod(i);
@@ -352,11 +361,16 @@ void ClassFile::ShowMethods() {
                     break;
             }
 
-            index = method->GetDescriptorIndex_M();
-            std::cout << constant_pool->GetUtf8(index) << " ";
+            name_index = method->GetNameIndex_M();
+            name_string = constant_pool->GetUtf8(name_index);
+            
 
-            index = method->GetNameIndex_M();
-            std::cout << constant_pool->GetUtf8(index) << std::endl;
+            std::cout << constant_pool->GetUtf8(name_index) << " ";
+            
+            descriptor_index = method->GetDescriptorIndex_M();
+            descriptor_string = constant_pool->GetUtf8(descriptor_index);
+            std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
+            
 
             std::cout << "\tFlags:" << std::endl;
 

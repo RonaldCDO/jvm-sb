@@ -21,8 +21,8 @@ class FieldsInfo {
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        char* descriptor;
-        char* name;
+        // char* descriptor;
+        // char* name;
         AttributesTable* at;
     public:
         FieldsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
@@ -30,8 +30,8 @@ class FieldsInfo {
         u2 GetNameIndex();
         u2 GetDescriptorIndex();
         u2 GetAttributesCount();
-        void SetDescriptor(char* descriptor);
-        void SetName(char* name);
+        // void SetDescriptor(char* descriptor);
+        // void SetName(char* name);
         void SetAttributesTable(AttributesTable* at);
 }; 
 
