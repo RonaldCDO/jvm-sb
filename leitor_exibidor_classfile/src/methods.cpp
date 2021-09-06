@@ -7,7 +7,7 @@ MethodsInfo::MethodsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2
     this->descriptor_index = descriptor_index;
     this->attributes_count = attributes_count;
 
-    std::cout <<"acc_fl "<<access_flags << " name_idx "<< name_index << " dscp_idx " << descriptor_index <<" att_cnt "<<attributes_count <<std::endl;
+    //std::cout <<"acc_fl "<<access_flags << " name_idx "<< name_index << " dscp_idx " << descriptor_index <<" att_cnt "<<attributes_count <<std::endl;
 }
 
 

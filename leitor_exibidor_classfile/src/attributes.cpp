@@ -219,6 +219,7 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
     u2 aux;
     u2 aux2;
     u1* att_info;
+    u1* attribute_name;
 
         for (int i = 0; i < attributes_count; i++){
 
@@ -227,15 +228,16 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
             aux2 = Readu2Raw(file);
             attribute_length = aux + aux2;
             
-            std::cout << constant_pool->GetUtf8(attribute_name_index-1) << std::endl;
-            std::cout << attribute_length << std::endl;
+            attribute_name =  constant_pool->GetUtf8(attribute_name_index-1);
+            
+            //std::cout << attribute_length << std::endl;
 
             att_info = Readu1(file, attribute_length);
 
             AppendGeneric(attribute_name_index, attribute_length, att_info);
 
+            
             /**
-
             if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
                 u2 constantvalue_index = Readu2Raw(file);
                 AppendConstantValue(attribute_name_index, attribute_length, constantvalue_index);
@@ -315,6 +317,7 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
 
             }
             **/
+            
             
         }
 
