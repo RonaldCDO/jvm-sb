@@ -245,8 +245,6 @@ void ClassFile::ShowFields() {
         u2 flags;
         u2 name_index;
         u2 descriptor_index;
-        u1 * name_string;
-        u1 * descriptor_string;
 
         for (int i = 0; i < fields_count; i++) {
             field = fields_table->GetField(i);
@@ -272,7 +270,6 @@ void ClassFile::ShowFields() {
 
 
             name_index = field->GetNameIndex();
-            name_string = constant_pool->GetUtf8(name_index);
             /**
             switch (descriptor_string[0]) {
                 case ((int)"B"):
@@ -281,7 +278,6 @@ void ClassFile::ShowFields() {
             std::cout << constant_pool->GetUtf8(name_index) << " ";
             
             descriptor_index = field->GetDescriptorIndex();
-            descriptor_string = constant_pool->GetUtf8(descriptor_index);
             std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
             
 
@@ -347,8 +343,6 @@ void ClassFile::ShowMethods() {
         u2 flags;
         u2 descriptor_index;
         u2 name_index;
-        u1 * descriptor_string;
-        u1 * name_string;
 
         for (int i = 0; i < methods_count; i++) {
             method = methods_table->GetMethod(i);
@@ -372,13 +366,9 @@ void ClassFile::ShowMethods() {
             }
 
             name_index = method->GetNameIndex_M();
-            name_string = constant_pool->GetUtf8(name_index);
-            
-
             std::cout << constant_pool->GetUtf8(name_index) << " ";
             
             descriptor_index = method->GetDescriptorIndex_M();
-            descriptor_string = constant_pool->GetUtf8(descriptor_index);
             std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
             
 
@@ -461,12 +451,7 @@ void ClassFile::LoadFieldsTable() {
     
     if (fields_count) {
 
-    FieldsInfo * field_pt;
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 * att_info;
-    
-    
+    FieldsInfo * field_pt;    
 
         fields_table = new Fields();
 
@@ -489,9 +474,6 @@ void ClassFile::LoadMethodsTable() {
     if (methods_count) {
 
     MethodsInfo * methods_pt;
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u1 * att_info;
 
         methods_table = new Methods();
 
