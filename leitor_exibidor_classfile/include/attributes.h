@@ -27,6 +27,7 @@ class AttributesTable{
         void AppendSourceFile(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
         void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length);
         void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length);
+        void AppendGeneric(u2 attribute_name_index, u4 attribute_length, u1* att_info);
         void ShowAttributesTable();
         void LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool);
 };
@@ -92,8 +93,6 @@ class ExceptionsIndexTable{
     public:
     ExceptionsIndexTable(u1 indexes);
 };
-
-
 
 class ExceptionsAtt : public AttributesInfo{
     protected:

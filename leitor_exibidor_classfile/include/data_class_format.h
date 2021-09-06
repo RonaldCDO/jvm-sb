@@ -14,9 +14,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+/**
 typedef uint8_t u1;
 typedef uint16_t u2;
 typedef uint32_t u4;
+**/
+
+typedef unsigned char u1;
+typedef unsigned short u2;
+typedef unsigned int u4;
+typedef unsigned long u8;
 
 
 u1 Readu1(std::istream& file);

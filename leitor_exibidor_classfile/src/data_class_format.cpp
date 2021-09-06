@@ -85,11 +85,23 @@ u4 Readu4(std::istream& file) {
 
 u4 Readu4Raw(std::istream& file) {
 
+    unsigned int ret = 0;
+	unsigned char aux;
+
+	for (int i=0; i<4; i++) {
+		ret <<= 8;
+		file.read(reinterpret_cast<char *>(&aux), sizeof(aux));
+		ret |= aux;
+	}
+
+	return ret;
+    /**
     u4 buffer_u4;
     
     file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
     
     return buffer_u4;
+    **/
     
 }
 

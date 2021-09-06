@@ -22,6 +22,7 @@ bool ClassFile::FileIsOpen() {
 }
 
 void ClassFile::ReadClassFile(){
+
     magic = Readu4(file);
     
 
@@ -42,17 +43,26 @@ void ClassFile::ReadClassFile(){
     access_flags = Readu2Raw(file);
     this_class = Readu2Raw(file);
     super_class = Readu2Raw(file);
+
+    std::cout << "interfaces" << std::endl;
+
     interfaces_count = Readu2Raw(file);
 
     LoadInterfaces();
+
+    std::cout << "fields" << std::endl;
 
     fields_count = Readu2Raw(file);
 
     LoadFieldsTable();
 
+    std::cout << "methods" << std::endl;
+
     methods_count = Readu2Raw(file);
 
     LoadMethodsTable();
+
+    std::cout << "attributes" << std::endl;
 
     attributes_count = Readu2Raw(file);
 
