@@ -12,6 +12,13 @@ ConstantValueAtt::ConstantValueAtt(u2 attribute_name_index, u4 attribute_length,
 }
 
 
+void ConstantValueAtt::Show(){
+    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "attributes_length: " << attribute_length   << std::endl;
+    std::cout << "constant_value_index: " << constantvalue_index << std::endl;
+}
+
+
 GenericAtt::GenericAtt(u2 attribute_name_index, u4 attribute_length, u1 * att_info) {
     this->attribute_name_index = attribute_name_index;
     this->attribute_length = attribute_length;
@@ -51,24 +58,37 @@ void CodeAtt::AppendAttribute(GenericAtt* ga) {
 
 void CodeAtt::Show() {
     std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attributes_length << std::endl;
+    std::cout << "attributes_length: " << attribute_length << std::endl;
     std::cout << "max_stack: " << max_stack << std::endl;
     std::cout << "max_locals: " << max_locals << std::endl;
+    std::cout << "code_length: " << code_length << std::endl;
 
 }
 
 
-void LineNumberTableAtt::AppendNumber(LineNumberTable * lnt){
-    this->line_number_table.push_back(lnt);
+ExceptionsIndexTable::ExceptionsIndexTable(u1 indexes){
+    this->indexes = indexes;
 }
 
-
-ExceptionsAtt::ExceptionsAtt(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions){
+ExceptionsAtt::ExceptionsAtt(u2 attribute_name_index, u4 attribute_length){
     this->attribute_name_index = attribute_name_index;
     this->attribute_length = attribute_length;
-    this->number_of_exceptions = number_of_exceptions;
 }
 
+void ExceptionsAtt::SetExceptionsIndexTableSize(u2 length){
+    this->number_of_exceptions = length;
+}
+
+void ExceptionsAtt::AppendExceptionIndex(ExceptionsIndexTable* eit){
+    this->exception_index_table.push_back(eit);
+}
+
+void ExceptionsAtt::Show() {
+    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "attributes_length: " << attribute_length << std::endl;
+    std::cout << "number_of_exceptions: " << number_of_exceptions << std::endl;
+
+}
 
 ExceptionsTableAtt::ExceptionsTableAtt(u2 start_pc, u2 end_pc, u2 handler_pc, u2 catch_type){
     this->start_pc = start_pc;
@@ -84,20 +104,69 @@ SourceFileAtt::SourceFileAtt(u2 attribute_name_index, u4 attribute_length, u2 so
     this->sourcefile_index = sourcefile_index;
 }
 
-
-LineNumberTableAtt::LineNumberTableAtt(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length){
-    this->attribute_name_index = attribute_name_index;
-    this->attribute_length = attribute_length;
-    this->line_number_table_length = line_number_table_length;
+void SourceFileAtt::Show(){
+    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "attributes_length: " << attribute_length << std::endl;
+    std::cout << "sourcefile_index: " << sourcefile_index << std::endl;
 }
 
 
-LocalVariableTableAtt::LocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length){
+LineNumberTableAtt::LineNumberTableAtt(u2 attribute_name_index, u4 attribute_length){
     this->attribute_name_index = attribute_name_index;
     this->attribute_length = attribute_length;
-    this->local_variable_table_length = local_variable_table_length;
 }
 
+
+LineNumberTable::LineNumberTable(u2 start_pc, u2 line_number){
+    this->start_pc = start_pc;
+    this->line_number = line_number;
+}
+
+
+void LineNumberTableAtt::SetLineNumberTableLength(u2 length){
+    this->line_number_table_length = length;
+}
+
+
+void LineNumberTableAtt::AppendNumber(LineNumberTable * lnt){
+    this->line_number_table.push_back(lnt);
+}
+
+
+void LineNumberTableAtt::Show(){
+    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "attributes_length: " << attribute_length << std::endl;
+    std::cout << "line_number_table_length: " << line_number_table_length << std::endl;
+}
+
+
+LocalVariableTable::LocalVariableTable(u2 start_pc, u2 name_index, u2 descriptor_index, u2 index){
+    this-> start_pc = start_pc;
+    this-> name_index = name_index;
+    this-> descriptor_index = descriptor_index;
+    this-> index = index;
+}
+
+
+LocalVariableTableAtt::LocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length){
+    this->attribute_name_index = attribute_name_index;
+    this->attribute_length = attribute_length;
+}
+
+void LocalVariableTableAtt::SetLocalVariableTableLength(u2 length){
+    this->attribute_length = length;
+}
+
+void LocalVariableTableAtt::AppendVariable(LocalVariableTable * lvt){
+    this->local_variable_table.push_back(lvt);
+}
+
+
+void LocalVariableTableAtt::Show(){
+    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "attributes_length: " << attribute_length << std::endl;
+    std::cout << "local_variable_table_length: " << local_variable_table_length << std::endl;
+}
 
 u2 AttributesInfo::GetAttributeNameIndex(){
     return attribute_name_index;
@@ -119,8 +188,8 @@ void AttributesTable::AppendCode(u2 attribute_name_index, u4 attribute_length, u
 }
 
 
-void AttributesTable::AppendExceptions(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions){
-    at.push_back(new ExceptionsAtt(attribute_name_index, attribute_length, number_of_exceptions));
+void AttributesTable::AppendExceptions(u2 attribute_name_index, u4 attribute_length){
+    at.push_back(new ExceptionsAtt(attribute_name_index, attribute_length));
 }
 
 
@@ -129,13 +198,13 @@ void AttributesTable::AppendSourceFile(u2 attribute_name_index, u4 attribute_len
 }
 
 
-void AttributesTable::AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length){
-    at.push_back(new LineNumberTableAtt(attribute_name_index, attribute_length, line_number_table_length));
+void AttributesTable::AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length){
+    at.push_back(new LineNumberTableAtt(attribute_name_index, attribute_length));
 }
 
 
-void AttributesTable::AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length){
-    at.push_back(new LocalVariableTableAtt(attribute_name_index, attribute_length, local_variable_table_length));
+void AttributesTable::AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length){
+    at.push_back(new LocalVariableTableAtt(attribute_name_index, attribute_length));
 }
 
 
@@ -156,11 +225,13 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
 
             attribute_name = constant_pool->GetUtf8(attribute_name_index-1);
             
-            std::cout << attribute_name << std::endl;
+            // std::cout << attribute_name << std::endl;
 
             if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
-                AppendConstantValue(attribute_name_index, attribute_length, Readu2Raw(file));
+                u2 constantvalue_index = Readu2Raw(file);
+                AppendConstantValue(attribute_name_index, attribute_length, constantvalue_index);
             }
+
 
             if (strcmp((const char*)attribute_name, "Code") == 0) {
                 u2 max_stack = Readu2Raw(file);
@@ -189,10 +260,19 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
                     att_info = Readu1(file, attribute_length);
                     code_att->AppendAttribute(new GenericAtt(code_attribute_name_index, code_attribute_length, att_info));                    
                 }                
-                code_att->Show();
+                // code_att->Show();
             }
 
             if (strcmp((const char*)attribute_name, "Exceptions") == 0) {
+                ExceptionsAtt * exp_att = new ExceptionsAtt(Readu2Raw(file), Readu4Raw(file));
+                u2 number_of_exceptions = Readu2Raw(file);
+
+                exp_att->SetExceptionsIndexTableSize(number_of_exceptions);
+
+                for(int i = 0; i< number_of_exceptions; i++){
+                    exp_att->AppendExceptionIndex(new ExceptionsIndexTable(Readu1(file)));
+                }
+                
             }
             
             
@@ -202,10 +282,23 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
             } 
 
             if (strcmp((const char*)attribute_name, "LineNumber") == 0) {
-               
-            }
+               LineNumberTableAtt * line_att = new LineNumberTableAtt(attribute_name_index, attribute_length);
+               u2 line_number_table_length = Readu2Raw(file);
+               line_att->SetLineNumberTableLength(line_number_table_length);
 
+                for (int i = 0; i < line_number_table_length; i++) {
+                    line_att->AppendNumber(new LineNumberTable(Readu2Raw(file), Readu2Raw(file)));
+                }
+            }
             if (strcmp((const char*)attribute_name, "LocalVariable") == 0) {
+                LocalVariableTableAtt * local_att = new LocalVariableTableAtt(Readu2Raw(file), Readu2Raw(file));
+                u2 local_variable_table_length = Readu2Raw(file);
+
+                local_att->SetLocalVariableTableLength(local_variable_table_length);
+            
+                for (int i = 0; i < local_variable_table_length; i++) {
+                    local_att->AppendVariable(new LocalVariableTable(Readu2Raw(file), Readu2Raw(file),Readu2Raw(file), Readu2Raw(file)));
+                }
             }
             
             

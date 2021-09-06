@@ -23,10 +23,10 @@ class AttributesTable{
     public:
         void AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index);
         void AppendCode(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
-        void AppendExceptions(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions);
+        void AppendExceptions(u2 attribute_name_index, u4 attribute_length);
         void AppendSourceFile(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
-        void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length);
-        void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length);
+        void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length);
+        void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length);
         void ShowAttributesTable();
         void LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool);
 };
@@ -37,6 +37,7 @@ class ConstantValueAtt : public AttributesInfo{
         u2 constantvalue_index;
     public:
         ConstantValueAtt(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index);
+        void Show();
 };
 
 class GenericAtt : public AttributesInfo{
@@ -61,6 +62,7 @@ class ExceptionsTableAtt{
         u2 catch_type;   
     public:
         ExceptionsTableAtt(u2 start_pc, u2 end_pc, u2 handler_pc, u2 catch_type);
+        void Show();
 };
 
 
@@ -86,7 +88,9 @@ class CodeAtt : public AttributesInfo{
 
 class ExceptionsIndexTable{
     protected:
-        std::vector<u2*> index_table;
+        u1 indexes;
+    public:
+    ExceptionsIndexTable(u1 indexes);
 };
 
 
@@ -94,10 +98,12 @@ class ExceptionsIndexTable{
 class ExceptionsAtt : public AttributesInfo{
     protected:
         u2 number_of_exceptions;
-        ExceptionsIndexTable * exception_index_table;
+        std::vector<ExceptionsIndexTable *> exception_index_table;
     public:
-        ExceptionsAtt(u2 attribute_name_index, u4 attribute_length, u2 number_of_exceptions);
-
+        ExceptionsAtt(u2 attribute_name_index, u4 attribute_length);
+        void SetExceptionsIndexTableSize(u2 length);
+        void AppendExceptionIndex(ExceptionsIndexTable* eit);
+        void Show();
 };
 
 
@@ -107,6 +113,7 @@ class SourceFileAtt : public AttributesInfo{
         
     public:
         SourceFileAtt(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
+        void Show();
 };
 
 
@@ -116,6 +123,7 @@ class LineNumberTable{
         u2 line_number;
     public:
         LineNumberTable(u2 start_pc, u2 line_number);
+        void Show();
 };
 
 
@@ -124,8 +132,10 @@ class LineNumberTableAtt : public AttributesInfo{
         u2 line_number_table_length;
         std::vector<LineNumberTable *> line_number_table;
     public:
-        LineNumberTableAtt(u2 attribute_name_index, u4 attribute_length, u2 line_number_table_length);
+        LineNumberTableAtt(u2 attribute_name_index, u4 attribute_length);
+        void SetLineNumberTableLength(u2 length);
         void AppendNumber(LineNumberTable * lnt);
+        void Show();
 };
 
 
@@ -135,15 +145,20 @@ class LocalVariableTable{
         u2 name_index;
         u2 descriptor_index;
         u2 index;
+    public:
+        LocalVariableTable(u2 start_pc, u2 name_index, u2 descriptor_index, u2 index);
 };
 
 
 class LocalVariableTableAtt : public AttributesInfo{
     protected:
         u2 local_variable_table_length;
-        LocalVariableTable * local_variable_table;
+        std::vector<LocalVariableTable*> local_variable_table;
     public:
-        LocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length, u2 local_variable_table_length);
+        LocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length);
+        void SetLocalVariableTableLength(u2 length);
+        void AppendVariable(LocalVariableTable * lvt);
+        void Show();
 };
 
 

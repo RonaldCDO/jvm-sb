@@ -6,7 +6,7 @@ void ConstantPool::Reference (u2 index) {
     u1 tag;
     tag = cp.at(index)->GetTag();
     if (tag == UTF8) {
-        std::cout<< GetUtf8(index) << "\t";
+        std::cout<< GetUtf8(index) << ":";
     }
     else{   // Pegar parametros para os metodos e chamar recursiva
         u2 arg2;
@@ -14,7 +14,7 @@ void ConstantPool::Reference (u2 index) {
         if (arg1 != 0) {
             Reference(arg1-1);
             if (arg2 != 0) {
-                std::cout<<" ";
+                std::cout<<"";
                 Reference(arg2-1);
             }
         }
