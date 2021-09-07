@@ -62,8 +62,14 @@ void CodeAtt::Show() {
     std::cout << "max_stack: " << max_stack << std::endl;
     std::cout << "max_locals: " << max_locals << std::endl;
     std::cout << "code_length: " << code_length << std::endl;
+    std::cout << "teste" << attributes_table[0] << std::endl;
 
 }
+
+// void AttributesTable::ShowAttributesTable(){
+//     CodeAtt * ct;
+//     ct->Show();
+// }
 
 
 ExceptionsIndexTable::ExceptionsIndexTable(u1 indexes){
@@ -105,9 +111,10 @@ SourceFileAtt::SourceFileAtt(u2 attribute_name_index, u4 attribute_length, u2 so
 }
 
 void SourceFileAtt::Show(){
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length << std::endl;
-    std::cout << "sourcefile_index: " << sourcefile_index << std::endl;
+    // std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
+    // std::cout << "attributes_length: " << attribute_length << std::endl;
+    // std::cout << "sourcefile_index: " << sourcefile_index << std::endl;
+
 }
 
 
@@ -180,6 +187,9 @@ u4 AttributesInfo::GetAttributeLength(){
 
 void AttributesTable::AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index){
     at.push_back(new ConstantValueAtt(attribute_name_index, attribute_length, constantvalue_index));
+    std::cout << "attribute_name_index------>" << attribute_name_index <<std::endl;
+    std::cout << "attribute_length------>" << attribute_length <<std::endl;
+    std::cout << "constantvalue_index------>" << constantvalue_index <<std::endl;
 }
 
 
@@ -195,6 +205,9 @@ void AttributesTable::AppendExceptions(u2 attribute_name_index, u4 attribute_len
 
 void AttributesTable::AppendSourceFile(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index){
     at.push_back(new SourceFileAtt(attribute_name_index, attribute_length, sourcefile_index));
+    std::cout<<"attribute_name_index ------->" << attribute_name_index << std::endl;
+    std::cout<<"attribute_length ------->" << attribute_length << std::endl;
+    std::cout<<"sourcefile_index -------> " << sourcefile_index << std::endl;
 }
 
 
@@ -209,10 +222,13 @@ void AttributesTable::AppendLocalVariableTableAtt(u2 attribute_name_index, u4 at
 
 void AttributesTable::AppendGeneric(u2 attribute_name_index, u4 attribute_length, u1 * info) {
     at.push_back(new GenericAtt(attribute_name_index, attribute_length, info));
+    // std::cout<<"attribute_name_index: " <<attribute_name_index<<std::endl;
+    // std::cout<<"attribute_length: " <<attribute_length<<std::endl;
+    // std::cout<<"info: " <<info<<std::endl;
 }
 
 
-void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool) {
+void AttributesTable::LoadAttributesTable(FILE* file, int attributes_count, ConstantPool* constant_pool) {
 
     u2 attribute_name_index;
     u4 attribute_length;
@@ -221,59 +237,76 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
     u1* att_info;
     u1* attribute_name;
 
+    // std::cout<<"file: " << &file << "\n";
+    //std::cout<<"attributes_count: " << attributes_count << "\n";
+    // std::cout<<"constant_pool: " << &constant_pool << "\n";
+    
+
         for (int i = 0; i < attributes_count; i++){
 
-            attribute_name_index = Readu2Raw(file);
-            aux = Readu2Raw(file);
-            aux2 = Readu2Raw(file);
+            attribute_name_index = Readu2(file);
+            // std::cout<< "attribute_name_index: " << attribute_name_index<< std::endl;
+            aux = Readu2(file);
+            aux2 = Readu2(file);
             attribute_length = aux + aux2;
+            // std::cout<< "attribute_length: " <<attribute_length << std::endl;
             
             attribute_name =  constant_pool->GetUtf8(attribute_name_index-1);
             
-            //std::cout << attribute_length << std::endl;
+            std::cout << "attribute_name: " <<attribute_name << std::endl;
 
             att_info = Readu1(file, attribute_length);
 
-            AppendGeneric(attribute_name_index, attribute_length, att_info);
+            
 
             
+           
+            // if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
+            //     u2 constantvalue_index = Readu2(file);
+            //     AppendConstantValue(attribute_name_index, attribute_length, constantvalue_index);
+            // }
+            if (strcmp((const char*)attribute_name, "SourceFile") == 0) {
+                u2 constantvalue_index = Readu2(file);
+                AppendSourceFile(attribute_name_index, attribute_length, constantvalue_index);
+             } //else if (strcmp((const char*)attribute_name, "Code") == 0) {
+            //     u2 max_stack = Readu2(file);
+            //     u2 max_locals = Readu2(file);
+            //     aux = Readu2(file);
+            //     aux2 = Readu2(file);
+            //     u4 code_length = aux + aux2;
+    
+            //     std::cout <<"code_length ------> " << code_length << std::endl;
+            //     u1* code = Readu1(file, code_length);
+
+            //     CodeAtt* code_att = new CodeAtt(attribute_name_index, attribute_length, max_stack, max_locals, code_length, code);
+                
+            //     std::cout<<"__Problem here__" << std::endl;
+            //     u2 exception_table_length = Readu2(file);
+            //     std::cout<< "exception_table_length ------> " << exception_table_length <<std::endl;
+            //     code_att->SetExceptionTableLength(exception_table_length);
+
+            //     for (int i = 0; i < exception_table_length; i++) {
+            //         code_att->AppendException(new ExceptionsTableAtt(Readu2(file), Readu2(file), Readu2(file), Readu2(file)));
+            //     }
+                
+            //     u2 code_attributes_count = Readu2(file);
+            //     for (int i = 0; i < code_attributes_count; i++) {
+            //         u2 code_attribute_name_index = Readu2(file);
+            //         u4 code_attribute_length = Readu4Raw(file);
+            //         att_info = Readu1(file, attribute_length);
+            //         code_att->AppendAttribute(new GenericAtt(code_attribute_name_index, code_attribute_length, att_info));                    
+            //     }                
+            //     // code_att->Show();
+            // } 
+            else{
+                AppendGeneric(attribute_name_index, attribute_length, att_info);
+            }
+
             /**
-            if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
-                u2 constantvalue_index = Readu2Raw(file);
-                AppendConstantValue(attribute_name_index, attribute_length, constantvalue_index);
-            }
-
-
-            else if (strcmp((const char*)attribute_name, "Code") == 0) {
-                u2 max_stack = Readu2Raw(file);
-                u2 max_locals = Readu2Raw(file);
-                u4 code_length = Readu4Raw(file);
-                std::cout << code_length << std::endl;
-                u1* code = Readu1(file, code_length);
-
-                CodeAtt* code_att = new CodeAtt(attribute_name_index, attribute_length, max_stack, max_locals, code_length, code);
-                
-                
-                u2 exception_table_length = Readu2Raw(file);
-                code_att->SetExceptionTableLength(exception_table_length);
-
-                for (int i = 0; i < exception_table_length; i++) {
-                    code_att->AppendException(new ExceptionsTableAtt(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file)));
-                }
-                
-                u2 code_attributes_count = Readu2Raw(file);
-                for (int i = 0; i < code_attributes_count; i++) {
-                    u2 code_attribute_name_index = Readu2Raw(file);
-                    u4 code_attribute_length = Readu4Raw(file);
-                    att_info = Readu1(file, attribute_length);
-                    code_att->AppendAttribute(new GenericAtt(code_attribute_name_index, code_attribute_length, att_info));                    
-                }                
-                // code_att->Show();
-            }
 
             else if (strcmp((const char*)attribute_name, "Exceptions") == 0) {
-                ExceptionsAtt * exp_att = new ExceptionsAtt(Readu2Raw(file), Readu4Raw(file));
-                u2 number_of_exceptions = Readu2Raw(file);
+                ExceptionsAtt * exp_att = new ExceptionsAtt(Readu2(file), Readu4Raw(file));
+                u2 number_of_exceptions = Readu2(file);
 
                 exp_att->SetExceptionsIndexTableSize(number_of_exceptions);
 
@@ -285,28 +318,28 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
             
             
             else if (strcmp((const char*)attribute_name, "SourceFile") == 0) {
-                u2 constantvalue_index = Readu2Raw(file);
+                u2 constantvalue_index = Readu2(file);
                 AppendSourceFile(attribute_name_index, attribute_length, constantvalue_index);
             } 
 
             else if (strcmp((const char*)attribute_name, "LineNumber") == 0) {
                LineNumberTableAtt * line_att = new LineNumberTableAtt(attribute_name_index, attribute_length);
-               u2 line_number_table_length = Readu2Raw(file);
+               u2 line_number_table_length = Readu2(file);
                line_att->SetLineNumberTableLength(line_number_table_length);
 
                 for (int i = 0; i < line_number_table_length; i++) {
-                    line_att->AppendNumber(new LineNumberTable(Readu2Raw(file), Readu2Raw(file)));
+                    line_att->AppendNumber(new LineNumberTable(Readu2(file), Readu2(file)));
                 }
             }
 
             else if (strcmp((const char*)attribute_name, "LocalVariable") == 0) {
-                LocalVariableTableAtt * local_att = new LocalVariableTableAtt(Readu2Raw(file), Readu2Raw(file));
-                u2 local_variable_table_length = Readu2Raw(file);
+                LocalVariableTableAtt * local_att = new LocalVariableTableAtt(Readu2(file), Readu2(file));
+                u2 local_variable_table_length = Readu2(file);
 
                 local_att->SetLocalVariableTableLength(local_variable_table_length);
             
                 for (int i = 0; i < local_variable_table_length; i++) {
-                    local_att->AppendVariable(new LocalVariableTable(Readu2Raw(file), Readu2Raw(file),Readu2Raw(file), Readu2Raw(file)));
+                    local_att->AppendVariable(new LocalVariableTable(Readu2(file), Readu2(file),Readu2(file), Readu2(file)));
                 }
             }
 
@@ -320,6 +353,7 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
             
             
         }
+        
 
     
 };

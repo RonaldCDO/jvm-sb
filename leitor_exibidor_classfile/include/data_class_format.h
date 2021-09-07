@@ -1,11 +1,11 @@
 #ifndef FORMAT
 #define FORMAT
 
-#ifdef _WIN32
-    #include <WinSock2.h>
-#else
-    #include <netinet/in.h>
-#endif
+// #ifdef _WIN32
+//     #include <WinSock2.h>
+// #else
+//     #include <netinet/in.h>
+// #endif
 
 #include <iomanip>
 #include <fstream>
@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <vector>
 
 /**
 typedef uint8_t u1;
@@ -26,19 +27,19 @@ typedef unsigned int u4;
 typedef unsigned long u8;
 
 
-u1 Readu1(std::istream& file);
+u1 Readu1(FILE* fp);
 
-u1 * Readu1(std::istream& file, u2 length);
+u1 * Readu1(FILE* fp, u2 length);
 
-u1 * Readu1(std::istream& file, u4 length);
+u1 * Readu1(FILE* fp, u4 length);
 
-u2 Readu2(std::istream& file);
+u2 Readu2(FILE* fp);
 
-u2 Readu2Raw(std::istream& file);
+// u2 Readu2Raw(std::istream& file);
 
-u4 Readu4(std::istream& file);
+u4 Readu4(FILE* fp);
 
-u4 Readu4Raw(std::istream& file);
+// u4 Readu4Raw(std::istream& file);
 
 
 void Printu2Hex(u2 hex_value);

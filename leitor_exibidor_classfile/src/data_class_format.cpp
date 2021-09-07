@@ -1,112 +1,181 @@
 #include "data_class_format.h"
 
 // Leitura de 1 byte do arquivo
-u1 Readu1(std::istream& file) {
+// u1 Readu1(std::istream& file) {
 
-    u1 buffer_u1;
+//     u1 buffer_u1;
     
-    file.read(reinterpret_cast<char *>(&buffer_u1), sizeof(buffer_u1));
+//     file.read(reinterpret_cast<char *>(&buffer_u1), sizeof(buffer_u1));
 
-    return buffer_u1;
+//     return buffer_u1;
+// }
+
+u1 Readu1 (FILE *fp)
+{
+	unsigned char ret;
+
+	fread(&ret, 1, 1, fp);
+
+	return ret;
 }
 
+// // Leitura byte a byte de uma string de 'length' bytes
+// u1 * Readu1(std::istream& file, u2 length) {
 
-// Leitura byte a byte de uma string de 'length' bytes
-u1 * Readu1(std::istream& file, u2 length) {
-
-    u1* bytes = new u1[length+1];
-    u1 buffer;
+//     u1* bytes = new u1[length+1];
+//     u1 buffer;
     
-    for (int i = 0; i < length; i++) {
-        file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-        bytes[i] = buffer;
-    }
+//     for (int i = 0; i < length; i++) {
+//         file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+//         bytes[i] = buffer;
+//     }
 
-    bytes[length] = '\0';
+//     bytes[length] = '\0';
 
-    return bytes;
+//     return bytes;
+// }
+
+u1 * Readu1 (FILE* fp, u2 length) 
+{
+	
+
+	std::vector<unsigned char> *ret = new std::vector<unsigned char>(length);
+
+	for (int i = 0; i < length; i++) {
+		ret->at(i) = Readu1(fp);
+	}
+
+	return (u1*) ret;
+} 
+
+u1 * Readu1 (FILE* fp, u4 length) 
+{
+	
+
+	std::vector<unsigned char> *ret = new std::vector<unsigned char>(length);
+
+	for (int i = 0; i < length; i++) {
+		ret->at(i) = Readu1(fp);
+	}
+
+	return (u1*) ret;
+} 
+
+// // Leitura byte a byte de uma cadeia de 'length' bytes
+// u1 * Readu1(std::istream& file, u4 length) {
+
+//     u1* bytes = new u1[length+1];
+//     u1 buffer;
+    
+//     for (u4 i = 0; i < length; i++) {
+//         file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+//         bytes[i] = buffer;
+//     }
+
+//     return bytes;
+// }
+
+// // Leitura de 2 bytes do arquivo
+// u2 Readu2(std::istream& file) {
+
+//     u2 buffer_u2;
+    
+//     file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
+
+//     buffer_u2 = htons(buffer_u2);
+    
+//     return buffer_u2;
+// }
+
+// //  Leitura de 2 bytes sem conversão de endianess
+// u2 Readu2Raw(std::istream& file) {
+
+//     u2 buffer_u2;
+    
+//     file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
+    
+//     return buffer_u2;
+// }
+
+u2 Readu2 (FILE *fp) 
+{
+	unsigned short ret = 0;
+	unsigned char aux;
+
+	fread(&ret, 1, 1, fp);
+	fread(&aux, 1, 1, fp);
+
+	ret <<= 8;
+	ret |= aux;
+
+	return ret;
 }
 
-// Leitura byte a byte de uma cadeia de 'length' bytes
-u1 * Readu1(std::istream& file, u4 length) {
+// // Leitura de 4 bytes do arquivo
+// u4 Readu4(std::istream& file) {
 
-    u1* bytes = new u1[length+1];
-    u1 buffer;
+//     u4 buffer_u4;
     
-    for (u4 i = 0; i < length; i++) {
-        file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
-        bytes[i] = buffer;
-    }
+//     file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
 
-    return bytes;
-}
-
-// Leitura de 2 bytes do arquivo
-u2 Readu2(std::istream& file) {
-
-    u2 buffer_u2;
+//     /** htonl() - host to network long conversion:
+//      * realiza a conversao de inteiros multi-byte 
+//      * da ordem do host para a ordem da rede
+//      * ex: se o programa ler "bebafeca", esse comando corrige
+//      * a ordem para "cafebabe" 
+//      **/
+//     buffer_u4 = htonl(buffer_u4);
     
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-
-    buffer_u2 = htons(buffer_u2);
+//     return buffer_u4;
     
-    return buffer_u2;
-}
+// }
 
-//  Leitura de 2 bytes sem conversão de endianess
-u2 Readu2Raw(std::istream& file) {
-
-    u2 buffer_u2;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-    
-    return buffer_u2;
-}
-
-// Leitura de 4 bytes do arquivo
-u4 Readu4(std::istream& file) {
-
-    u4 buffer_u4;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
-
-    /** htonl() - host to network long conversion:
-     * realiza a conversao de inteiros multi-byte 
-     * da ordem do host para a ordem da rede
-     * ex: se o programa ler "bebafeca", esse comando corrige
-     * a ordem para "cafebabe" 
-     **/
-    buffer_u4 = htonl(buffer_u4);
-    
-    return buffer_u4;
-    
-}
-
-
-u4 Readu4Raw(std::istream& file) {
-    /**
-    u4 ret = 0;
-	u1 aux;
+u4 Readu4 (FILE *fp)
+ {
+	unsigned int ret = 0;
+	unsigned char aux;
 
 	for (int i=0; i<4; i++) {
 		ret <<= 8;
-		file.read(reinterpret_cast<char *>(&aux), sizeof(aux));
+		fread(&aux, 1, 1, fp);
 		ret |= aux;
-        std::cout << ret << std::endl;
 	}
 
 	return ret;
-    **/
-
-    u4 buffer_u4;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
-
-    buffer_u4 = htonl(buffer_u4);
-    
-    return buffer_u4;
-    
 }
+
+// u4 Readu4Raw(std::istream& file) {
+    
+//     u4 ret = 0;
+// 	u1 aux;
+
+// 	for (int i=0; i<4; i++) {
+// 		ret <<= 8;
+// 		file.read(reinterpret_cast<char *>(&aux), sizeof(aux));
+// 		ret |= aux;
+//         std::cout << ret << std::endl;
+// 	}
+
+// 	return ret;
+
+
+
+
+
+
+
+
+   
+
+    // u4 buffer_u4;
+    
+    // file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
+
+    // buffer_u4 = htonl(buffer_u4);
+    
+    // return buffer_u4;
+// }
+    
 
 void Printu2Hex(u2 hex_value) {
 

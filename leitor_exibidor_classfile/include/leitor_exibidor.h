@@ -27,7 +27,7 @@ void LoadFile(char* fileName);
 
 class ClassFile {
     protected:
-        std::ifstream file;
+        FILE* file;
         u4 magic; 
         u2 minor_version;
         u2 major_version;

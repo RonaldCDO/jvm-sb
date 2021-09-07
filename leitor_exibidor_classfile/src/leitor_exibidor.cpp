@@ -3,10 +3,10 @@
 void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
 
-    this -> file.open(fileName);
+    this -> file = fopen(fileName, "r");
     std::cout<<"Filename: " << fileName <<std::endl;
     
-    if (this -> file.is_open()) {
+    if (this -> file) {
         ReadClassFile();
     } else {
         std::cout << "Falha ao abrir arquivo. Encerrando...\n";
@@ -14,7 +14,7 @@ void ClassFile::LoadFile(char* fileName){
 }
 
 bool ClassFile::FileIsOpen() {
-    if (file.is_open()) {
+    if (file) {
         return true;
     }
 
@@ -40,31 +40,31 @@ void ClassFile::ReadClassFile(){
       
     LoadConstantPool();
 
-    access_flags = Readu2Raw(file);
-    this_class = Readu2Raw(file);
-    super_class = Readu2Raw(file);
+    access_flags = Readu2(file);
+    this_class = Readu2(file);
+    super_class = Readu2(file);
 
-    //std::cout << "interfaces" << std::endl;
+    //std::cout << "interfaces" << std::e   ndl;
 
-    interfaces_count = Readu2Raw(file);
+    interfaces_count = Readu2(file);
 
     LoadInterfaces();
 
     //std::cout << "fields" << std::endl;
 
-    fields_count = Readu2Raw(file);
+    fields_count = Readu2(file);
 
     LoadFieldsTable();
 
     //std::cout << "methods" << std::endl;
 
-    methods_count = Readu2Raw(file);
+    methods_count = Readu2(file);
 
     LoadMethodsTable();
 
     //std::cout << "attributes" << std::endl;
 
-    attributes_count = Readu2Raw(file);
+    attributes_count = Readu2(file);
 
     if (attributes_count) {
         attributes_table = new AttributesTable();
@@ -442,7 +442,7 @@ void ClassFile::LoadInterfaces() {
 
         interfaces = new u2(interfaces_count);
         for (int i = 0; i < interfaces_count; i++) {
-            interfaces[i] = Readu2Raw(file);
+            interfaces[i] = Readu2(file);
         }
     }
 }
@@ -457,7 +457,7 @@ void ClassFile::LoadFieldsTable() {
 
         for (int i = 0; i < fields_count; i++) {
             
-            field_pt = new FieldsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            field_pt = new FieldsInfo(Readu2(file), Readu2(file), Readu2(file), Readu2(file));
             
             if (field_pt->GetAttributesCount()) {
                 AttributesTable* at = new AttributesTable();
@@ -477,45 +477,20 @@ void ClassFile::LoadMethodsTable() {
 
         methods_table = new Methods();
 
+        AttributesTable* at = new AttributesTable();
         for (int i = 0; i < methods_count; i++) {
             
-            methods_pt = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            methods_pt = new MethodsInfo(Readu2(file), Readu2(file), Readu2(file), Readu2(file));
 
             if (methods_pt->GetAttributesCount_M()) {
-                AttributesTable* at = new AttributesTable();
                 at->LoadAttributesTable(file, methods_pt->GetAttributesCount_M(), constant_pool);
-            }
-
+            }   
             methods_table->AppendMethod(methods_pt);
+            
         }
+        // at->ShowAttributesTable();
     }
 }
 
-// u2 ClassFile::GetThisClass(){
-//     return this_class;
-// }
 
-// u2 ClassFile::GetSuperClass(){
-//     return super_class;
-// }
-
-
-// u2 ClassFile::GetInterfacesCount(){
-//     return interfaces_count;
-// }
-
-
-// u2 ClassFile::GetFieldsCount(){
-//     return fields_count;
-// }
-
-
-// u2 ClassFile::GetMethodsCount(){
-//     return methods_count;
-// }
-
-
-// u2 ClassFile::GetAttributesCount(){
-//     return attributes_count;
-// }    
 
