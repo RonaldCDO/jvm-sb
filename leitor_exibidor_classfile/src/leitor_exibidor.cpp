@@ -66,10 +66,10 @@ void ClassFile::ReadClassFile(){
 
     attributes_count = Readu2Raw(file);
 
-    if (attributes_count) {
-        attributes_table = new AttributesTable();
-        attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
-    }
+    // if (attributes_count) {
+    //     attributes_table = new AttributesTable();
+    //     attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
+    // }
 }
 
 void ClassFile::ShowMagic() {
@@ -121,14 +121,14 @@ void ClassFile::ShowAccessFlags() {
 }
 
 void ClassFile::ShowThisClass() {
-    std::cout << "This_class:\t\t";
-    constant_pool->Reference(this_class-1);
+    std::cout << "This_class:\t\t" ;
+    constant_pool->Reference(this_class);
     std::cout<<std::endl;
 }
 
 void ClassFile::ShowSuperClass() {
     std::cout << "Super_class:\t\t";
-    constant_pool->Reference(super_class-1);
+    constant_pool->Reference(super_class);
     std::cout<<std::endl;
 }
 
@@ -245,7 +245,7 @@ void ClassFile::ShowFields() {
 
     if (fields_count) {
         
-        std::cout << "Fields:" << std::endl;
+        std::cout << "\nFields:" << std::endl;
         
         FieldsInfo* field;
 
@@ -335,6 +335,8 @@ void ClassFile::ShowFields() {
             std::cout << "}" << std::endl;
 
         }
+    } else {
+        std::cout << "\nFields: \n" << std::endl;
     }
 
 }
@@ -353,13 +355,14 @@ void ClassFile::ShowMethods() {
         u2 name_index;
 
         for (int i = 0; i < methods_count; i++) {
+
             method = methods_table->GetMethod(i);
 
             flags = method->GetAccessFlags_M();
 
             byte = flags & 0x000F;
-
-            std::cout << "\n" << std::endl;
+            // std::cout << i << " " << method << " " << flags << " " << byte ;
+            std::cout << "\n";
 
             switch(byte){
                 case ACC_PRIVATE_M:
@@ -373,11 +376,15 @@ void ClassFile::ShowMethods() {
                     break;
             }
 
-            name_index = method->GetNameIndex_M();
-            std::cout << constant_pool->GetUtf8(name_index) << " ";
+            name_index = (method->GetNameIndex_M());
+            if (name_index == 0){
+                std::cout << "\tName: " << constant_pool->GetUtf8(name_index) << std::endl;
+            } else{
+                std::cout << "\tName: " << constant_pool->GetUtf8(name_index-1) << std::endl;
+            }
             
             descriptor_index = method->GetDescriptorIndex_M();
-            std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
+            std::cout <<"\tDescriptor: "<<constant_pool->GetUtf8(descriptor_index-1) << std::endl;
             
 
             std::cout << "\tFlags:" << std::endl;
@@ -439,6 +446,8 @@ void ClassFile::ShowMethods() {
             std::cout << "}" << std::endl;
 
         }
+    } else {
+        std::cout << "Methods: " << std::endl;
     }
 
 }
@@ -469,6 +478,7 @@ void ClassFile::LoadFieldsTable() {
             
             if (field_pt->GetAttributesCount()) {
                 AttributesTable* at = new AttributesTable();
+                // std::cout<< "Field" << std::endl;
                 at->LoadAttributesTable(file, field_pt->GetAttributesCount(), constant_pool);
             }
             fields_table->appendField(field_pt);
@@ -486,11 +496,11 @@ void ClassFile::LoadMethodsTable() {
         methods_table = new Methods();
 
         for (int i = 0; i < methods_count; i++) {
-            
+
             methods_pt = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
 
             if (methods_pt->GetAttributesCount_M()) {
-                AttributesTable* at = new AttributesTable();
+                AttributesTable* at = new AttributesTable();                
                 at->LoadAttributesTable(file, methods_pt->GetAttributesCount_M(), constant_pool);
             }
 

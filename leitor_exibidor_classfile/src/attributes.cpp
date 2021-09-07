@@ -57,11 +57,11 @@ void CodeAtt::AppendAttribute(GenericAtt* ga) {
 
 
 void CodeAtt::Show() {
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length << std::endl;
-    std::cout << "max_stack: " << max_stack << std::endl;
-    std::cout << "max_locals: " << max_locals << std::endl;
-    std::cout << "code_length: " << code_length << std::endl;
+    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tattributes_length: " << attribute_length << std::endl;
+    std::cout << "\t\tMax_stack: " << max_stack << std::endl;
+    std::cout << "\t\tMax_locals: " << max_locals << std::endl;
+    std::cout << "\t\tcode_length: " << code_length << std::endl;
 
 }
 
@@ -221,16 +221,17 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
     u1* att_info;
     u1* attribute_name;
 
-        for (int i = 0; i < attributes_count; i++){
+        // for (int i = 0; i < attributes_count; i++){
 
             // attribute_name_index = Readu2Raw(file);
+            // // attribute_name_index = Readu2(file);
             // aux = Readu2Raw(file);
             // aux2 = Readu2Raw(file);
             // attribute_length = aux + aux2;
             
+            // // std::cout << "i" << " Count: " << attributes_count << " name: " << attribute_name_index << " length: " << attribute_length << std::endl;
             // attribute_name =  constant_pool->GetUtf8(attribute_name_index-1);
             
-            // //std::cout << attribute_length << std::endl;
 
             // att_info = Readu1(file, attribute_length);
 
@@ -319,7 +320,7 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
             **/
             
             
-        }
+        // }
 
     
 };
