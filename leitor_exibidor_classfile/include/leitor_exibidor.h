@@ -57,6 +57,7 @@ class ClassFile {
         void ShowMagic();
         void ShowMinor();
         void ShowMajor();
+        void ShowJavaVersion();
         void ShowConstantPoolCount();
         void ShowConstantPool();
         void ShowFields();

@@ -223,18 +223,18 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
 
         for (int i = 0; i < attributes_count; i++){
 
-            attribute_name_index = Readu2Raw(file);
-            aux = Readu2Raw(file);
-            aux2 = Readu2Raw(file);
-            attribute_length = aux + aux2;
+            // attribute_name_index = Readu2Raw(file);
+            // aux = Readu2Raw(file);
+            // aux2 = Readu2Raw(file);
+            // attribute_length = aux + aux2;
             
-            attribute_name =  constant_pool->GetUtf8(attribute_name_index-1);
+            // attribute_name =  constant_pool->GetUtf8(attribute_name_index-1);
             
-            //std::cout << attribute_length << std::endl;
+            // //std::cout << attribute_length << std::endl;
 
-            att_info = Readu1(file, attribute_length);
+            // att_info = Readu1(file, attribute_length);
 
-            AppendGeneric(attribute_name_index, attribute_length, att_info);
+            // AppendGeneric(attribute_name_index, attribute_length, att_info);
 
             
             /**

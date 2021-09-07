@@ -23,6 +23,7 @@ int main(int argc, char* argv[]) {
     cf->ShowMagic();
     cf->ShowMinor();
     cf->ShowMajor();
+    cf->ShowJavaVersion();
     cf->ShowAccessFlags();
     cf->ShowThisClass();
     cf->ShowSuperClass();

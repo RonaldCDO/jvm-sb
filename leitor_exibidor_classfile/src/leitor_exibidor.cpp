@@ -86,6 +86,10 @@ void ClassFile::ShowMajor() {
     std::cout << "Major Version:\t\t" << major_version << std::endl;
 }
 
+void ClassFile::ShowJavaVersion() {
+    std::cout << "Java Version:\t\t" << "1." << major_version-44 << std::endl;
+}
+
 void ClassFile::ShowConstantPoolCount(){
     std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
 }
@@ -117,11 +121,15 @@ void ClassFile::ShowAccessFlags() {
 }
 
 void ClassFile::ShowThisClass() {
-    std::cout << "This_class:\t\t" << this_class << std::endl;
+    std::cout << "This_class:\t\t";
+    constant_pool->Reference(this_class-1);
+    std::cout<<std::endl;
 }
 
 void ClassFile::ShowSuperClass() {
-    std::cout << "Super_class:\t\t" << super_class << std::endl;
+    std::cout << "Super_class:\t\t";
+    constant_pool->Reference(super_class-1);
+    std::cout<<std::endl;
 }
 
 
