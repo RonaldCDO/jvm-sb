@@ -234,9 +234,9 @@ OC_jsr_w = 0xc9,
 
 //Reserved
 
-breakpoint = 0xca,
-impdep1 = 0xfe,
-impdep2 = 0xff
+OC_breakpoint = 0xca,
+OC_impdep1 = 0xfe,
+OC_impdep2 = 0xff
 
 };
 
