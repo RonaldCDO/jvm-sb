@@ -41,7 +41,6 @@ u4 Readu4(std::istream& file);
 
 u4 Readu4Raw(std::istream& file);
 
-
 void Printu2Hex(u2 hex_value);
 
 void Printu4Hex(u4 hex_value);

@@ -5,7 +5,6 @@
 
 #define MNEMONIC_SIZE 20
 
-
 class Instruction {
     protected:
         u1 opcode;
@@ -13,10 +12,20 @@ class Instruction {
         int size;
     public:
         Instruction(u1 opcode, const std::string mnemonic, int size);
-        std::vector<Instruction*> CreateInstructionVector();
+        inline u1 GetOpcode(){return opcode;};
+        inline int GetSize(){return size;};
+        inline std::string GetMnemonic(){return mnemonic;};
 };
 
-#endif
+class InstructionVector{
+    protected:
+        std::vector<Instruction*> instructions;
+    public:
+        std::vector<Instruction*> CreateInstructionVector();
+        Instruction* GetInstruction(int position);
+        int GetSize();
+        int ShowInstruction(u1 opcode, u1 * operands);
+};
 
 /**
 typedef enum Opcodes {
@@ -261,3 +270,5 @@ OC_impdep2 = 0xff
 };
 
 **/
+
+#endif

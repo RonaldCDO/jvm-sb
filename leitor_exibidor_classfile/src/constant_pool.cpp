@@ -147,7 +147,11 @@ InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
 }
 
 void InfoLong::Show() {
-    std::cout<< "Long\t\t" << " ! " << "\t\t";
+    long datalong = (((long) high_bytes << 32) + low_bytes);
+    if (datalong < 0) {
+        datalong = datalong +1;
+    }
+    std::cout<< "Long\t\t" << datalong << "\t\t";
 }
 
 u2 InfoLong::GetArgs(u2 *arg2){
@@ -194,9 +198,16 @@ void InfoDouble::Show() {
     // std::stringstream ss(result);
     
     // std::cout<< result;
+    double datadouble;
+    long bits = (((long) high_bytes << 32) + low_bytes);
 
+    int s = ((bits >> 63) == 0) ? 1 : -1;
+    int e = ((bits >> 52) & 0x7ffL);
+	long m = (e == 0) ? (bits & 0xfffffffffffffL) << 1 : (bits & 0xfffffffffffffL) | 0x10000000000000L;
+		
+	datadouble = (s * m * pow(2, (e-1075)));
 
-    std::cout<< "Double\t\t"<< " ! " << "\t\t";
+    std::cout<< "Double\t\t"<< datadouble << "\t\t";
 }
 
 u2 InfoDouble::GetArgs(u2 *arg2){

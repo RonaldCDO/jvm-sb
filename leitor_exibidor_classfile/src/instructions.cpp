@@ -7,9 +7,7 @@ Instruction::Instruction(u1 opcode, const std::string mnemonic, int size) {
     this->size = size;
 }
 
-std::vector<Instruction*> Instruction::CreateInstructionVector() {
-    
-    std::vector<Instruction*> instructions;
+std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     
     //CONSTANTS
 
@@ -72,10 +70,10 @@ std::vector<Instruction*> Instruction::CreateInstructionVector() {
     //STORES
 
     instructions.push_back(new Instruction(0x36, "istore", 0));
-    instructions.push_back(new Instruction(0x37, "lsotre", 0));
-    instructions.push_back(new Instruction(0x38, "fsotre", 0));
-    instructions.push_back(new Instruction(0x30, "dsotre", 0));    
-    instructions.push_back(new Instruction(0x3a, "asotre", 0));
+    instructions.push_back(new Instruction(0x37, "lstore", 0));
+    instructions.push_back(new Instruction(0x38, "fstore", 0));
+    instructions.push_back(new Instruction(0x30, "dstore", 0));    
+    instructions.push_back(new Instruction(0x3a, "astore", 0));
     instructions.push_back(new Instruction(0x36, "istore", 1));
     instructions.push_back(new Instruction(0x37, "lstore", 1));
     instructions.push_back(new Instruction(0x38, "fstore", 1));
@@ -252,4 +250,33 @@ std::vector<Instruction*> Instruction::CreateInstructionVector() {
     instructions.push_back(new Instruction(0xff, "impdep2", 0));
 
     return instructions;    
+}
+
+Instruction* InstructionVector::GetInstruction(int position) {
+    return instructions.at(position);
+}
+
+
+int InstructionVector::GetSize() {
+    return instructions.size();
+}
+
+int InstructionVector::ShowInstruction(u1 opcode, u1 * operands) {
+
+    Instruction* inst;
+
+    for (int i = 0; i < instructions.size(); i++) {
+        inst = instructions.at(i);
+        if (opcode == inst->GetOpcode()) {
+            std::cout << inst->GetMnemonic();
+            if (inst->GetSize()) {
+                for (int i = 0; i < inst->GetSize(); i++) {
+                    std::cout << operands[i] << " "; 
+                }
+            }
+            std::cout << std::endl;
+            return inst->GetSize();
+        }
+    }
+    return -1;
 }

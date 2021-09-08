@@ -2,6 +2,7 @@
 #define ATTRIBUTES
 
 #include "data_class_format.h"
+#include "instructions.h"
 #include "constant_pool.h"
 #include <vector>
 #include <iostream>
@@ -29,7 +30,7 @@ class AttributesTable{
         void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length);
         void AppendGeneric(u2 attribute_name_index, u4 attribute_length, u1* att_info);
         void AppendAttribute(AttributesInfo * attribute);
-        void ShowAttributesTable();
+        void ShowAttributesTable(ConstantPool* cp);
         void LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool);
 };
 

@@ -34,6 +34,7 @@ class MethodsInfo{
         inline u2 GetDescriptorIndex(){return descriptor_index;};
         inline u2 GetAttributesCount(){return attributes_count;};
         void SetAttributesTable(AttributesTable* at);
+        void printAttributesTable(ConstantPool* cp);
 };
 
 class Methods{
@@ -42,6 +43,7 @@ class Methods{
     public:
         void AppendMethod(MethodsInfo * method_info);
         MethodsInfo* GetMethod(int index);
+        void ShowMethods(int method_count, ConstantPool* cp);
 };
 
 

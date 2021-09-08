@@ -12,6 +12,7 @@
 #include "methods.h"
 #include "attributes.h"
 #include "data_class_format.h"
+#include "instructions.h"
 
 #define magic_number 0xcafebabe
 #define ACC_PUBLIC_C 0x0001
@@ -67,7 +68,6 @@ class ClassFile {
         void ShowThisClass();
         void ShowSuperClass();
         void ShowInterfacesCount();
-        void ShowInterfaces();
         void ShowFieldsCount();
         void ShowMethodsCount();
         void ShowAttributesCount();

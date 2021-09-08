@@ -60,14 +60,28 @@ void CodeAtt::SetAttributesTable(AttributesTable * attributes) {
 
 
 void CodeAtt::Show() {
-    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "\tattributes_length: " << attribute_length << std::endl;
+
+    std::cout << "\tAttribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tAttributes_length: " << attribute_length << std::endl;
     std::cout << "\t\tMax_stack: " << max_stack << std::endl;
     std::cout << "\t\tMax_locals: " << max_locals << std::endl;
-    std::cout << "\t\tcode_length: " << code_length << std::endl;
+    std::cout << "\t\tCode_length: " << code_length << std::endl;
+
+    InstructionVector instructionVector;
+    instructionVector.CreateInstructionVector();
+
+    u4 aux_code_length = code_length;
+    u1 opcode;
+    int skip;
+    int i = 0;
+
+    while (i < aux_code_length) {
+        opcode = code[i];
+        skip = instructionVector.ShowInstruction(opcode, code);
+        i = i + 1 + skip;
+    }
 
 }
-
 
 ExceptionsIndexTable::ExceptionsIndexTable(u1 indexes){
     this->indexes = indexes;
@@ -294,3 +308,9 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
                
         }
 };
+
+void AttributesTable::ShowAttributesTable(ConstantPool* cp) {
+    for (int i = 0; i < at.size(); i++){
+        at.at(i)->Show();
+    }
+}

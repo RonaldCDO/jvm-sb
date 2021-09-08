@@ -27,7 +27,6 @@ int main(int argc, char* argv[]) {
     cf->ShowAccessFlags();
     cf->ShowThisClass();
     cf->ShowSuperClass();
-    cf->ShowInterfaces();
     cf->ShowFieldsCount();
     cf->ShowMethodsCount();
     cf->ShowAttributesCount();
