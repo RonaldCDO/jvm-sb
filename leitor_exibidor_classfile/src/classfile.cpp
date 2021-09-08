@@ -212,23 +212,23 @@ void ClassFile::ShowMagic() {
 
     std::cout << "Magic: ";
     Printu4Hex(magic);
-    std::cout<<std::endl;
+    std::cout << std::endl;
 }
 
 void ClassFile::ShowMinor() {
-    std::cout << "Minor Version:\t\t" << minor_version << std::endl;
+    std::cout << "Minor Version:\t\t" << minor_version << std::endl << std::endl;
 }
 
 void ClassFile::ShowMajor() {
-    std::cout << "Major Version:\t\t" << major_version << std::endl;
+    std::cout << "Major Version:\t\t" << major_version << std::endl << std::endl;
 }
 
 void ClassFile::ShowJavaVersion() {
-    std::cout << "Java Version:\t\t" << "1." << major_version-44 << std::endl;
+    std::cout << "Java Version:\t\t" << "1." << major_version-44 << std::endl << std::endl;
 }
 
 void ClassFile::ShowConstantPoolCount(){
-    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
+    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl << std::endl;
 }
 
 void ClassFile::ShowAccessFlags() {
@@ -260,40 +260,49 @@ void ClassFile::ShowAccessFlags() {
 void ClassFile::ShowThisClass() {
     std::cout << "This_class:\t\t" ;
     constant_pool->Reference(this_class-1);
-    std::cout<<std::endl;
+    std::cout << std::endl << std::endl;
 }
 
 void ClassFile::ShowSuperClass() {
     std::cout << "Super_class:\t\t";
     constant_pool->Reference(super_class-1);
-    std::cout<<std::endl;
+    std::cout << std::endl << std::endl;
 }
 
 
-void ClassFile::ShowInterfacesCount(){
-    std::cout << "Interfaces:\t\t" << interfaces_count << std::endl;
+void ClassFile::ShowInterfaces(){
+    std::cout << "Interfaces:\t\t";
+    if (interfaces_count) {
+        for (int i = 0; i < interfaces_count; i++) {
+            std::cout << constant_pool->GetUtf8(interfaces[i]) << ", ";
+        }
+        std::cout << std::endl << std::endl;
+    } else {
+        std::cout << "(Nenhuma)" << std::endl << std::endl;
+    }
 }
 
 
 void ClassFile::ShowFieldsCount(){
-    std::cout << "Fields:\t\t\t" << fields_count << std::endl;
+    std::cout << "Fields:\t\t\t" << fields_count << std::endl << std::endl;
 }
 
 
 void ClassFile::ShowMethodsCount(){
-    std::cout << "Methods:\t\t" << methods_count << std::endl;
+    std::cout << "Methods:\t\t" << methods_count << std::endl << std::endl;
 }
 
 void ClassFile::ShowAttributesCount(){
-    std::cout <<"Attributes:\t\t" << attributes_count << std::endl;
+    std::cout <<"Attributes:\t\t" << attributes_count << std::endl << std::endl;
 }
+
 // u2 ClassFile::GetAcessFlags(){
 //     return access_flags;
 // }
 
-
 void ClassFile::ShowConstantPool() {
     constant_pool->ShowConstantPoolTable();
+    std::cout << std::endl;
 }
 
 void ClassFile::ShowFields() {
@@ -336,15 +345,16 @@ void ClassFile::ShowFields() {
 
 
             name_index = field->GetNameIndex();
+            descriptor_index = field->GetDescriptorIndex();
             /**
             switch (descriptor_string[0]) {
                 case ((int)"B"):
                     std:: 
             }**/
-            std::cout << constant_pool->GetUtf8(name_index) << " ";
+            std::cout << constant_pool->GetUtf8(descriptor_index) << " ";
+            std::cout << constant_pool->GetUtf8(name_index) << std::endl;
             
-            descriptor_index = field->GetDescriptorIndex();
-            std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
+            //std::cout <<"\nDescriptor: "<<constant_pool->GetUtf8(descriptor_index) << std::endl;
             
 
             std::cout << "\tFlags:" << std::endl;
@@ -353,16 +363,16 @@ void ClassFile::ShowFields() {
 
             switch(byte){
                 case ACC_PUBLIC_F:
-                    std::cout << "\t\tACC_PUBLIC" << std::endl;
+                    std::cout << "\tACC_PUBLIC" << std::endl;
                     break;
                 case ACC_PROTECTED_F:
-                    std::cout << "\t\tACC_PROTECTED" << std::endl;
+                    std::cout << "\tACC_PROTECTED" << std::endl;
                     break;
                 case ACC_PRIVATE_F:
-                    std::cout << "\t\tACC_PRIVATE" << std::endl;
+                    std::cout << "\tACC_PRIVATE" << std::endl;
                     break;
                 case ACC_STATIC_F:
-                    std::cout << "\t\tACC_STATIC" << std::endl;
+                    std::cout << "\tACC_STATIC" << std::endl;
                     break;
             }
 
@@ -370,13 +380,13 @@ void ClassFile::ShowFields() {
 
             switch(byte){
                 case ACC_FINAL_F:
-                    std::cout << "\t\tACC_FINAL" << std::endl;
+                    std::cout << "\tACC_FINAL" << std::endl;
                     break;
                 case ACC_VOLATILE_F:
-                    std::cout << "\t\tACC_VOLATILE" << std::endl;
+                    std::cout << "\tACC_VOLATILE" << std::endl;
                     break;
                 case ACC_TRANSIENT_F:
-                    std::cout << "\t\tACC_TRANSIENT" << std::endl;
+                    std::cout << "\tACC_TRANSIENT" << std::endl;
                     break;
             }
 
@@ -384,15 +394,17 @@ void ClassFile::ShowFields() {
 
                 switch(byte){
                 case ACC_SYNTHETIC_F:
-                    std::cout << "\t\tACC_SYNTHETIC" << std::endl;
+                    std::cout << "\tACC_SYNTHETIC" << std::endl;
                     break;
                 case ACC_ENUM_F:
-                    std::cout << "\t\tACC_ENUM" << std::endl;
+                    std::cout << "\tACC_ENUM" << std::endl;
                     break;
             }
-            std::cout << "}" << std::endl;
+            std::cout << "}" << std::endl << std::endl;
 
         }
+    } else {
+        std::cout << "\nClasse nao possui Fields.\n\n";
     }
 
 }
@@ -466,16 +478,16 @@ void ClassFile::ShowMethods() {
                     std::cout<< " []" <<std::endl;
                     break;
                 case ACC_PUBLIC_M:
-                    std::cout << "\t\tACC_PUBLIC" << std::endl;
+                    std::cout << "\tACC_PUBLIC" << std::endl;
                     break;
                 case ACC_PROTECTED_M:
-                    std::cout << "\t\tACC_PROTECTED" << std::endl;
+                    std::cout << "\tACC_PROTECTED" << std::endl;
                     break;
                 case ACC_PRIVATE_M:
-                    std::cout << "\t\tACC_PRIVATE" << std::endl;
+                    std::cout << "\tACC_PRIVATE" << std::endl;
                     break;
                 case ACC_STATIC_M:
-                    std::cout << "\t\tACC_STATIC" << std::endl;
+                    std::cout << "\tACC_STATIC" << std::endl;
                     break;
                 case ACC_PUBLIC_M + ACC_STATIC_M:
                     std::cout << " ACC_PUBLIC, ACC_STATIC" <<std::endl;
@@ -485,16 +497,16 @@ void ClassFile::ShowMethods() {
 
             switch(byte){
                 case ACC_FINAL_M:
-                    std::cout << "\t\tACC_FINAL" << std::endl;
+                    std::cout << "\tACC_FINAL" << std::endl;
                     break;
                 case ACC_SYNCRONIZED_M:
-                    std::cout << "\t\tACC_SYNCRONIZED" << std::endl;
+                    std::cout << "\tACC_SYNCRONIZED" << std::endl;
                     break;
                 case ACC_BRIDGE_M:
-                    std::cout << "\t\tACC_BRIDGE" << std::endl;
+                    std::cout << "\tACC_BRIDGE" << std::endl;
                     break;
                   case ACC_VARARGS_M:
-                    std::cout << "\t\tACC_VARARGS" << std::endl;
+                    std::cout << "\tACC_VARARGS" << std::endl;
                     break;
                     
             }
@@ -503,26 +515,24 @@ void ClassFile::ShowMethods() {
 
                 switch(byte){
                 case ACC_NATIVE_M:
-                    std::cout << "\t\tACC_NATIVE" << std::endl;
+                    std::cout << "\tACC_NATIVE" << std::endl;
                     break;
                 case ACC_ABSTRACT_M:
-                    std::cout << "\t\tACC_ABSTRACT" << std::endl;
+                    std::cout << "\tACC_ABSTRACT" << std::endl;
                     break;
                 case ACC_STRICT_M:
-                    std::cout << "\t\tACC_STRICT" << std::endl;
+                    std::cout << "\tACC_STRICT" << std::endl;
                     break;
                 case ACC_SYNTHETIC_M:
-                    std::cout << "\t\tACC_SYNTHETIC" << std::endl;
+                    std::cout << "\tACC_SYNTHETIC" << std::endl;
                     break;
-                
-
             }
 
             std::cout << "\n}" << std::endl;
 
         }
     } else {
-        std::cout << "Methods: " << std::endl;
+        std::cout << "Classe não possui Methods.\n\n" << std::endl;
     }
 
 }

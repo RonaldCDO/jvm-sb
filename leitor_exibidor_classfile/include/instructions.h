@@ -1,7 +1,25 @@
 #ifndef INSTRUCTIONS
 #define INSTRUCTIONS
 
-typedef enum Instructions {
+#include "data_class_format.h"
+
+#define MNEMONIC_SIZE 20
+
+
+class Instruction {
+    protected:
+        u1 opcode;
+        std::string mnemonic;
+        int size;
+    public:
+        Instruction(u1 opcode, const std::string mnemonic, int size);
+        std::vector<Instruction*> CreateInstructionVector();
+};
+
+#endif
+
+/**
+typedef enum Opcodes {
     
 // Constants
 OC_nop = 0x00,
@@ -242,4 +260,4 @@ OC_impdep2 = 0xff
 
 };
 
-#endif
+**/

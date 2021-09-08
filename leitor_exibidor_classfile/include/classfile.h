@@ -60,6 +60,7 @@ class ClassFile {
         void ShowJavaVersion();
         void ShowConstantPoolCount();
         void ShowConstantPool();
+        void ShowInterfaces();
         void ShowFields();
         void ShowMethods();
         void ShowAccessFlags();
