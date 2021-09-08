@@ -21,8 +21,6 @@ class FieldsInfo {
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        // char* descriptor;
-        // char* name;
         AttributesTable* at;
     public:
         FieldsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);

@@ -31,7 +31,7 @@ void ClassFile::ReadClassFile(){
     if (magic == magic_number) 
         std::cout << "File Type: .class"<<"\n";
     else{
-        std::cout<< "Tipo de arquivo não aceito\n";
+        std::cout<< "Tipo de arquivo nao aceito\n";
         exit(1);
     }
     minor_version = Readu2(file);
@@ -47,25 +47,17 @@ void ClassFile::ReadClassFile(){
     this_class = Readu2Raw(file);
     super_class = Readu2Raw(file);
 
-    std::cout << "interfaces" << std::endl;
-
     interfaces_count = Readu2Raw(file);
 
     LoadInterfaces();
-
-    std::cout << "fields" << std::endl;
 
     fields_count = Readu2Raw(file);
 
     LoadFieldsTable();
 
-    std::cout << "methods" << std::endl;
-
     methods_count = Readu2Raw(file);
 
     LoadMethodsTable();
-
-    std::cout << "attributes" << std::endl;
 
     attributes_count = Readu2Raw(file);
 
@@ -74,90 +66,19 @@ void ClassFile::ReadClassFile(){
          attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
      }
 
-    std::cout << "Fim da leitura do arquivo .class." << std::endl; 
-}
-
-void ClassFile::ShowMagic() {
-
-    std::cout << "Magic: ";
-    Printu4Hex(magic);
-}
-
-void ClassFile::ShowMinor() {
-    std::cout << "Minor Version:\t\t" << minor_version << std::endl;
-}
-
-void ClassFile::ShowMajor() {
-    std::cout << "Major Version:\t\t" << major_version << std::endl;
-}
-
-void ClassFile::ShowJavaVersion() {
-    std::cout << "Java Version:\t\t" << "1." << major_version-44 << std::endl;
-}
-
-void ClassFile::ShowConstantPoolCount(){
-    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
-}
-
-void ClassFile::ShowAccessFlags() {
-    std::cout << "Flags:\t\t\t";
-    Printu2Hex(access_flags);
-
-    u2 byte;
-
-    byte = access_flags & 0x000F;
-
-    if (byte == ACC_PUBLIC_C) std::cout << "\t\t\tACC_PUBLIC" << std::endl;
-
-    byte = access_flags & 0x00F0;
-
-    if (byte == ACC_FINAL_C) std::cout << "\t\t\tACC_FINAL" << std::endl;
-    if (byte == ACC_SUPER_C) std::cout << "\t\t\tACC_SUPER" << std::endl;
-
-    byte = access_flags & 0x0F00;
-
-    if (byte == ACC_INTERFACE_C) std::cout << "\t\t\tACC_INTERFACE" << std::endl;
-    if (byte == ACC_ABSTRACT_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
-
-    byte = access_flags & 0xF000;
-
-    if (byte == ACC_ANNOTATION_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
-    if (byte == ACC_ENUM_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
-}
-
-void ClassFile::ShowThisClass() {
-    std::cout << "This_class:\t\t" ;
-    constant_pool->Reference(this_class);
-    std::cout<<std::endl;
-}
-
-void ClassFile::ShowSuperClass() {
-    std::cout << "Super_class:\t\t";
-    constant_pool->Reference(super_class);
-    std::cout<<std::endl;
+    //std::cout << "Fim da leitura do arquivo .class." << std::endl; 
 }
 
 
-void ClassFile::ShowInterfacesCount(){
-    std::cout << "Interfaces:\t\t" << interfaces_count << std::endl;
+void ClassFile::LoadInterfaces() {
+    if (interfaces_count) {
+
+        interfaces = new u2(interfaces_count);
+        for (int i = 0; i < interfaces_count; i++) {
+            interfaces[i] = Readu2Raw(file);
+        }
+    }
 }
-
-
-void ClassFile::ShowFieldsCount(){
-    std::cout << "Fields:\t\t\t" << fields_count << std::endl;
-}
-
-
-void ClassFile::ShowMethodsCount(){
-    std::cout << "Methods:\t\t" << methods_count << std::endl;
-}
-
-void ClassFile::ShowAttributesCount(){
-    std::cout <<"Attributes:\t\t" << attributes_count << std::endl;
-}
-// u2 ClassFile::GetAcessFlags(){
-//     return access_flags;
-// }
 
 void ClassFile::LoadConstantPool() {
 
@@ -241,6 +162,134 @@ void ClassFile::LoadConstantPool() {
         cp_count_local--;
     }
 }
+
+void ClassFile::LoadFieldsTable() {
+    
+    if (fields_count) {
+
+    FieldsInfo * field;    
+
+        fields_table = new Fields();
+
+        for (int i = 0; i < fields_count; i++) {
+            
+            field = new FieldsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            
+            if (field->GetAttributesCount()) {
+                AttributesTable* at = new AttributesTable();
+                at->LoadAttributesTable(file, field->GetAttributesCount(), constant_pool);
+                field->SetAttributesTable(at);
+            }
+            fields_table->appendField(field);
+        }
+    }
+}
+
+
+void ClassFile::LoadMethodsTable() {
+    
+    if (methods_count) {
+
+    MethodsInfo * method;
+
+        methods_table = new Methods();
+
+        for (int i = 0; i < methods_count; i++) {
+
+            method = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+
+            if (method->GetAttributesCount_M()) {
+                AttributesTable * at = new AttributesTable();                
+                at->LoadAttributesTable(file, method->GetAttributesCount_M(), constant_pool);
+                method->SetAttributesTable(at);
+            }
+
+            methods_table->AppendMethod(method);
+        }
+    }
+}
+void ClassFile::ShowMagic() {
+
+    std::cout << "Magic: ";
+    Printu4Hex(magic);
+}
+
+void ClassFile::ShowMinor() {
+    std::cout << "Minor Version:\t\t" << minor_version << std::endl;
+}
+
+void ClassFile::ShowMajor() {
+    std::cout << "Major Version:\t\t" << major_version << std::endl;
+}
+
+void ClassFile::ShowJavaVersion() {
+    std::cout << "Java Version:\t\t" << "1." << major_version-44 << std::endl;
+}
+
+void ClassFile::ShowConstantPoolCount(){
+    std::cout << "Constant Pool count:\t" << constant_pool_count << std::endl;
+}
+
+void ClassFile::ShowAccessFlags() {
+    std::cout << "Flags:\t\t\t";
+    Printu2Hex(access_flags);
+
+    u2 byte;
+
+    byte = access_flags & 0x000F;
+
+    if (byte == ACC_PUBLIC_C) std::cout << "\t\t\tACC_PUBLIC" << std::endl;
+
+    byte = access_flags & 0x00F0;
+
+    if (byte == ACC_FINAL_C) std::cout << "\t\t\tACC_FINAL" << std::endl;
+    if (byte == ACC_SUPER_C) std::cout << "\t\t\tACC_SUPER" << std::endl;
+
+    byte = access_flags & 0x0F00;
+
+    if (byte == ACC_INTERFACE_C) std::cout << "\t\t\tACC_INTERFACE" << std::endl;
+    if (byte == ACC_ABSTRACT_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+
+    byte = access_flags & 0xF000;
+
+    if (byte == ACC_ANNOTATION_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ENUM_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+}
+
+void ClassFile::ShowThisClass() {
+    std::cout << "This_class:\t\t" ;
+    constant_pool->Reference(this_class-1);
+    std::cout<<std::endl;
+}
+
+void ClassFile::ShowSuperClass() {
+    std::cout << "Super_class:\t\t";
+    constant_pool->Reference(super_class-1);
+    std::cout<<std::endl;
+}
+
+
+void ClassFile::ShowInterfacesCount(){
+    std::cout << "Interfaces:\t\t" << interfaces_count << std::endl;
+}
+
+
+void ClassFile::ShowFieldsCount(){
+    std::cout << "Fields:\t\t\t" << fields_count << std::endl;
+}
+
+
+void ClassFile::ShowMethodsCount(){
+    std::cout << "Methods:\t\t" << methods_count << std::endl;
+}
+
+void ClassFile::ShowAttributesCount(){
+    std::cout <<"Attributes:\t\t" << attributes_count << std::endl;
+}
+// u2 ClassFile::GetAcessFlags(){
+//     return access_flags;
+// }
+
 
 void ClassFile::ShowConstantPool() {
     constant_pool->ShowConstantPoolTable();
@@ -457,94 +506,4 @@ void ClassFile::ShowMethods() {
 
 }
 
-
-
-void ClassFile::LoadInterfaces() {
-    if (interfaces_count) {
-
-        interfaces = new u2(interfaces_count);
-        for (int i = 0; i < interfaces_count; i++) {
-            interfaces[i] = Readu2Raw(file);
-        }
-    }
-}
-
-void ClassFile::LoadFieldsTable() {
-    
-    if (fields_count) {
-
-    FieldsInfo * field_pt;    
-
-        fields_table = new Fields();
-
-        for (int i = 0; i < fields_count; i++) {
-            
-            field_pt = new FieldsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
-            
-            if (field_pt->GetAttributesCount()) {
-                AttributesTable* at = new AttributesTable();
-                // std::cout<< "Field" << std::endl;
-                at->LoadAttributesTable(file, field_pt->GetAttributesCount(), constant_pool);
-            }
-            fields_table->appendField(field_pt);
-        }
-    }
-}
-
-
-void ClassFile::LoadMethodsTable() {
-    
-    if (methods_count) {
-
-    MethodsInfo * method;
-
-        methods_table = new Methods();
-
-        for (int i = 0; i < methods_count; i++) {
-
-            //u2 access_flags = Readu2Raw(file);
-            //u2 name_index = Readu2Raw(file);
-            //u2 descriptor_index = Readu2Raw(file);
-            //u2 attributes_count = Readu2Raw(file);
-
-            method = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
-
-            if (method->GetAttributesCount_M()) {
-                AttributesTable * at = new AttributesTable();                
-                at->LoadAttributesTable(file, method->GetAttributesCount_M(), constant_pool);
-                method->SetAttributesTable(at);
-            }
-
-            methods_table->AppendMethod(method);
-        }
-    }
-}
-
-// u2 ClassFile::GetThisClass(){
-//     return this_class;
-// }
-
-// u2 ClassFile::GetSuperClass(){
-//     return super_class;
-// }
-
-
-// u2 ClassFile::GetInterfacesCount(){
-//     return interfaces_count;
-// }
-
-
-// u2 ClassFile::GetFieldsCount(){
-//     return fields_count;
-// }
-
-
-// u2 ClassFile::GetMethodsCount(){
-//     return methods_count;
-// }
-
-
-// u2 ClassFile::GetAttributesCount(){
-//     return attributes_count;
-// }    
 

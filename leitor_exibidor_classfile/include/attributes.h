@@ -161,6 +161,4 @@ class LocalVariableTableAtt : public AttributesInfo{
         void Show();
 };
 
-
-
 #endif

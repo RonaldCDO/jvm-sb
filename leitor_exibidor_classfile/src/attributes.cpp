@@ -226,11 +226,7 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
 
             attribute_name_index = Readu2Raw(file);
             attribute_length = Readu4Raw(file);
-            std::cout << "i" << " Count: " << attributes_count << " name: " << attribute_name_index << " length: " << attribute_length << std::endl;
-            attribute_name = constant_pool->GetUtf8(attribute_name_index-1);
-            
-            //att_info = Readu1(file, attribute_length);
-            //AppendGeneric(attribute_name_index, attribute_length, att_info);            
+            attribute_name = constant_pool->GetUtf8(attribute_name_index-1);        
             
             if (strcmp((const char*)attribute_name, "ConstantValue") == 0) {
                 u2 constantvalue_index = Readu2Raw(file);
@@ -242,7 +238,6 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
                 u2 max_stack = Readu2Raw(file);
                 u2 max_locals = Readu2Raw(file);
                 u4 code_length = Readu4Raw(file);
-                std::cout << code_length << std::endl;
                 u1* code = Readu1(file, code_length);
 
                 CodeAtt* code_att = new CodeAtt(attribute_name_index, attribute_length, max_stack, max_locals, code_length, code);
@@ -255,7 +250,7 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
                 }
                 
                 u2 code_attributes_count = Readu2Raw(file);
-                for (int i = 0; i < code_attributes_count; i++) {
+                if (code_attributes_count) {
                     AttributesTable * at = new AttributesTable();
                     at->LoadAttributesTable(file, code_attributes_count, constant_pool);
                     code_att->SetAttributesTable(at);
@@ -272,10 +267,8 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
 
                 for(int i = 0; i< number_of_exceptions; i++){
                     exp_att->AppendExceptionIndex(new ExceptionsIndexTable(Readu1(file)));
-                }
-                
+                }   
             }
-            
             
             else if (strcmp((const char*)attribute_name, "SourceFile") == 0) {
                 u2 constantvalue_index = Readu2Raw(file);
@@ -310,10 +303,6 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
                 att_info = Readu1(file, attribute_length);
                 AppendGeneric(attribute_name_index, attribute_length, att_info);
             }
-            
-            
-            
+               
         }
-
-    
 };
