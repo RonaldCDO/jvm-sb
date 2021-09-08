@@ -240,22 +240,24 @@ void ClassFile::ShowAccessFlags() {
 
     byte = access_flags & 0x000F;
 
-    if (byte == ACC_PUBLIC_C) std::cout << "\t\tACC_PUBLIC" << std::endl;
+    if (byte == ACC_PUBLIC_C) std::cout << "ACC_PUBLIC" << std::endl;
 
     byte = access_flags & 0x00F0;
 
-    if (byte == ACC_FINAL_C) std::cout << "\t\tACC_FINAL" << std::endl;
-    if (byte == ACC_SUPER_C) std::cout << "\t\tACC_SUPER" << std::endl;
+    if (byte == ACC_FINAL_C) std::cout << "ACC_FINAL" << std::endl;
+    if (byte == ACC_SUPER_C) std::cout << "ACC_SUPER" << std::endl;
 
     byte = access_flags & 0x0F00;
 
-    if (byte == ACC_INTERFACE_C) std::cout << "\t\tACC_INTERFACE" << std::endl;
-    if (byte == ACC_ABSTRACT_C) std::cout << "\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_INTERFACE_C) std::cout << "ACC_INTERFACE" << std::endl;
+    if (byte == ACC_ABSTRACT_C) std::cout << "ACC_ABSTRACT" << std::endl;
 
     byte = access_flags & 0xF000;
 
-    if (byte == ACC_ANNOTATION_C) std::cout << "\t\tACC_ABSTRACT" << std::endl;
-    if (byte == ACC_ENUM_C) std::cout << "\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ANNOTATION_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ENUM_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+
+    std::cout << std::endl;
 }
 
 void ClassFile::ShowThisClass() {
