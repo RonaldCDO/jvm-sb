@@ -1,4 +1,4 @@
-#include "leitor_exibidor.h"
+#include "classfile.h"
 
 void ClassFile::LoadFile(char* fileName){
     std::cout << fileName << "\n";
@@ -44,25 +44,25 @@ void ClassFile::ReadClassFile(){
     this_class = Readu2Raw(file);
     super_class = Readu2Raw(file);
 
-    //std::cout << "interfaces" << std::endl;
+    std::cout << "interfaces" << std::endl;
 
     interfaces_count = Readu2Raw(file);
 
     LoadInterfaces();
 
-    //std::cout << "fields" << std::endl;
+    std::cout << "fields" << std::endl;
 
     fields_count = Readu2Raw(file);
 
     LoadFieldsTable();
 
-    //std::cout << "methods" << std::endl;
+    std::cout << "methods" << std::endl;
 
     methods_count = Readu2Raw(file);
 
     LoadMethodsTable();
 
-    //std::cout << "attributes" << std::endl;
+    std::cout << "attributes" << std::endl;
 
     attributes_count = Readu2Raw(file);
 
@@ -70,6 +70,8 @@ void ClassFile::ReadClassFile(){
     //     attributes_table = new AttributesTable();
     //     attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
     // }
+
+    std::cout << "Fim da leitura do arquivo .class." << std::endl; 
 }
 
 void ClassFile::ShowMagic() {

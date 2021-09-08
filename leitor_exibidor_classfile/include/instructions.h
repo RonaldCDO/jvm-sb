@@ -1,3 +1,5 @@
+#ifndef INSTRUCTIONS
+#define INSTRUCTIONS
 
 typedef enum Instructions {
     
@@ -240,3 +242,4 @@ OC_impdep2 = 0xff
 
 };
 
+#endif
