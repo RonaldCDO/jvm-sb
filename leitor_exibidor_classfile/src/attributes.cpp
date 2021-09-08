@@ -17,9 +17,10 @@ ConstantValueAtt::ConstantValueAtt(u2 attribute_name_index, u4 attribute_length,
 
 
 void ConstantValueAtt::Show(){
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length   << std::endl;
-    std::cout << "constant_value_index: " << constantvalue_index << std::endl;
+    std::cout << "\t>>> Constant Value: " << std::endl;
+    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tattributes_length: " << attribute_length   << std::endl;
+    std::cout << "\tconstant_value_index: " << constantvalue_index << std::endl;
 }
 
 
@@ -58,26 +59,25 @@ void CodeAtt::SetAttributesTable(AttributesTable * attributes) {
     this->attributes = attributes;
 }
 
-
 void CodeAtt::Show() {
-
+    std::cout << "\t>>> Code: " << std::endl;
     std::cout << "\tAttribute_name_index: " << attribute_name_index << std::endl;
     std::cout << "\tAttributes_length: " << attribute_length << std::endl;
-    std::cout << "\t\tMax_stack: " << max_stack << std::endl;
-    std::cout << "\t\tMax_locals: " << max_locals << std::endl;
-    std::cout << "\t\tCode_length: " << code_length << std::endl;
+    std::cout << "\tMax_stack: " << max_stack << std::endl;
+    std::cout << "\tMax_locals: " << max_locals << std::endl;
+    std::cout << "\tCode_length: " << code_length << std::endl << std::endl;
 
     InstructionVector instructionVector;
     instructionVector.CreateInstructionVector();
 
-    u4 aux_code_length = code_length;
+    int aux_code_length = code_length;
     u1 opcode;
     int skip;
     int i = 0;
 
     while (i < aux_code_length) {
         opcode = code[i];
-        skip = instructionVector.ShowInstruction(opcode, code);
+        skip = instructionVector.ShowInstruction(opcode);
         i = i + 1 + skip;
     }
 
@@ -101,9 +101,10 @@ void ExceptionsAtt::AppendExceptionIndex(ExceptionsIndexTable* eit){
 }
 
 void ExceptionsAtt::Show() {
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length << std::endl;
-    std::cout << "number_of_exceptions: " << number_of_exceptions << std::endl;
+    std::cout << "\t>>> Exceptions: " << std::endl;
+    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tattributes_length: " << attribute_length << std::endl;
+    std::cout << "\tnumber_of_exceptions: " << number_of_exceptions << std::endl;
 
 }
 
@@ -122,9 +123,10 @@ SourceFileAtt::SourceFileAtt(u2 attribute_name_index, u4 attribute_length, u2 so
 }
 
 void SourceFileAtt::Show(){
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length << std::endl;
-    std::cout << "sourcefile_index: " << sourcefile_index << std::endl;
+    std::cout << "\t>>> SourceFile: " << std::endl;
+    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tattributes_length: " << attribute_length << std::endl;
+    std::cout << "\tsourcefile_index: " << sourcefile_index << std::endl;
 }
 
 
@@ -151,9 +153,10 @@ void LineNumberTableAtt::AppendNumber(LineNumberTable * lnt){
 
 
 void LineNumberTableAtt::Show(){
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length << std::endl;
-    std::cout << "line_number_table_length: " << line_number_table_length << std::endl;
+    std::cout << "\t>>> LineNumberTable: " << std::endl;
+    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tattributes_length: " << attribute_length << std::endl;
+    std::cout << "\tline_number_table_length: " << line_number_table_length << std::endl;
 }
 
 
@@ -180,9 +183,10 @@ void LocalVariableTableAtt::AppendVariable(LocalVariableTable * lvt){
 
 
 void LocalVariableTableAtt::Show(){
-    std::cout << "attribute_name_index: " << attribute_name_index << std::endl;
-    std::cout << "attributes_length: " << attribute_length << std::endl;
-    std::cout << "local_variable_table_length: " << local_variable_table_length << std::endl;
+    std::cout << "\t >>> LocalVariableTable: " << std::endl;
+    std::cout << "\tattribute_name_index: " << attribute_name_index << std::endl;
+    std::cout << "\tattributes_length: " << attribute_length << std::endl;
+    std::cout << "\tlocal_variable_table_length: " << local_variable_table_length << std::endl;
 }
 
 void AttributesTable::AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index){
@@ -309,8 +313,8 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
         }
 };
 
-void AttributesTable::ShowAttributesTable(ConstantPool* cp) {
-    for (int i = 0; i < at.size(); i++){
+void AttributesTable::ShowAttributesTable() {
+    for (int i = 0; i < (int)at.size(); i++){
         at.at(i)->Show();
     }
 }

@@ -261,18 +261,20 @@ int InstructionVector::GetSize() {
     return instructions.size();
 }
 
-int InstructionVector::ShowInstruction(u1 opcode, u1 * operands) {
+int InstructionVector::ShowInstruction(u1 opcode) {
 
     Instruction* inst;
 
-    for (int i = 0; i < instructions.size(); i++) {
+    for (int i = 0; i < (int) instructions.size(); i++) {
         inst = instructions.at(i);
         if (opcode == inst->GetOpcode()) {
-            std::cout << inst->GetMnemonic();
+            std::cout << "\t\t" << inst->GetMnemonic();
             if (inst->GetSize()) {
+                /**
                 for (int i = 0; i < inst->GetSize(); i++) {
                     std::cout << operands[i] << " "; 
                 }
+                **/
             }
             std::cout << std::endl;
             return inst->GetSize();

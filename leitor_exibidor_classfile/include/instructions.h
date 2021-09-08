@@ -24,7 +24,7 @@ class InstructionVector{
         std::vector<Instruction*> CreateInstructionVector();
         Instruction* GetInstruction(int position);
         int GetSize();
-        int ShowInstruction(u1 opcode, u1 * operands);
+        int ShowInstruction(u1 opcode);
 };
 
 /**

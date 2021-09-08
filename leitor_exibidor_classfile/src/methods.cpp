@@ -20,8 +20,8 @@ MethodsInfo* Methods::GetMethod(int index){
    return methods.at(index); 
 }
 
-void MethodsInfo::printAttributesTable(ConstantPool* cp) {
-    attributes->ShowAttributesTable(cp);
+void MethodsInfo::printAttributesTable() {
+    attributes->ShowAttributesTable();
 }
 
 void Methods::ShowMethods(int methods_count, ConstantPool* cp) {
@@ -133,7 +133,7 @@ void Methods::ShowMethods(int methods_count, ConstantPool* cp) {
                     break;
             }
 
-            method->printAttributesTable(cp);
+            method->printAttributesTable();
 
             std::cout << "\n}" << std::endl;
 

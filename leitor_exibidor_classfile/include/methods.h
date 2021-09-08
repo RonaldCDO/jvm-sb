@@ -34,7 +34,7 @@ class MethodsInfo{
         inline u2 GetDescriptorIndex(){return descriptor_index;};
         inline u2 GetAttributesCount(){return attributes_count;};
         void SetAttributesTable(AttributesTable* at);
-        void printAttributesTable(ConstantPool* cp);
+        void printAttributesTable();
 };
 
 class Methods{

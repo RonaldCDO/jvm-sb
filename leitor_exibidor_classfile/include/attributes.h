@@ -30,7 +30,7 @@ class AttributesTable{
         void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length);
         void AppendGeneric(u2 attribute_name_index, u4 attribute_length, u1* att_info);
         void AppendAttribute(AttributesInfo * attribute);
-        void ShowAttributesTable(ConstantPool* cp);
+        void ShowAttributesTable();
         void LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool);
 };
 
