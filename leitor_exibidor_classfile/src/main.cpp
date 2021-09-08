@@ -3,7 +3,7 @@
 int main(int argc, char* argv[]) {
 
     if (argc == 1)
-    std::cout << "Voce informou " << argc << " argumento: " << argv[0] <<"\n";
+    std::cout << "Voce informou " << argc << " argumento: " << argv[0] <<std::endl;
     else 
     std::cout << "Voce informou " << argc << " argumentos: ";
     
@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
     cf->ShowAttributesCount();
     cf->ShowConstantPoolCount();
     cf->ShowConstantPool();
+    cf->ShowInterfaces();
     cf->ShowFields();
     cf->ShowMethods();
     delete cf;

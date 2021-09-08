@@ -290,9 +290,6 @@ u2 InfoInvokeDynamic::GetArgs(u2 *arg2){
     return name_and_type_index;
 }
 
-// void ConstantPoolInfo::SetTag(u1 tag) {
-//     this->tag = tag;
-// }
 
 u1 ConstantPoolInfo::GetTag() {
     return tag;
@@ -357,7 +354,9 @@ void ConstantPool::AppendInvokeDynamic(u1 tag, u2 bootstrap_method_attr_index, u
 }
 
 void ConstantPool::ShowConstantPoolTable() {
-    std::cout<<"Constant Pool:"<<std::endl;
+    std::cout<<"\n-----------------";
+    std::cout<<"\n| Constant Pool |:"<<std::endl;
+    std::cout<<"-----------------\n";
     int length = cp.size();
     u1 tag;
     for (int i = 0; i < length; i++) {

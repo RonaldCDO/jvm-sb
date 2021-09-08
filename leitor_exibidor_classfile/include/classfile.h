@@ -66,6 +66,7 @@ class ClassFile {
         void ShowThisClass();
         void ShowSuperClass();
         void ShowInterfacesCount();
+        void ShowInterfaces();
         void ShowFieldsCount();
         void ShowMethodsCount();
         void ShowAttributesCount();

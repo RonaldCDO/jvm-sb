@@ -171,16 +171,6 @@ void LocalVariableTableAtt::Show(){
     std::cout << "local_variable_table_length: " << local_variable_table_length << std::endl;
 }
 
-u2 AttributesInfo::GetAttributeNameIndex(){
-    return attribute_name_index;
-}
-
-
-u4 AttributesInfo::GetAttributeLength(){
-    return attribute_length;
-}
-
-
 void AttributesTable::AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index){
     at.push_back(new ConstantValueAtt(attribute_name_index, attribute_length, constantvalue_index));
 }
@@ -256,7 +246,6 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
                     code_att->SetAttributesTable(at);
                 }
                 at.push_back(code_att);
-                // code_att->Show();
             }
 
             else if (strcmp((const char*)attribute_name, "Exceptions") == 0) {
@@ -299,7 +288,6 @@ void AttributesTable::LoadAttributesTable(std::istream& file, int attributes_cou
             }
 
             else {
-                std::cout << "generic" << std::endl;
                 att_info = Readu1(file, attribute_length);
                 AppendGeneric(attribute_name_index, attribute_length, att_info);
             }

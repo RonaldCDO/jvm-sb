@@ -100,17 +100,6 @@ u4 Readu4Raw(std::istream& file) {
 	}
 
 	return ret;
-    
-    /**
-    u4 buffer_u4;
-    
-    file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
-
-    buffer_u4 = htonl(buffer_u4);
-    
-    return buffer_u4;
-    **/
-    
 }
 
 void Printu2Hex(u2 hex_value) {
@@ -120,7 +109,7 @@ void Printu2Hex(u2 hex_value) {
     std::streamsize oldPrec = std::cout.precision();
     char oldFill = std::cout.fill();
     
-    std::cout << "0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::hex << hex_value << std::endl;
+    std::cout << "(0x" << std::uppercase << std::setfill('0') << std::setw(4) << std::hex << hex_value <<")";
     
     // restaura configuracoes do cout apos o uso do parametro "hex"
     std::cout.flags(oldFlags);
@@ -135,7 +124,7 @@ void Printu4Hex(u4 hex_value) {
     std::streamsize oldPrec = std::cout.precision();
     char oldFill = std::cout.fill();
     
-    std::cout << "0x" <<  std::uppercase <<std::setfill('0') << std::setw(8) << std::hex << hex_value << std::endl;
+    std::cout << "0x" <<  std::uppercase <<std::setfill('0') << std::setw(8) << std::hex << hex_value;
     
     // restaura configuracoes do cout apos o uso do parametro "hex"
     std::cout.flags(oldFlags);

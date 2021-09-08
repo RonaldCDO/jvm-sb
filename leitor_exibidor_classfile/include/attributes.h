@@ -12,8 +12,8 @@ class AttributesInfo{
     u2 attribute_name_index;
     u4 attribute_length;
     public:
-    u2 GetAttributeNameIndex();
-    u4 GetAttributeLength();
+    inline u2 GetAttributeNameIndex() {return attribute_name_index;};
+    inline u4 GetAttributeLength() {return attribute_length;};
     virtual void Show();
 };
 

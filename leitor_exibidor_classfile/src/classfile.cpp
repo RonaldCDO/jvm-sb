@@ -6,7 +6,7 @@ void ClassFile::LoadFile(char* fileName){
 
     std::cout << fileName << "\n";
 
-    std::cout<<"Filename: " << fileName <<std::endl;
+    std::cout<<"\nFilename: " << fileName <<std::endl;
     
     if (file.is_open()) {
         ReadClassFile();
@@ -39,9 +39,9 @@ void ClassFile::ReadClassFile(){
     major_version = Readu2(file);
 
     constant_pool_count = Readu2(file);
-    constant_pool_count--;
       
     LoadConstantPool();
+
 
     access_flags = Readu2Raw(file);
     this_class = Readu2Raw(file);
@@ -82,7 +82,7 @@ void ClassFile::LoadInterfaces() {
 
 void ClassFile::LoadConstantPool() {
 
-    u2 cp_count_local = constant_pool_count;
+    u2 cp_count_local = constant_pool_count -1;
 
 
     constant_pool = new ConstantPool();
@@ -198,9 +198,9 @@ void ClassFile::LoadMethodsTable() {
 
             method = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
 
-            if (method->GetAttributesCount_M()) {
+            if (method->GetAttributesCount()) {
                 AttributesTable * at = new AttributesTable();                
-                at->LoadAttributesTable(file, method->GetAttributesCount_M(), constant_pool);
+                at->LoadAttributesTable(file, method->GetAttributesCount(), constant_pool);
                 method->SetAttributesTable(at);
             }
 
@@ -212,6 +212,7 @@ void ClassFile::ShowMagic() {
 
     std::cout << "Magic: ";
     Printu4Hex(magic);
+    std::cout<<std::endl;
 }
 
 void ClassFile::ShowMinor() {
@@ -231,29 +232,29 @@ void ClassFile::ShowConstantPoolCount(){
 }
 
 void ClassFile::ShowAccessFlags() {
-    std::cout << "Flags:\t\t\t";
+    std::cout << "Flags: ";
     Printu2Hex(access_flags);
 
     u2 byte;
 
     byte = access_flags & 0x000F;
 
-    if (byte == ACC_PUBLIC_C) std::cout << "\t\t\tACC_PUBLIC" << std::endl;
+    if (byte == ACC_PUBLIC_C) std::cout << "\t\tACC_PUBLIC" << std::endl;
 
     byte = access_flags & 0x00F0;
 
-    if (byte == ACC_FINAL_C) std::cout << "\t\t\tACC_FINAL" << std::endl;
-    if (byte == ACC_SUPER_C) std::cout << "\t\t\tACC_SUPER" << std::endl;
+    if (byte == ACC_FINAL_C) std::cout << "\t\tACC_FINAL" << std::endl;
+    if (byte == ACC_SUPER_C) std::cout << "\t\tACC_SUPER" << std::endl;
 
     byte = access_flags & 0x0F00;
 
-    if (byte == ACC_INTERFACE_C) std::cout << "\t\t\tACC_INTERFACE" << std::endl;
-    if (byte == ACC_ABSTRACT_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_INTERFACE_C) std::cout << "\t\tACC_INTERFACE" << std::endl;
+    if (byte == ACC_ABSTRACT_C) std::cout << "\t\tACC_ABSTRACT" << std::endl;
 
     byte = access_flags & 0xF000;
 
-    if (byte == ACC_ANNOTATION_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
-    if (byte == ACC_ENUM_C) std::cout << "\t\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ANNOTATION_C) std::cout << "\t\tACC_ABSTRACT" << std::endl;
+    if (byte == ACC_ENUM_C) std::cout << "\t\tACC_ABSTRACT" << std::endl;
 }
 
 void ClassFile::ShowThisClass() {
@@ -297,9 +298,12 @@ void ClassFile::ShowConstantPool() {
 
 void ClassFile::ShowFields() {
 
+    std::cout<<"\n-----------\n";
+    std::cout << "| Fields: |" << std::endl;
+    std::cout<<"-----------\n";
+
     if (fields_count) {
         
-        std::cout << "\nFields:" << std::endl;
         
         FieldsInfo* field;
 
@@ -313,21 +317,21 @@ void ClassFile::ShowFields() {
 
             flags = field->GetAccessFlags();
 
-            byte = flags & 0x000F;
+            // byte = flags & 0x000F;
 
             std::cout << "{\n" << std::endl;
 
-            switch(byte){
-                case ACC_PUBLIC_F:
-                    std::cout << "public ";
-                    break;
-                case ACC_PROTECTED_F:
-                    std::cout << "protected ";
-                    break;
-                case ACC_PRIVATE_F:
-                    std::cout << "private ";
-                    break;
-            }
+            // switch(byte){
+            //     case ACC_PUBLIC_F:
+            //         std::cout << "public ";
+            //         break;
+            //     case ACC_PROTECTED_F:
+            //         std::cout << "protected ";
+            //         break;
+            //     case ACC_PRIVATE_F:
+            //         std::cout << "private ";
+            //         break;
+            // }
 
 
 
@@ -389,17 +393,26 @@ void ClassFile::ShowFields() {
             std::cout << "}" << std::endl;
 
         }
-    } else {
-        std::cout << "\nFields: \n" << std::endl;
     }
 
 }
 
-void ClassFile::ShowMethods() {
+void ClassFile::ShowInterfaces(){
+    std::cout<<"\n---------------\n";
+    std::cout << "| Interfaces: |" <<std::endl;
+    std::cout<<"---------------\n";
+    if (interfaces_count){
 
+    }
+    
+}
+
+void ClassFile::ShowMethods() {
+    std::cout<<"\n------------\n";
+    std::cout << "| Methods: |" << std::endl;
+    std::cout<<"------------\n";
     if (methods_count) {
         
-        std::cout << "Methods:" << std::endl;
         
         MethodsInfo* method;
 
@@ -412,40 +425,46 @@ void ClassFile::ShowMethods() {
 
             method = methods_table->GetMethod(i);
 
-            flags = method->GetAccessFlags_M();
+            flags = method->GetAccessFlags();
 
-            byte = flags & 0x000F;
-            // std::cout << i << " " << method << " " << flags << " " << byte ;
-            std::cout << "\n";
+            // byte = flags & 0x000F;
+            // std::cout << "i " << i << "method " << method << "flags " << flags << "byte " << byte ;
+            // std::cout << "\n";
 
-            switch(byte){
-                case ACC_PRIVATE_M:
-                    std::cout << "private ";
-                    break;
-                case ACC_PROTECTED_M:
-                    std::cout << "protected ";
-                    break;
-                case ACC_PUBLIC_M:
-                    std::cout << "public ";
-                    break;
-            }
+            // switch(byte){
+            //     case ACC_PRIVATE_M:
+            //         std::cout << "private ";
+            //         break;
+            //     case ACC_PROTECTED_M:
+            //         std::cout << "protected ";
+            //         break;
+            //     case ACC_PUBLIC_M:
+            //         std::cout << "public ";
+            //         break;
+            //     case ACC_PUBLIC_M + ACC_STATIC_M:
+            //         std::cout <<"public static ";
+            // }
 
-            name_index = (method->GetNameIndex_M());
+            name_index = (method->GetNameIndex());
             if (name_index == 0){
-                std::cout << "\tName: " << constant_pool->GetUtf8(name_index) << std::endl;
+                std::cout << "Name: " << constant_pool->GetUtf8(name_index) << std::endl;
             } else{
-                std::cout << "\tName: " << constant_pool->GetUtf8(name_index-1) << std::endl;
+                std::cout << "Name: " << constant_pool->GetUtf8(name_index-1) << std::endl;
             }
             
-            descriptor_index = method->GetDescriptorIndex_M();
-            std::cout <<"\tDescriptor: "<<constant_pool->GetUtf8(descriptor_index-1) << std::endl;
+            descriptor_index = method->GetDescriptorIndex();
+            std::cout <<"Descriptor: "<<constant_pool->GetUtf8(descriptor_index-1) << std::endl;
             
-
-            std::cout << "\tFlags:" << std::endl;
 
             byte = flags & 0x000F;
 
+            std::cout << "Access Flags:"<< " ";
+            Printu2Hex(byte);
+
             switch(byte){
+                case 0:
+                    std::cout<< " []" <<std::endl;
+                    break;
                 case ACC_PUBLIC_M:
                     std::cout << "\t\tACC_PUBLIC" << std::endl;
                     break;
@@ -458,6 +477,8 @@ void ClassFile::ShowMethods() {
                 case ACC_STATIC_M:
                     std::cout << "\t\tACC_STATIC" << std::endl;
                     break;
+                case ACC_PUBLIC_M + ACC_STATIC_M:
+                    std::cout << " ACC_PUBLIC, ACC_STATIC" <<std::endl;
             }
 
             byte = flags & 0x00F0;
@@ -497,7 +518,7 @@ void ClassFile::ShowMethods() {
 
             }
 
-            std::cout << "}" << std::endl;
+            std::cout << "\n}" << std::endl;
 
         }
     } else {

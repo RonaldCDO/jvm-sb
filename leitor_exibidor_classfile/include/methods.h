@@ -29,10 +29,10 @@ class MethodsInfo{
         AttributesTable * attributes;
     public:
         MethodsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
-        u2 GetAccessFlags_M();
-        u2 GetNameIndex_M();
-        u2 GetDescriptorIndex_M();
-        u2 GetAttributesCount_M();
+        inline u2 GetAccessFlags(){return access_flags;};
+        inline u2 GetNameIndex(){return name_index;};
+        inline u2 GetDescriptorIndex(){return descriptor_index;};
+        inline u2 GetAttributesCount(){return attributes_count;};
         void SetAttributesTable(AttributesTable* at);
 };
 
