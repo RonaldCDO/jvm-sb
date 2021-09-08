@@ -20,7 +20,7 @@ u1 * Readu1(std::istream& file, u2 length) {
     for (int i = 0; i < length; i++) {
         file.read(reinterpret_cast<char *>(&buffer), sizeof(buffer));
         bytes[i] = buffer;
-    }
+    } 
 
     bytes[length] = '\0';
 
@@ -56,11 +56,16 @@ u2 Readu2(std::istream& file) {
 //  Leitura de 2 bytes sem conversão de endianess
 u2 Readu2Raw(std::istream& file) {
 
-    u2 buffer_u2;
+    u2 ret = 0;
+	u1 aux;
+
+	for (int i=0; i<2; i++) {
+		ret <<= 8;
+		file.read(reinterpret_cast<char *>(&aux), sizeof(aux));
+		ret |= aux;
+	}
     
-    file.read(reinterpret_cast<char *>(&buffer_u2), sizeof(buffer_u2));
-    
-    return buffer_u2;
+    return ret;
 }
 
 // Leitura de 4 bytes do arquivo
@@ -84,7 +89,7 @@ u4 Readu4(std::istream& file) {
 
 
 u4 Readu4Raw(std::istream& file) {
-    /**
+    
     u4 ret = 0;
 	u1 aux;
 
@@ -92,12 +97,11 @@ u4 Readu4Raw(std::istream& file) {
 		ret <<= 8;
 		file.read(reinterpret_cast<char *>(&aux), sizeof(aux));
 		ret |= aux;
-        std::cout << ret << std::endl;
 	}
 
 	return ret;
-    **/
-
+    
+    /**
     u4 buffer_u4;
     
     file.read(reinterpret_cast<char *>(&buffer_u4), sizeof(buffer_u4));
@@ -105,6 +109,7 @@ u4 Readu4Raw(std::istream& file) {
     buffer_u4 = htonl(buffer_u4);
     
     return buffer_u4;
+    **/
     
 }
 

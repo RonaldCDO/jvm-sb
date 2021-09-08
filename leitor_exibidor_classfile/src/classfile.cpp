@@ -1,12 +1,14 @@
 #include "classfile.h"
 
 void ClassFile::LoadFile(char* fileName){
+
+    file.open(fileName, std::ios::binary);
+
     std::cout << fileName << "\n";
 
-    this -> file.open(fileName);
     std::cout<<"Filename: " << fileName <<std::endl;
     
-    if (this -> file.is_open()) {
+    if (file.is_open()) {
         ReadClassFile();
     } else {
         std::cout << "Falha ao abrir arquivo. Encerrando...\n";
@@ -37,6 +39,7 @@ void ClassFile::ReadClassFile(){
     major_version = Readu2(file);
 
     constant_pool_count = Readu2(file);
+    constant_pool_count--;
       
     LoadConstantPool();
 
@@ -66,10 +69,10 @@ void ClassFile::ReadClassFile(){
 
     attributes_count = Readu2Raw(file);
 
-    // if (attributes_count) {
-    //     attributes_table = new AttributesTable();
-    //     attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
-    // }
+     if (attributes_count) {
+         attributes_table = new AttributesTable();
+         attributes_table->LoadAttributesTable(file, attributes_count, constant_pool);
+     }
 
     std::cout << "Fim da leitura do arquivo .class." << std::endl; 
 }
@@ -493,20 +496,26 @@ void ClassFile::LoadMethodsTable() {
     
     if (methods_count) {
 
-    MethodsInfo * methods_pt;
+    MethodsInfo * method;
 
         methods_table = new Methods();
 
         for (int i = 0; i < methods_count; i++) {
 
-            methods_pt = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+            //u2 access_flags = Readu2Raw(file);
+            //u2 name_index = Readu2Raw(file);
+            //u2 descriptor_index = Readu2Raw(file);
+            //u2 attributes_count = Readu2Raw(file);
 
-            if (methods_pt->GetAttributesCount_M()) {
-                AttributesTable* at = new AttributesTable();                
-                at->LoadAttributesTable(file, methods_pt->GetAttributesCount_M(), constant_pool);
+            method = new MethodsInfo(Readu2Raw(file), Readu2Raw(file), Readu2Raw(file), Readu2Raw(file));
+
+            if (method->GetAttributesCount_M()) {
+                AttributesTable * at = new AttributesTable();                
+                at->LoadAttributesTable(file, method->GetAttributesCount_M(), constant_pool);
+                method->SetAttributesTable(at);
             }
 
-            methods_table->AppendMethod(methods_pt);
+            methods_table->AppendMethod(method);
         }
     }
 }

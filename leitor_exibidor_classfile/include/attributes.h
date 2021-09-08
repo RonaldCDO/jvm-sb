@@ -28,6 +28,7 @@ class AttributesTable{
         void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length);
         void AppendLocalVariableTableAtt(u2 attribute_name_index, u4 attribute_length);
         void AppendGeneric(u2 attribute_name_index, u4 attribute_length, u1* att_info);
+        void AppendAttribute(AttributesInfo * attribute);
         void ShowAttributesTable();
         void LoadAttributesTable(std::istream& file, int attributes_count, ConstantPool* constant_pool);
 };
@@ -76,13 +77,13 @@ class CodeAtt : public AttributesInfo{
         u2 exception_table_length;
         std::vector<ExceptionsTableAtt*> exceptions_table;
         u2 attributes_length;
-        std::vector<GenericAtt*> attributes_table;
+        AttributesTable * attributes;
     public:
         CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
         void SetExceptionTableLength(u2 length);
         void SetAttributesLength(u2 length);
         void AppendException(ExceptionsTableAtt * eta);
-        void AppendAttribute(GenericAtt * ga);
+        void SetAttributesTable(AttributesTable * attributes);
         void Show();
 };
 

@@ -30,8 +30,8 @@ u2 MethodsInfo::GetAttributesCount_M(){
     return attributes_count;
 }
 
-void MethodsInfo::SetAttributesTable(AttributesTable* at){
-    this->at = at;
+void MethodsInfo::SetAttributesTable(AttributesTable* attributes){
+    this->attributes = attributes;
 }
 
 void Methods::AppendMethod(MethodsInfo * MethodsInfo){
