@@ -1,7 +1,22 @@
+/**
+ * LEITOR EXIBIDOR DE BYTECODE JAVA
+ * 
+ * SOFTWARE BASICO 
+ * PROF MARCELO LADEIRA
+ * 
+ * INTEGRANTES
+ * RONALD CESAR OLIVEIRA - 18/0047205
+ * JOAO ANTONIO MORAES - 16/0126975
+ * GEOVANNE CHIAPINOTTO - 15/0059639
+ * PEDRO AUGUSTO NUNES - 16/0141044
+ * 
+ **/
+
 #include "classfile.h"
 
 int main(int argc, char* argv[]) {
 
+    std::cout << "LEITOR/EXIBIDOR DE BYTECODE JAVA" << std::endl;
     if (argc == 1)
     std::cout << "Voce informou " << argc << " argumento: " << argv[0] <<std::endl;
     else 

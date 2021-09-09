@@ -1,5 +1,35 @@
 #include "instructions.h"
 
+Instruction* InstructionVector::GetInstruction(int position) {
+    return instructions.at(position);
+}
+
+
+int InstructionVector::GetSize() {
+    return instructions.size();
+}
+
+int InstructionVector::ShowInstruction(u1 opcode, int prefix) {
+
+    Instruction* inst;
+
+    for (int i = 0; i < (int) instructions.size(); i++) {
+        inst = instructions.at(i);
+        if (opcode == inst->GetOpcode()) {
+            std::cout << "\t\t" << prefix << "   " << inst->GetMnemonic();
+            if (inst->GetSize()) {
+                /**
+                for (int i = 0; i < inst->GetSize(); i++) {
+                    std::cout << operands[i] << " "; 
+                }
+                **/
+            }
+            std::cout << std::endl;
+            return inst->GetSize();
+        }
+    }
+    return -1;
+}
 
 Instruction::Instruction(u1 opcode, const std::string mnemonic, int size) {
     this->opcode = opcode;
@@ -24,6 +54,7 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x0a, "lconst_1", 0));
     instructions.push_back(new Instruction(0x0b, "fconst_0", 0));
     instructions.push_back(new Instruction(0x0c, "fconst_1", 0));
+    instructions.push_back(new Instruction(0x0d, "fconst_2", 0));
     instructions.push_back(new Instruction(0x0e, "dconst_0", 0));
     instructions.push_back(new Instruction(0x0f, "dconst_1", 0));
     instructions.push_back(new Instruction(0x10, "bipush", 1));
@@ -37,7 +68,8 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x15, "iload", 1));
     instructions.push_back(new Instruction(0x16, "lload", 1));
     instructions.push_back(new Instruction(0x17, "fload", 1));
-    instructions.push_back(new Instruction(0x18, "dload", 1));    
+    instructions.push_back(new Instruction(0x18, "dload", 1));
+    instructions.push_back(new Instruction(0x19, "aload", 1));    
     instructions.push_back(new Instruction(0x1a, "iload_0", 0));
     instructions.push_back(new Instruction(0x1b, "iload_1", 0));
     instructions.push_back(new Instruction(0x1c, "iload_2", 0));
@@ -72,12 +104,7 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x36, "istore", 0));
     instructions.push_back(new Instruction(0x37, "lstore", 0));
     instructions.push_back(new Instruction(0x38, "fstore", 0));
-    instructions.push_back(new Instruction(0x30, "dstore", 0));    
-    instructions.push_back(new Instruction(0x3a, "astore", 0));
-    instructions.push_back(new Instruction(0x36, "istore", 1));
-    instructions.push_back(new Instruction(0x37, "lstore", 1));
-    instructions.push_back(new Instruction(0x38, "fstore", 1));
-    instructions.push_back(new Instruction(0x30, "dstore", 1));    
+    instructions.push_back(new Instruction(0x39, "dstore", 0));    
     instructions.push_back(new Instruction(0x3a, "astore", 1));
     instructions.push_back(new Instruction(0x3b, "istore_0", 0));
     instructions.push_back(new Instruction(0x3c, "istore_1", 0));
@@ -250,35 +277,4 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0xff, "impdep2", 0));
 
     return instructions;    
-}
-
-Instruction* InstructionVector::GetInstruction(int position) {
-    return instructions.at(position);
-}
-
-
-int InstructionVector::GetSize() {
-    return instructions.size();
-}
-
-int InstructionVector::ShowInstruction(u1 opcode) {
-
-    Instruction* inst;
-
-    for (int i = 0; i < (int) instructions.size(); i++) {
-        inst = instructions.at(i);
-        if (opcode == inst->GetOpcode()) {
-            std::cout << "\t\t" << inst->GetMnemonic();
-            if (inst->GetSize()) {
-                /**
-                for (int i = 0; i < inst->GetSize(); i++) {
-                    std::cout << operands[i] << " "; 
-                }
-                **/
-            }
-            std::cout << std::endl;
-            return inst->GetSize();
-        }
-    }
-    return -1;
 }

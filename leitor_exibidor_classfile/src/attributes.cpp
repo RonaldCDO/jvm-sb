@@ -74,11 +74,13 @@ void CodeAtt::Show() {
     u1 opcode;
     int skip;
     int i = 0;
+    int prefix = 1;
 
     while (i < aux_code_length) {
         opcode = code[i];
-        skip = instructionVector.ShowInstruction(opcode);
+        skip = instructionVector.ShowInstruction(opcode, prefix);
         i = i + 1 + skip;
+        prefix = prefix + 1;
     }
 
 }

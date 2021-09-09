@@ -31,7 +31,7 @@ void ClassFile::ReadClassFile(){
     if (magic == magic_number) 
         std::cout << "File Type: .class"<<"\n";
     else{
-        std::cout<< "Tipo de arquivo nao aceito\n";
+        std::cout<< "Magic number nao encontrado. Encerrando...\n";
         exit(1);
     }
     minor_version = Readu2(file);

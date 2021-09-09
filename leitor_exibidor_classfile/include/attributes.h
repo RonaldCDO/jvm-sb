@@ -51,12 +51,6 @@ class GenericAtt : public AttributesInfo{
 };
 
 
-class Code{
-    protected:
-        u1 instructions;
-};
-
-
 class ExceptionsTableAtt{
     protected:
         u2 start_pc;
