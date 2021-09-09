@@ -24,6 +24,7 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x0a, "lconst_1", 0));
     instructions.push_back(new Instruction(0x0b, "fconst_0", 0));
     instructions.push_back(new Instruction(0x0c, "fconst_1", 0));
+    instructions.push_back(new Instruction(0x0d, "fconst_2", 0));
     instructions.push_back(new Instruction(0x0e, "dconst_0", 0));
     instructions.push_back(new Instruction(0x0f, "dconst_1", 0));
     instructions.push_back(new Instruction(0x10, "bipush", 1));
@@ -37,7 +38,8 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x15, "iload", 1));
     instructions.push_back(new Instruction(0x16, "lload", 1));
     instructions.push_back(new Instruction(0x17, "fload", 1));
-    instructions.push_back(new Instruction(0x18, "dload", 1));    
+    instructions.push_back(new Instruction(0x18, "dload", 1));
+    instructions.push_back(new Instruction(0x19, "aload", 1));     
     instructions.push_back(new Instruction(0x1a, "iload_0", 0));
     instructions.push_back(new Instruction(0x1b, "iload_1", 0));
     instructions.push_back(new Instruction(0x1c, "iload_2", 0));
@@ -179,10 +181,10 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x91, "i2b", 0));
     instructions.push_back(new Instruction(0x92, "i2c", 0));
     instructions.push_back(new Instruction(0x93, "i2s", 0));
-    instructions.push_back(new Instruction(0x94, "lcmp", 0));
     
     //COMPARISONS
 
+    instructions.push_back(new Instruction(0x94, "lcmp", 0));
     instructions.push_back(new Instruction(0x95, "fcmpl", 0));
     instructions.push_back(new Instruction(0x96, "fcmpg", 0));
     instructions.push_back(new Instruction(0x97, "dcmpl", 0));
@@ -236,10 +238,10 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0xc1, "instanceof", 2));
     instructions.push_back(new Instruction(0xc2, "monitorenter", 0));
     instructions.push_back(new Instruction(0xc3, "monitorexit", 0));
-    instructions.push_back(new Instruction(0xc4, "wide", 3));
     
     //EXTENDED
-
+    
+    instructions.push_back(new Instruction(0xc4, "wide", 3));
     instructions.push_back(new Instruction(0xc5, "multinewarray", 3));
     instructions.push_back(new Instruction(0xc6, "ifnull", 2));
     instructions.push_back(new Instruction(0xc7, "ifnonnull", 2));

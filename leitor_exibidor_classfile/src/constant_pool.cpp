@@ -207,7 +207,7 @@ void InfoDouble::Show() {
 		
 	datadouble = (s * m * pow(2, (e-1075)));
 
-    std::cout<< "Double\t\t"<< datadouble << "\t\t";
+    std::cout<< "Double\t\t"<< "D!" << "\t\t";
 }
 
 u2 InfoDouble::GetArgs(u2 *arg2){
