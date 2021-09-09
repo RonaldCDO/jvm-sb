@@ -101,10 +101,10 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     
     //STORES
 
-    instructions.push_back(new Instruction(0x36, "istore", 0));
-    instructions.push_back(new Instruction(0x37, "lstore", 0));
-    instructions.push_back(new Instruction(0x38, "fstore", 0));
-    instructions.push_back(new Instruction(0x39, "dstore", 0));    
+    instructions.push_back(new Instruction(0x36, "istore", 1));
+    instructions.push_back(new Instruction(0x37, "lstore", 1));
+    instructions.push_back(new Instruction(0x38, "fstore", 1));
+    instructions.push_back(new Instruction(0x39, "dstore", 1));    
     instructions.push_back(new Instruction(0x3a, "astore", 1));
     instructions.push_back(new Instruction(0x3b, "istore_0", 0));
     instructions.push_back(new Instruction(0x3c, "istore_1", 0));
@@ -206,10 +206,10 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x91, "i2b", 0));
     instructions.push_back(new Instruction(0x92, "i2c", 0));
     instructions.push_back(new Instruction(0x93, "i2s", 0));
-    instructions.push_back(new Instruction(0x94, "lcmp", 0));
     
     //COMPARISONS
 
+    instructions.push_back(new Instruction(0x94, "lcmp", 0));
     instructions.push_back(new Instruction(0x95, "fcmpl", 0));
     instructions.push_back(new Instruction(0x96, "fcmpg", 0));
     instructions.push_back(new Instruction(0x97, "dcmpl", 0));
@@ -222,10 +222,10 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0x9e, "ifle", 2));
     instructions.push_back(new Instruction(0x9f, "if_icmpeq", 2));
     instructions.push_back(new Instruction(0xa0, "if_icmpne", 2));
-    instructions.push_back(new Instruction(0xa1, "if_icmplt", 0));
-    instructions.push_back(new Instruction(0xa2, "if_icmpge", 0));
-    instructions.push_back(new Instruction(0xa3, "if_icmpgt", 0));
-    instructions.push_back(new Instruction(0xa4, "if_icmple", 0));
+    instructions.push_back(new Instruction(0xa1, "if_icmplt", 2));
+    instructions.push_back(new Instruction(0xa2, "if_icmpge", 2));
+    instructions.push_back(new Instruction(0xa3, "if_icmpgt", 2));
+    instructions.push_back(new Instruction(0xa4, "if_icmple", 2));
     instructions.push_back(new Instruction(0xa5, "if_acmpeq", 2));
     instructions.push_back(new Instruction(0xa6, "if_acmpne", 2));
     
@@ -263,10 +263,10 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0xc1, "instanceof", 2));
     instructions.push_back(new Instruction(0xc2, "monitorenter", 0));
     instructions.push_back(new Instruction(0xc3, "monitorexit", 0));
-    instructions.push_back(new Instruction(0xc4, "wide", 3));
     
     //EXTENDED
-
+    
+    instructions.push_back(new Instruction(0xc4, "wide", 3));
     instructions.push_back(new Instruction(0xc5, "multinewarray", 3));
     instructions.push_back(new Instruction(0xc6, "ifnull", 2));
     instructions.push_back(new Instruction(0xc7, "ifnonnull", 2));
