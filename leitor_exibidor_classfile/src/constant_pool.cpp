@@ -148,9 +148,9 @@ InfoLong::InfoLong(u1 tag, u4 low_bytes, u4 high_bytes) {
 
 void InfoLong::Show() {
     long datalong = (((long) high_bytes << 32) + low_bytes);
-    // if (datalong < 0) {
-    //     datalong = datalong +1;
-    // }
+    if (datalong < 0) {
+        datalong = datalong +1;
+    }
     std::cout<< "Long\t\t" << datalong <<"l" << "\t\t";
 }
 
