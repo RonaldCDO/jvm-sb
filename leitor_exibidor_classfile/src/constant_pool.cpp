@@ -151,7 +151,7 @@ void InfoLong::Show() {
     // if (datalong < 0) {
     //     datalong = datalong +1;
     // }
-    std::cout<< "Long\t\t" << datalong <<"d" << "\t\t";
+    std::cout<< "Long\t\t" << datalong <<"l" << "\t\t";
 }
 
 u2 InfoLong::GetArgs(u2 *arg2){
