@@ -125,20 +125,20 @@ class InfoFloat: public ConstantPoolInfo {
 
 class InfoLong: public ConstantPoolInfo {
     protected:
-        u4 high_bytes;
         u4 low_bytes;
+        u4 high_bytes;
     public:
-        InfoLong(u1 tag, u4 high_bytes, u4 low_bytes);
+        InfoLong(u1 tag, u4 low_bytes, u4 high_bytes);
         void Show();
         u2 GetArgs(u2 *arg2);
 };
 
 class InfoDouble: public ConstantPoolInfo {
     protected:
-        u4 high_bytes;
         u4 low_bytes;
+        u4 high_bytes;
     public:
-        InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes);
+        InfoDouble(u1 tag, u4 low_bytes, u4 high_bytes);
         void Show();
         u2 GetArgs(u2 *arg2);
 };

@@ -140,18 +140,18 @@ u2 InfoFloat::GetArgs(u2 *arg2){
     return bytes;
 }
 
-InfoLong::InfoLong(u1 tag, u4 high_bytes, u4 low_bytes) {
+InfoLong::InfoLong(u1 tag, u4 low_bytes, u4 high_bytes) {
     this->tag = tag;
-    this->high_bytes = high_bytes;
     this->low_bytes = low_bytes;
+    this->high_bytes = high_bytes;
 }
 
 void InfoLong::Show() {
     long datalong = (((long) high_bytes << 32) + low_bytes);
-    if (datalong < 0) {
-        datalong = datalong +1;
-    }
-    std::cout<< "Long\t\t" << datalong << "\t\t";
+    // if (datalong < 0) {
+    //     datalong = datalong +1;
+    // }
+    std::cout<< "Long\t\t" << datalong <<"d" << "\t\t";
 }
 
 u2 InfoLong::GetArgs(u2 *arg2){
@@ -159,45 +159,17 @@ u2 InfoLong::GetArgs(u2 *arg2){
     return 0;
 }
 
-InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
+InfoDouble::InfoDouble(u1 tag, u4 low_bytes, u4 high_bytes) {
     this->tag = tag;
-    this->high_bytes = high_bytes;
     this->low_bytes = low_bytes;
+    this->high_bytes = high_bytes;
 }
 
-union Converter { uint32_t i; double d; };
+// union Converter { uint32_t i; double d; };
 
-// double convert(std::bitset<32> const& bs) {
-//     Converter c;
-//     c.i = bs.to_ullong();
-//     return c.d;
-// }
 
 void InfoDouble::Show() {
 
-    // std::bitset<32> teste (low_bytes);
-    // std::bitset<32> teste2 (high_bytes);
-    // std::vector<int> a;
-    // for (int i= 0 ; i< teste2.size(); i++){
-    //     a.push_back(teste[i]);
-    // }
-    // for (int i= 0 ; i< teste.size(); i++){
-    //     a.push_back(teste2[i]);    
-    // }
-    // for (int c : a)
-    //     std::cout<< c;
-    //     std::cout<<std::endl;
-    
-    
-    // std::cout<< teste <<std::endl;
-    // std::cout<< "teste3: " <<teste3 <<std::endl;
-
-    // std::stringstream stream;
-    // stream << std::hex << high_bytes;
-    // std::string result(stream.str());
-    // std::stringstream ss(result);
-    
-    // std::cout<< result;
     double datadouble;
     long bits = (((long) high_bytes << 32) + low_bytes);
 
@@ -207,7 +179,7 @@ void InfoDouble::Show() {
 		
 	datadouble = (s * m * pow(2, (e-1075)));
 
-    std::cout<< "Double\t\t"<< "D!" << "\t\t";
+    std::cout<< "Double\t\t"<< datadouble <<"d" << "\t\t";
 }
 
 u2 InfoDouble::GetArgs(u2 *arg2){
