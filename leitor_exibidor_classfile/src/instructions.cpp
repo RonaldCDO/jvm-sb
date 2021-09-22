@@ -1,4 +1,6 @@
 #include "instructions.h"
+#include "constant_pool.h"
+#include "attributes.h"
 
 Instruction* InstructionVector::GetInstruction(int position) {
     return instructions.at(position);
@@ -12,13 +14,16 @@ int InstructionVector::GetSize() {
 int InstructionVector::ShowInstruction(u1 opcode, int prefix) {
 
     Instruction* inst;
+    // AttributesTable* a;
 
     for (int i = 0; i < (int) instructions.size(); i++) {
         inst = instructions.at(i);
         if (opcode == inst->GetOpcode()) {
             // if (instructions.size() > )
+            // std::cout<<"inst_size " <<instructions.size()<<std::endl;
             std::cout << "\t\t" << prefix << "   " << inst->GetMnemonic();
             if (inst->GetSize()) {
+                // std::cout<< <<std::endl;
                 /**
                 for (int i = 0; i < inst->GetSize(); i++) {
                     std::cout << operands[i] << " "; 
