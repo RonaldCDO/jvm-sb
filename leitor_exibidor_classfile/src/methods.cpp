@@ -44,24 +44,6 @@ void Methods::ShowMethods(int methods_count, ConstantPool* cp) {
 
             flags = method->GetAccessFlags();
 
-            // byte = flags & 0x000F;
-            // std::cout << "i " << i << "method " << method << "flags " << flags << "byte " << byte ;
-            // std::cout << "\n";
-
-            // switch(byte){
-            //     case ACC_PRIVATE_M:
-            //         std::cout << "private ";
-            //         break;
-            //     case ACC_PROTECTED_M:
-            //         std::cout << "protected ";
-            //         break;
-            //     case ACC_PUBLIC_M:
-            //         std::cout << "public ";
-            //         break;
-            //     case ACC_PUBLIC_M + ACC_STATIC_M:
-            //         std::cout <<"public static ";
-            // }
-
             name_index = (method->GetNameIndex());
             if (name_index == 0){
                 std::cout << "Name: " << cp->GetUtf8(name_index) << std::endl;

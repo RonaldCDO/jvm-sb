@@ -11,7 +11,8 @@ void ClassFile::LoadFile(char* fileName){
     if (file.is_open()) {
         ReadClassFile();
     } else {
-        std::cout << "Falha ao abrir arquivo. Encerrando...\n";
+        std::cout << "Falha ao abrir arquivo. Não se trata de um arquivo .class!\n Encerrando...\n";
+        exit(1);
     }
 }
 

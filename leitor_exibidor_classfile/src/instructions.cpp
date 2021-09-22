@@ -16,6 +16,7 @@ int InstructionVector::ShowInstruction(u1 opcode, int prefix) {
     for (int i = 0; i < (int) instructions.size(); i++) {
         inst = instructions.at(i);
         if (opcode == inst->GetOpcode()) {
+            // if (instructions.size() > )
             std::cout << "\t\t" << prefix << "   " << inst->GetMnemonic();
             if (inst->GetSize()) {
                 /**
