@@ -2,39 +2,18 @@
 #include "constant_pool.h"
 #include "attributes.h"
 
+InstructionVector instructionVector;
+
 Instruction* InstructionVector::GetInstruction(int position) {
     return instructions.at(position);
 }
 
+void Instruction::Show() {
+    std::cout << mnemonic << std::endl;
+}
 
 int InstructionVector::GetSize() {
     return instructions.size();
-}
-
-int InstructionVector::ShowInstruction(u1 opcode, int prefix) {
-
-    Instruction* inst;
-    // AttributesTable* a;
-
-    for (int i = 0; i < (int) instructions.size(); i++) {
-        inst = instructions.at(i);
-        if (opcode == inst->GetOpcode()) {
-            // if (instructions.size() > )
-            // std::cout<<"inst_size " <<instructions.size()<<std::endl;
-            std::cout << "\t\t" << prefix << "   " << inst->GetMnemonic();
-            if (inst->GetSize()) {
-                // std::cout<< <<std::endl;
-                /**
-                for (int i = 0; i < inst->GetSize(); i++) {
-                    std::cout << operands[i] << " "; 
-                }
-                **/
-            }
-            std::cout << std::endl;
-            return inst->GetSize();
-        }
-    }
-    return -1;
 }
 
 Instruction::Instruction(u1 opcode, const std::string mnemonic, int size) {
@@ -43,7 +22,11 @@ Instruction::Instruction(u1 opcode, const std::string mnemonic, int size) {
     this->size = size;
 }
 
-std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
+void InstructionVector::CreateInstructionVector() {
+
+    if (instructions.empty() == false) {
+        return;
+    }
     
     //CONSTANTS
 
@@ -281,6 +264,4 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
     instructions.push_back(new Instruction(0xca, "breakpoint", 0));
     instructions.push_back(new Instruction(0xfe, "impdep1", 0));
     instructions.push_back(new Instruction(0xff, "impdep2", 0));
-
-    return instructions;    
 }

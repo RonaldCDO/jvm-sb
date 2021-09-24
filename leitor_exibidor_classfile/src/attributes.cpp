@@ -30,6 +30,40 @@ GenericAtt::GenericAtt(u2 attribute_name_index, u4 attribute_length, u1 * att_in
     this->att_info = att_info;
 }
 
+void CodeAtt::CreateCodeInstructions() {
+
+    instructionVector.CreateInstructionVector();
+
+    Instruction* inst;
+    u1 opcode;
+    int skip;
+    int i = 0;
+
+    while (i < code_length) {
+        opcode = code[i];
+        //skip = instructionVector.ShowInstruction(opcode, prefix);
+
+        for (int j = 0; j < (int) instructionVector.GetSize(); j++) {
+            inst = instructionVector.GetInstruction(j);
+            if (opcode == inst->GetOpcode()) {
+                if (opcode == 0xaa){ //tableswitch
+                    u1 padding = 0;
+                    while ((i+padding) % 4 != 0){
+                        std::cout << i+padding % 4 << std::endl;
+                        padding++;
+                    }
+                    inst->SetSize(padding);
+                    code_instructions.push_back(inst);
+                    skip = inst ->GetSize();
+                } else {
+                    code_instructions.push_back(inst);
+                    skip = inst->GetSize();
+                }
+            }
+        }
+        i = i + 1 + skip;
+    }
+}
 
 CodeAtt::CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1* code){
     this->attribute_name_index = attribute_name_index;
@@ -38,6 +72,7 @@ CodeAtt::CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 
     this->max_locals = max_locals;
     this->code_length = code_length;
     this->code = code;
+    CreateCodeInstructions();
 }
 
 
@@ -66,23 +101,13 @@ void CodeAtt::Show() {
     std::cout << "\tMax_stack: " << max_stack << std::endl;
     std::cout << "\tMax_locals: " << max_locals << std::endl;
     std::cout << "\tCode_length: " << code_length << std::endl << std::endl;
+    std::cout << "\tCode: " << std::endl << std::endl;
 
-    InstructionVector instructionVector;
-    instructionVector.CreateInstructionVector();
+    int code_instructions_size = code_instructions.size();
 
-    int aux_code_length = code_length;
-    u1 opcode;
-    int skip;
-    int i = 0;
-    int prefix = 1;
-
-    while (i < aux_code_length) {
-        opcode = code[i];
-        skip = instructionVector.ShowInstruction(opcode, prefix);
-        i = i + 1 + skip;
-        prefix = prefix + 1;
+    for (int i = 0; i < code_instructions_size; i++) {
+        code_instructions.at(i)->Show();
     }
-
 }
 
 ExceptionsIndexTable::ExceptionsIndexTable(u1 indexes){
