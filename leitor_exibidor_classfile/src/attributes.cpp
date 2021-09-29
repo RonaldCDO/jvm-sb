@@ -76,8 +76,10 @@ int CodeAtt::CreateTableswitchInstruction(int index) {
             jump_offsets[i] |= code[index];
             index++;
         }
-        tsi->SetJumpOffset(jump_offsets[i]);
+        std::cout << jump_offsets[i] << std::endl;
     }
+
+    tsi->SetJumpOffsets(jump_offsets);
 
     code_instructions.push_back(tsi);
 

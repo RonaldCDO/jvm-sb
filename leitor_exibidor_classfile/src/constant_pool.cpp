@@ -159,7 +159,7 @@ u2 InfoLong::GetArgs(u2 *arg2){
     return 0;
 }
 
-InfoDouble::InfoDouble(u1 tag, u4 low_bytes, u4 high_bytes) {
+InfoDouble::InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes) {
     this->tag = tag;
     this->low_bytes = low_bytes;
     this->high_bytes = high_bytes;

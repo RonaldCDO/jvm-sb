@@ -138,7 +138,7 @@ class InfoDouble: public ConstantPoolInfo {
         u4 low_bytes;
         u4 high_bytes;
     public:
-        InfoDouble(u1 tag, u4 low_bytes, u4 high_bytes);
+        InfoDouble(u1 tag, u4 high_bytes, u4 low_bytes);
         void Show();
         u2 GetArgs(u2 *arg2);
 };

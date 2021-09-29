@@ -19,6 +19,7 @@ class Instruction {
         inline int GetSize(){return size;};
         inline std::string GetMnemonic(){return mnemonic;};
         virtual void Show();
+        virtual void Execute();
 };
 
 // Modelo de instrucao especifica do tipo "Tableswitch"
@@ -28,13 +29,14 @@ class TableswitchInst : public Instruction {
         u4 default_bytes;
         u4 high_bytes;
         u4 low_bytes;
-        std::vector<u4*> jump_offsets;
+        std::vector<u4> jump_offsets;
+        u2 jump_offsets_length;
         bool padding_set;
     public:
         TableswitchInst(u1 opcode, const std::string mnemonic);
         void SetPadding(int padding);
         void SetBytes(u4 default_bytes, u4 high_bytes, u4 low_bytes);
-        void SetJumpOffset(u4 jump_offset);
+        void SetJumpOffsets(u4* jump_offsets);
         void Show();
 };
 

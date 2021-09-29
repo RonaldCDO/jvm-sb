@@ -41,13 +41,16 @@ void TableswitchInst::Show() {
     std::cout << "\tdefault_bytes: " << default_bytes << std::endl;
     std::cout << "\thigh_bytes: " << high_bytes << std::endl;
     std::cout << "\tlow_bytes: " << low_bytes << std::endl;
+    int jump_offsets_length = high_bytes - low_bytes + 1;
+    for (int i = 0; i < jump_offsets_length; i++) {
+        std::cout << jump_offsets.at(i) << std::endl;
+    }
 }
 
 void TableswitchInst::SetBytes(u4 default_bytes, u4 high_bytes, u4 low_bytes) {
     this->default_bytes = default_bytes;
     this->high_bytes = high_bytes;
     this->low_bytes = low_bytes;
-    this->jump_offsets_amount = high_bytes - low_bytes + 1;
 
     if (low_bytes > high_bytes) {
         std::cout << "ERRO: TableswitchInst com low_bytes maior que high_bytes. Encerrando..." << std :: endl;
@@ -55,8 +58,12 @@ void TableswitchInst::SetBytes(u4 default_bytes, u4 high_bytes, u4 low_bytes) {
     }
 }
 
-u2 TableswitchInst::GetJumpOffsets(u4 jump_offset) {
-    this->jump_offsets.push_back(jump_offset);
+void TableswitchInst::SetJumpOffsets(u4* jump_offsets) {
+    int jump_offsets_length = high_bytes - low_bytes + 1;
+
+    for (int i = 0; i < jump_offsets_length; i++) {
+        this->jump_offsets.push_back(jump_offsets[i]);
+    }
 }
 
 int InstructionVector::GetSize() {

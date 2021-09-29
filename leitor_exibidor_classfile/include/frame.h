@@ -22,7 +22,7 @@ class LocalVariable{
     u2 op;
     ConstantPoolInfo* ci;
     public:
-}
+};
 
 class Frame{
     protected:
