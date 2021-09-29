@@ -30,6 +30,61 @@ GenericAtt::GenericAtt(u2 attribute_name_index, u4 attribute_length, u1 * att_in
     this->att_info = att_info;
 }
 
+int CodeAtt::CreateTableswitchInstruction(int index) {
+
+    TableswitchInst* tsi = new TableswitchInst(0xaa, "tableswitch");
+    int padding = 0;
+    u4 default_bytes;
+    u4 high_bytes;
+    u4 low_bytes;
+
+    while ((index + padding) % 4 != 0){
+        padding++;
+    }
+
+    index = index + padding;
+
+    tsi->SetPadding(padding);
+
+    for (int i = 0; i < 4; i++) {
+		default_bytes <<= 8;
+		default_bytes |= code[index];
+        index++;
+	}
+
+    for (int i = 0; i < 4; i++) {
+		low_bytes <<= 8;
+		low_bytes |= code[index];
+        index++;
+	}
+
+    for (int i = 0; i < 4; i++) {
+		high_bytes <<= 8;
+		high_bytes |= code[index];
+        index++;
+	}
+
+    tsi->SetBytes(default_bytes, high_bytes, low_bytes);
+
+    int jump_offsets_amount = high_bytes - low_bytes + 1;
+
+    u4 jump_offsets[jump_offsets_amount];
+
+    for (int i = 0; i < jump_offsets_amount; i++) {
+        for (int j = 0; j < 4; j++) {
+            jump_offsets[i] <<= 8;
+            jump_offsets[i] |= code[index];
+            index++;
+        }
+        tsi->SetJumpOffset(jump_offsets[i]);
+    }
+
+    code_instructions.push_back(tsi);
+
+    return index;
+
+}
+
 void CodeAtt::CreateCodeInstructions() {
 
     instructionVector.CreateInstructionVector();
@@ -47,21 +102,15 @@ void CodeAtt::CreateCodeInstructions() {
             inst = instructionVector.GetInstruction(j);
             if (opcode == inst->GetOpcode()) {
                 if (opcode == 0xaa){ //tableswitch
-                    u1 padding = 0;
-                    while ((i+padding) % 4 != 0){
-                        std::cout << i+padding % 4 << std::endl;
-                        padding++;
-                    }
-                    inst->SetSize(padding);
-                    code_instructions.push_back(inst);
-                    skip = inst ->GetSize();
+                    i = CreateTableswitchInstruction(i);
                 } else {
                     code_instructions.push_back(inst);
                     skip = inst->GetSize();
+                    i = i + 1 + skip;
                 }
+                break;
             }
         }
-        i = i + 1 + skip;
     }
 }
 

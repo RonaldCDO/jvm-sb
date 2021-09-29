@@ -4,6 +4,7 @@
 
 InstructionVector instructionVector;
 
+
 Instruction* InstructionVector::GetInstruction(int position) {
     return instructions.at(position);
 }
@@ -12,14 +13,54 @@ void Instruction::Show() {
     std::cout << mnemonic << std::endl;
 }
 
-int InstructionVector::GetSize() {
-    return instructions.size();
+Instruction::Instruction() {
+
 }
 
 Instruction::Instruction(u1 opcode, const std::string mnemonic, int size) {
     this->opcode = opcode;
     this->mnemonic = mnemonic;
     this->size = size;
+}
+
+TableswitchInst::TableswitchInst(u1 opcode, const std::string mnemonic) {
+    this->opcode = opcode;
+    this->mnemonic = mnemonic;
+    this->padding_set = false;
+}
+
+void TableswitchInst::SetPadding(int padding) {
+    if (this->padding_set == false) {
+        this->padding = padding;
+        this->padding_set = true;
+    }  
+}
+
+void TableswitchInst::Show() {
+    std::cout << "tableswitch\n\tpadding: " << padding << std::endl;
+    std::cout << "\tdefault_bytes: " << default_bytes << std::endl;
+    std::cout << "\thigh_bytes: " << high_bytes << std::endl;
+    std::cout << "\tlow_bytes: " << low_bytes << std::endl;
+}
+
+void TableswitchInst::SetBytes(u4 default_bytes, u4 high_bytes, u4 low_bytes) {
+    this->default_bytes = default_bytes;
+    this->high_bytes = high_bytes;
+    this->low_bytes = low_bytes;
+    this->jump_offsets_amount = high_bytes - low_bytes + 1;
+
+    if (low_bytes > high_bytes) {
+        std::cout << "ERRO: TableswitchInst com low_bytes maior que high_bytes. Encerrando..." << std :: endl;
+        exit(1);
+    }
+}
+
+u2 TableswitchInst::GetJumpOffsets(u4 jump_offset) {
+    this->jump_offsets.push_back(jump_offset);
+}
+
+int InstructionVector::GetSize() {
+    return instructions.size();
 }
 
 void InstructionVector::CreateInstructionVector() {

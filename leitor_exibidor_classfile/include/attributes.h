@@ -74,6 +74,8 @@ class CodeAtt : public AttributesInfo{
         std::vector<ExceptionsTableAtt*> exceptions_table;
         u2 attributes_length;
         AttributesTable * attributes;
+
+        int CreateTableswitchInstruction(int index);
     public:
         CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
         void CreateCodeInstructions();
