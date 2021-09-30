@@ -49,7 +49,7 @@ std::vector<Instruction*> InstructionVector::CreateInstructionVector() {
 
     instructions.push_back(new Instruction(0x00, "nop", 0));
     instructions.push_back(new Instruction(0x01, "aconst_null", 0));
-    instructions.push_back(new Instruction(0x02, "iconst_ml", 0));
+    instructions.push_back(new Instruction(0x02, "iconst_m1", 0));
     instructions.push_back(new Instruction(0x03, "iconst_0", 0));
     instructions.push_back(new Instruction(0x04, "iconst_1", 0));
     instructions.push_back(new Instruction(0x05, "iconst_2", 0));
