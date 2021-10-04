@@ -2,7 +2,12 @@
 #define FRAME
 
 #include "data_class_format.h"
+#include "classfile.h"
 #include "methods.h"
+#include "constant_pool.h"
+#include <vector>
+#include <sstream>
+#include <stack>
 
 
 class StackOp{
@@ -13,10 +18,14 @@ class StackOp{
     inline u2 GetOp(){return op;};
 };
 
+
 class Frame{
     protected:
-        std::vector<StackOp*> op;
+        std::stack<StackOp*> operandsStack;
+        std::vector<Variable*> variablesVector;
     public:
+        // Frame(ClassFile*, ConstantPool*, u2);
+    
 };
 
 #endif

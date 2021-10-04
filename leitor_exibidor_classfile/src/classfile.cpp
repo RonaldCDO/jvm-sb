@@ -3,10 +3,6 @@
 void ClassFile::LoadFile(char* fileName){
 
     file.open(fileName, std::ios::binary);
-
-    std::cout << fileName << "\n";
-
-    std::cout<<"\nFilename: " << fileName <<std::endl;
     
     if (file.is_open()) {
         ReadClassFile();

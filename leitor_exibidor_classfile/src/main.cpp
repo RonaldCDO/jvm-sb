@@ -14,15 +14,15 @@
 
 #include "classfile.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
 
-    std::cout << "LEITOR/EXIBIDOR DE BYTECODE JAVA" << std::endl;
+    
     if (argc == 1)
     std::cout << "Voce informou " << argc << " argumento: " << argv[0] <<std::endl;
     else 
     std::cout << "Voce informou " << argc << " argumentos: ";
     
-    for (int i = 0; i < argc -1; i++) {
+    for (int i = 0; i < argc; i++) {
         std::cout << argv[i] << " ";
     }
 
@@ -34,23 +34,37 @@ int main(int argc, char* argv[]) {
     
     ClassFile * cf = new ClassFile();
 
-    cf->LoadFile(argv[1]);
-    cf->ShowMagic();
-    cf->ShowMinor();
-    cf->ShowMajor();
-    cf->ShowJavaVersion();
-    cf->ShowAccessFlags();
-    cf->ShowThisClass();
-    cf->ShowSuperClass();
-    cf->ShowFieldsCount();
-    cf->ShowMethodsCount();
-    cf->ShowAttributesCount();
-    cf->ShowConstantPoolCount();
-    cf->ShowConstantPool();
-    cf->ShowInterfaces();
-    cf->ShowFields();
-    cf->ShowMethods();
-    delete cf;
+    if (*argv[1] == 'e'){
+        std::cout << "\nLEITOR/EXIBIDOR DE BYTECODE JAVA" << std::endl;
+        
+        char* fileName = argv[2];
+        std::cout<<"\nFilename: " << fileName <<std::endl;
+
+        cf->LoadFile(fileName);
+        cf->ShowMagic();
+        cf->ShowMinor();
+        cf->ShowMajor();
+        cf->ShowJavaVersion();
+        cf->ShowAccessFlags();
+        cf->ShowThisClass();
+        cf->ShowSuperClass();
+        cf->ShowFieldsCount();
+        cf->ShowMethodsCount();
+        cf->ShowAttributesCount();
+        cf->ShowConstantPoolCount();
+        cf->ShowConstantPool();
+        cf->ShowInterfaces();
+        cf->ShowFields();
+        cf->ShowMethods();
+        delete cf;
+    } else if(*argv[1] == 'i'){
+        std::cout<<"\n\nINTERPRETADOR DE BYTECODE JAVA"<<std::endl;
+    }
+    else{
+        std::cout<<"Opcao desconhecida"<<std::endl;
+    return 0;
+    }
+    
 
     return 0;
 }

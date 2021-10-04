@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <vector>
+#include <unordered_map>
+
 
 
 typedef uint8_t u1;
@@ -46,17 +48,46 @@ void Printu2Hex(u2 hex_value);
 void Printu4Hex(u4 hex_value);
 
 typedef union primitive_data{
-    uint8_t B;
-    char C;
-    double D;
-    float F;
-    int I;
-    long J;
-    short S;
-    bool Z;
+    u1 *boolVal;
+    u2 *charVal;
+    u2 *shortVal;
+    u4 *floatVal;
+    u4 *integerVal;
+    u8 *longVal;
+    u8 *doubleVal;
     
-} primitive;
+} Primitive;
 
+class JavaClassInstance;
+
+class ArrayVariable;
+
+// class ClassFile;
+
+class Variable{
+
+    enum dataType{
+        voidType, byteType, boolType, charType, short_type, intType, floatType, longType,
+        doubleType, classInstanceType, arrayType, stringType, returnAddressType 
+    };
+
+    union{
+        Primitive *var;
+        std::string *string;
+        ArrayVariable *arr;
+        u4 *returnAddress;
+        // JavaClassInstance *object;
+    };
+};
+
+// class JavaClassInstance{
+//     ClassFile* readerJava;
+//     std::unordered_map<std::string, Variable*> *fieldVariables;
+// };
+
+class ArrayVariable{
+    std::vector<Variable*> arr;
+};
 
 
 union ulf
