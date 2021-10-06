@@ -1,8 +1,11 @@
 #include "frame.h"
 
+typedef void (*fun)(void);
 class Operacoes {
 
 private:
+
+	static struct frame_s *f;
 
 	static void nop();
 	static void aconst_null();
@@ -21,6 +24,8 @@ private:
 	static void dconst_0();
 	static void dconst_1();
 
+	const static fun functions[];
+	
 public:
     static void run(int);
 };
