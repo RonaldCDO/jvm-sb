@@ -13,6 +13,7 @@
  **/
 
 #include "classfile.h"
+#include "method_area.h"
 
 int main(int argc, char** argv) {
 
@@ -59,6 +60,11 @@ int main(int argc, char** argv) {
         delete cf;
     } else if(*argv[1] == 'i'){
         std::cout<<"\n\nINTERPRETADOR DE BYTECODE JAVA"<<std::endl;
+
+        char* fileName = argv[2];
+        std::cout<<"\nFilename: " << fileName <<std::endl;
+
+        MethodArea* methodArea = new MethodArea(fileName);
     }
     else{
         std::cout<<"Opcao desconhecida"<<std::endl;
