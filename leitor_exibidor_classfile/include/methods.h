@@ -26,8 +26,9 @@ class MethodsInfo{
         u2 name_index;
         u2 descriptor_index;
         u2 attributes_count;
-        AttributesTable * attributes;
+        
     public:
+        AttributesTable * attributes;
         MethodsInfo(u2 access_flags, u2 name_index, u2 descriptor_index, u2 attributes_count);
         inline u2 GetAccessFlags(){return access_flags;};
         inline u2 GetNameIndex(){return name_index;};

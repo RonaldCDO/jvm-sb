@@ -2,6 +2,8 @@
 #include "frame.h"
 
 frame *Operacoes::f = nullptr;
+std::stack<struct frame_s*> *Operacoes::framestack = nullptr;
+Frame *Operacoes::fs = nullptr;
 
 const fun Operacoes::functions[] ={
         &Operacoes::nop,
@@ -33,7 +35,7 @@ void Operacoes::nop (){
 
 void Operacoes::aconst_null (){
     //0x01
-	// operandsStack->push((int*)(nullptr));
+	// f->operandsStack->push((int*)(nullptr));
 }
 
 void Operacoes::iconst_m1 (){

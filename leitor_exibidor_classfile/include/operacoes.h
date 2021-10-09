@@ -6,6 +6,8 @@ class Operacoes {
 private:
 
 	static struct frame_s *f;
+	static std::stack<struct frame_s*> *framestack;
+	static Frame *fs;
 
 	static void nop();
 	static void aconst_null();

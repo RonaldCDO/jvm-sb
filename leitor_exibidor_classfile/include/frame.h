@@ -9,14 +9,6 @@
 #include <sstream>
 #include <stack>
 
-typedef struct frame_s{
-	unsigned char *pc;
-    ConstantPool cp;
-    std::stack<StackOp*> operandsStack;
-    std::vector<Variable*> variablesVector;
-	// methodsinfo;
-} frame;
-
 class StackOp{
     protected:
     u2 op;
@@ -25,12 +17,27 @@ class StackOp{
     inline u2 GetOp(){return op;};
 };
 
+typedef struct frame_s{
+	unsigned char *pc;
+    ConstantPoolInfo *cp;
+    std::stack<StackOp*> operandsStack;
+    std::vector<Variable*> variablesVector;
+	MethodsInfo m;
+} frame;
+
 
 class Frame{
     protected:
-        std::stack<StackOp*> operandsStack;
-        std::vector<Variable*> variablesVector;
+        // std::stack<StackOp*> operandsStack;
+        // std::vector<Variable*> variablesVector;
+        std::stack<frame*> framestack;
         u4 pc;
+        CodeAtt* code;
+        ClassFile *class_file;
+        MethodsInfo* method;
+        
+        int opcode;
+        bool nextInstruction();
         
     public:
 

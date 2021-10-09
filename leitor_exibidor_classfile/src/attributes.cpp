@@ -320,3 +320,7 @@ void AttributesTable::ShowAttributesTable() {
         at.at(i)->Show();
     }
 }
+
+AttributesInfo * AttributesTable::GetAttributeInfo() {
+    return at.back();
+}

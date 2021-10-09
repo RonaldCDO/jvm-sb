@@ -58,6 +58,8 @@ int main(int argc, char** argv) {
         cf->ShowMethods();
         delete cf;
     } else if(*argv[1] == 'i'){
+        char* fileName = argv[2];
+        cf->LoadFile(fileName);
         std::cout<<"\n\nINTERPRETADOR DE BYTECODE JAVA"<<std::endl;
     }
     else{

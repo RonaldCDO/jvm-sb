@@ -12,18 +12,22 @@ class AttributesInfo{
     protected:
     u2 attribute_name_index;
     u4 attribute_length;
+    u1 * code;
     public:
     inline u2 GetAttributeNameIndex() {return attribute_name_index;};
     inline u4 GetAttributeLength() {return attribute_length;};
+    inline u1 * GetCode() {return code;};
     virtual void Show();
 };
 
 class AttributesTable{
     protected:
-        std::vector<AttributesInfo *> at;
+        // std::vector<AttributesInfo *> at;
     public:
+        std::vector<AttributesInfo *> at;
         void AppendConstantValue(u2 attribute_name_index, u4 attribute_length, u2 constantvalue_index);
         void AppendCode(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
+        AttributesInfo * GetAttributeInfo();
         void AppendExceptions(u2 attribute_name_index, u4 attribute_length);
         void AppendSourceFile(u2 attribute_name_index, u4 attribute_length, u2 sourcefile_index);
         void AppendLineNumberTable(u2 attribute_name_index, u4 attribute_length);
@@ -74,6 +78,7 @@ class CodeAtt : public AttributesInfo{
         u2 attributes_length;
         AttributesTable * attributes;
     public:
+        inline u1 * GetCode() {return code;};
         CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
         void SetExceptionTableLength(u2 length);
         void SetAttributesLength(u2 length);
