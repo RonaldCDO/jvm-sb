@@ -70,7 +70,7 @@ class ExceptionsTableAtt{
 class CodeAtt : public AttributesInfo{
     protected:
         u2 max_stack;
-        u2 max_locals;
+        // u2 max_locals;
         u4 code_length;
         u1* code;
         u2 exception_table_length;
@@ -78,6 +78,7 @@ class CodeAtt : public AttributesInfo{
         u2 attributes_length;
         AttributesTable * attributes;
     public:
+        u2 max_locals;
         inline u1 * GetCode() {return code;};
         CodeAtt(u2 attribute_name_index, u4 attribute_length, u2 max_stack, u2 max_locals, u4 code_length, u1 * code);
         void SetExceptionTableLength(u2 length);

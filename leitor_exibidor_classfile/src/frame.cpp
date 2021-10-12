@@ -7,6 +7,15 @@
 
 // }
 
+Frame::Frame(ClassFile* class_file, MethodsInfo& method){
+    this->class_file = class_file;
+    this->pc = 0;
+    this->method = &method;
+
+    this->code = code;
+    this->variablesVector.resize(code->max_locals, 0);
+}
+
 void Frame::execute(){
 	while (nextInstruction())
 	{

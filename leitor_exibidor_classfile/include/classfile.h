@@ -42,7 +42,7 @@ class ClassFile {
         u2 fields_count;
         Fields * fields_table;
         u2 methods_count;
-        Methods * methods_table;
+        // Methods * methods_table;
         u2 attributes_count;
         AttributesTable * attributes_table;
 
@@ -54,6 +54,7 @@ class ClassFile {
         void LoadMethodsTable();
         void LoadAttributesTable();
     public:
+        Methods * methods_table;
         void LoadFile(char* fileName);
         void ShowMagic();
         void ShowMinor();
