@@ -13,6 +13,8 @@
  **/
 
 #include "classfile.h"
+#include "frame.h"
+#include "methods.h"
 
 int main(int argc, char** argv) {
 
@@ -59,7 +61,10 @@ int main(int argc, char** argv) {
         delete cf;
     } else if(*argv[1] == 'i'){
         char* fileName = argv[2];
-        cf->LoadFile(fileName);
+        cf->LoadFile(fileName);    
+
+        // Frame frames(cf, methods);
+        // frames.execute();
         std::cout<<"\n\nINTERPRETADOR DE BYTECODE JAVA"<<std::endl;
     }
     else{
